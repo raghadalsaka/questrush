@@ -1,0 +1,374 @@
+{
+  "title": "Volcano",
+  "slug": "times-tables-volcano",
+  "order": 3,
+  "description": "Times tables",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "times-01",
+      "prompt": "What is 7 × 6?",
+      "options": [
+        "43",
+        "42",
+        "48",
+        "49"
+      ],
+      "correctIndex": 1,
+      "explanation": "7 × 6 means 7 groups of 6. Skip count by 6, 7 times, to reach 42."
+    },
+    {
+      "id": "times-02",
+      "prompt": "What is 2 × 4?",
+      "options": [
+        "9",
+        "8",
+        "10",
+        "6"
+      ],
+      "correctIndex": 1,
+      "explanation": "2 × 4 means 2 groups of 4. Skip count by 4, 2 times, to reach 8."
+    },
+    {
+      "id": "times-03",
+      "prompt": "What is 9 × 7?",
+      "options": [
+        "72",
+        "63",
+        "70",
+        "64"
+      ],
+      "correctIndex": 1,
+      "explanation": "9 × 7 means 9 groups of 7. Skip count by 7, 9 times, to reach 63."
+    },
+    {
+      "id": "times-04",
+      "prompt": "What is 8 × 9?",
+      "options": [
+        "73",
+        "64",
+        "72",
+        "80"
+      ],
+      "correctIndex": 2,
+      "explanation": "8 × 9 means 8 groups of 9. Skip count by 9, 8 times, to reach 72."
+    },
+    {
+      "id": "times-05",
+      "prompt": "What is 2 × 8?",
+      "options": [
+        "8",
+        "15",
+        "14",
+        "16"
+      ],
+      "correctIndex": 3,
+      "explanation": "2 × 8 means 2 groups of 8. Skip count by 8, 2 times, to reach 16."
+    },
+    {
+      "id": "times-06",
+      "prompt": "What is 7 × 7?",
+      "options": [
+        "48",
+        "56",
+        "50",
+        "49"
+      ],
+      "correctIndex": 3,
+      "explanation": "7 × 7 means 7 groups of 7. Skip count by 7, 7 times, to reach 49."
+    },
+    {
+      "id": "times-07",
+      "prompt": "What is 4 × 4?",
+      "options": [
+        "17",
+        "16",
+        "12",
+        "15"
+      ],
+      "correctIndex": 1,
+      "explanation": "4 × 4 means 4 groups of 4. Skip count by 4, 4 times, to reach 16."
+    },
+    {
+      "id": "times-08",
+      "prompt": "What is 3 × 8?",
+      "options": [
+        "25",
+        "23",
+        "32",
+        "24"
+      ],
+      "correctIndex": 3,
+      "explanation": "3 × 8 means 3 groups of 8. Skip count by 8, 3 times, to reach 24."
+    },
+    {
+      "id": "times-09",
+      "prompt": "What is 2 × 7?",
+      "options": [
+        "15",
+        "12",
+        "21",
+        "14"
+      ],
+      "correctIndex": 3,
+      "explanation": "2 × 7 means 2 groups of 7. Skip count by 7, 2 times, to reach 14."
+    },
+    {
+      "id": "times-10",
+      "prompt": "What is 2 × 9?",
+      "options": [
+        "27",
+        "9",
+        "17",
+        "18"
+      ],
+      "correctIndex": 3,
+      "explanation": "2 × 9 means 2 groups of 9. Skip count by 9, 2 times, to reach 18."
+    },
+    {
+      "id": "times-11",
+      "prompt": "What is 6 × 4?",
+      "options": [
+        "18",
+        "20",
+        "28",
+        "24"
+      ],
+      "correctIndex": 3,
+      "explanation": "6 × 4 means 6 groups of 4. Skip count by 4, 6 times, to reach 24."
+    },
+    {
+      "id": "times-12",
+      "prompt": "What is 8 × 6?",
+      "options": [
+        "49",
+        "47",
+        "56",
+        "48"
+      ],
+      "correctIndex": 3,
+      "explanation": "8 × 6 means 8 groups of 6. Skip count by 6, 8 times, to reach 48."
+    },
+    {
+      "id": "times-13",
+      "prompt": "What is 3 × 5?",
+      "options": [
+        "15",
+        "14",
+        "18",
+        "16"
+      ],
+      "correctIndex": 0,
+      "explanation": "3 × 5 means 3 groups of 5. Skip count by 5, 3 times, to reach 15."
+    },
+    {
+      "id": "times-14",
+      "prompt": "What is 5 × 9?",
+      "options": [
+        "40",
+        "45",
+        "44",
+        "50"
+      ],
+      "correctIndex": 1,
+      "explanation": "5 × 9 means 5 groups of 9. Skip count by 9, 5 times, to reach 45."
+    },
+    {
+      "id": "times-15",
+      "prompt": "What is 9 × 4?",
+      "options": [
+        "36",
+        "35",
+        "45",
+        "32"
+      ],
+      "correctIndex": 0,
+      "explanation": "9 × 4 means 9 groups of 4. Skip count by 4, 9 times, to reach 36."
+    },
+    {
+      "id": "times-16",
+      "prompt": "What is 2 × 3?",
+      "options": [
+        "5",
+        "6",
+        "9",
+        "3"
+      ],
+      "correctIndex": 1,
+      "explanation": "2 × 3 means 2 groups of 3. Skip count by 3, 2 times, to reach 6."
+    },
+    {
+      "id": "times-17",
+      "prompt": "What is 7 × 4?",
+      "options": [
+        "21",
+        "28",
+        "24",
+        "29"
+      ],
+      "correctIndex": 1,
+      "explanation": "7 × 4 means 7 groups of 4. Skip count by 4, 7 times, to reach 28."
+    },
+    {
+      "id": "times-18",
+      "prompt": "What is 6 × 6?",
+      "options": [
+        "36",
+        "37",
+        "42",
+        "35"
+      ],
+      "correctIndex": 0,
+      "explanation": "6 × 6 means 6 groups of 6. Skip count by 6, 6 times, to reach 36."
+    },
+    {
+      "id": "times-19",
+      "prompt": "What is 7 × 3?",
+      "options": [
+        "18",
+        "24",
+        "22",
+        "21"
+      ],
+      "correctIndex": 3,
+      "explanation": "7 × 3 means 7 groups of 3. Skip count by 3, 7 times, to reach 21."
+    },
+    {
+      "id": "times-20",
+      "prompt": "What is 9 × 6?",
+      "options": [
+        "54",
+        "48",
+        "63",
+        "53"
+      ],
+      "correctIndex": 0,
+      "explanation": "9 × 6 means 9 groups of 6. Skip count by 6, 9 times, to reach 54."
+    },
+    {
+      "id": "times-21",
+      "prompt": "What is 2 × 5?",
+      "options": [
+        "10",
+        "11",
+        "9",
+        "5"
+      ],
+      "correctIndex": 0,
+      "explanation": "2 × 5 means 2 groups of 5. Skip count by 5, 2 times, to reach 10."
+    },
+    {
+      "id": "times-22",
+      "prompt": "What is 3 × 3?",
+      "options": [
+        "12",
+        "8",
+        "6",
+        "9"
+      ],
+      "correctIndex": 3,
+      "explanation": "3 × 3 means 3 groups of 3. Skip count by 3, 3 times, to reach 9."
+    },
+    {
+      "id": "times-23",
+      "prompt": "What is 5 × 7?",
+      "options": [
+        "42",
+        "40",
+        "35",
+        "34"
+      ],
+      "correctIndex": 2,
+      "explanation": "5 × 7 means 5 groups of 7. Skip count by 7, 5 times, to reach 35."
+    },
+    {
+      "id": "times-24",
+      "prompt": "What is 4 × 3?",
+      "options": [
+        "12",
+        "15",
+        "11",
+        "13"
+      ],
+      "correctIndex": 0,
+      "explanation": "4 × 3 means 4 groups of 3. Skip count by 3, 4 times, to reach 12."
+    },
+    {
+      "id": "times-25",
+      "prompt": "What is 5 × 8?",
+      "options": [
+        "40",
+        "35",
+        "45",
+        "41"
+      ],
+      "correctIndex": 0,
+      "explanation": "5 × 8 means 5 groups of 8. Skip count by 8, 5 times, to reach 40."
+    },
+    {
+      "id": "times-26",
+      "prompt": "What is 3 × 6?",
+      "options": [
+        "18",
+        "24",
+        "17",
+        "15"
+      ],
+      "correctIndex": 0,
+      "explanation": "3 × 6 means 3 groups of 6. Skip count by 6, 3 times, to reach 18."
+    },
+    {
+      "id": "times-27",
+      "prompt": "What is 4 × 5?",
+      "options": [
+        "19",
+        "15",
+        "20",
+        "21"
+      ],
+      "correctIndex": 2,
+      "explanation": "4 × 5 means 4 groups of 5. Skip count by 5, 4 times, to reach 20."
+    },
+    {
+      "id": "times-28",
+      "prompt": "What is 3 × 9?",
+      "options": [
+        "18",
+        "27",
+        "24",
+        "26"
+      ],
+      "correctIndex": 1,
+      "explanation": "3 × 9 means 3 groups of 9. Skip count by 9, 3 times, to reach 27."
+    },
+    {
+      "id": "times-29",
+      "prompt": "What is 8 × 4?",
+      "options": [
+        "36",
+        "28",
+        "31",
+        "32"
+      ],
+      "correctIndex": 3,
+      "explanation": "8 × 4 means 8 groups of 4. Skip count by 4, 8 times, to reach 32."
+    },
+    {
+      "id": "times-30",
+      "prompt": "What is 5 × 5?",
+      "options": [
+        "30",
+        "25",
+        "24",
+        "20"
+      ],
+      "correctIndex": 1,
+      "explanation": "5 × 5 means 5 groups of 5. Skip count by 5, 5 times, to reach 25."
+    }
+  ]
+}

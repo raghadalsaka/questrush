@@ -1,0 +1,158 @@
+{
+  "title": "Treasure Cove",
+  "slug": "shapes-treasure-cove",
+  "order": 4,
+  "description": "Shapes and sides",
+  "unlocked": false,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "shapes-01",
+      "prompt": "How many sides does a triangle have?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "2"
+      ],
+      "correctIndex": 0,
+      "explanation": "Tri means three. A triangle has 3 straight sides and 3 corners."
+    },
+    {
+      "id": "shapes-02",
+      "prompt": "How many sides does a square have?",
+      "options": [
+        "5",
+        "4",
+        "3",
+        "6"
+      ],
+      "correctIndex": 1,
+      "explanation": "A square has 4 equal sides and 4 right-angle corners."
+    },
+    {
+      "id": "shapes-03",
+      "prompt": "How many sides does a pentagon have?",
+      "options": [
+        "5",
+        "6",
+        "4",
+        "8"
+      ],
+      "correctIndex": 0,
+      "explanation": "Penta means five. A pentagon has 5 sides."
+    },
+    {
+      "id": "shapes-04",
+      "prompt": "How many sides does a hexagon have?",
+      "options": [
+        "5",
+        "6",
+        "8",
+        "7"
+      ],
+      "correctIndex": 1,
+      "explanation": "Hex means six. Honeycomb cells are hexagons with 6 sides."
+    },
+    {
+      "id": "shapes-05",
+      "prompt": "How many sides does an octagon have?",
+      "options": [
+        "8",
+        "10",
+        "6",
+        "7"
+      ],
+      "correctIndex": 0,
+      "explanation": "Octo means eight, like an octopus with 8 arms. A stop sign is an octagon."
+    },
+    {
+      "id": "shapes-06",
+      "prompt": "Which shape has no corners?",
+      "options": [
+        "Square",
+        "Circle",
+        "Triangle",
+        "Rectangle"
+      ],
+      "correctIndex": 1,
+      "explanation": "A circle is one curved line, so it has no straight sides and no corners."
+    },
+    {
+      "id": "shapes-07",
+      "prompt": "Which shape has 4 sides, with opposite sides the same length?",
+      "options": [
+        "Circle",
+        "Rectangle",
+        "Triangle",
+        "Pentagon"
+      ],
+      "correctIndex": 1,
+      "explanation": "A rectangle has 4 sides; the two long sides match and the two short sides match."
+    },
+    {
+      "id": "shapes-08",
+      "prompt": "How many corners does a rectangle have?",
+      "options": [
+        "4",
+        "2",
+        "3",
+        "6"
+      ],
+      "correctIndex": 0,
+      "explanation": "A rectangle has 4 corners, one where each pair of sides meets."
+    },
+    {
+      "id": "shapes-09",
+      "prompt": "How many faces does a cube have?",
+      "options": [
+        "6",
+        "8",
+        "12",
+        "4"
+      ],
+      "correctIndex": 0,
+      "explanation": "A cube is like a dice: top, bottom, front, back, left and right make 6 faces."
+    },
+    {
+      "id": "shapes-10",
+      "prompt": "Which 3D shape is shaped like a ball?",
+      "options": [
+        "Cylinder",
+        "Cone",
+        "Cube",
+        "Sphere"
+      ],
+      "correctIndex": 3,
+      "explanation": "A sphere is perfectly round in every direction, like a ball."
+    },
+    {
+      "id": "shapes-11",
+      "prompt": "Which 3D shape is shaped like an ice-cream cone?",
+      "options": [
+        "Pyramid",
+        "Cone",
+        "Cube",
+        "Sphere"
+      ],
+      "correctIndex": 1,
+      "explanation": "A cone has a circle at one end and a point at the other."
+    },
+    {
+      "id": "shapes-12",
+      "prompt": "How many sides do two triangles have altogether?",
+      "options": [
+        "3",
+        "5",
+        "6",
+        "8"
+      ],
+      "correctIndex": 2,
+      "explanation": "Each triangle has 3 sides, so 3 + 3 = 6."
+    }
+  ]
+}

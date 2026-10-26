@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("../assets/fonts/atkinson-hyperlegible-next-latin.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../assets/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+  font-weight: 500 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Atkinson Hyperlegible Next", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+
+  --color-board: #f2f6fb;
+  --color-card: #ffffff;
+  --color-ink: #16213e;
+  --color-ink-deep: #0a1022;
+  --color-ink-soft: #4a5775;
+  --color-rule: #c9d5e6;
+  --color-track: #dde6f1;
+  --color-margin: #f0b7be;
+
+  --color-good: #178047;
+  --color-good-deep: #0f5e33;
+  --color-good-soft: #e2f5e9;
+  --color-bad: #d6283a;
+  --color-bad-soft: #fce5e8;
+  --color-warn: #7d5c00;
+  --color-warn-soft: #fff4cc;
+
+  --color-sea: #4fa3d9;
+  --color-sea-deep: #1f6fd1;
+  --color-sea-foam: #bfe3f7;
+  --color-sand: #f2e2b6;
+  --color-sand-deep: #d9bf7c;
+  --color-jungle: #5fae5a;
+  --color-trail: #8a5a2b;
+  --color-gold: #f5b700;
+  --color-gold-deep: #b98a00;
+  --color-locked: #8994a8;
+  --color-locked-soft: #e4e8ef;
+
+  --radius-card: 1.75rem;
+  --radius-tile: 1rem;
+
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-stamp: stamp 400ms var(--ease-pop);
+  --animate-sparkle: sparkle 800ms ease-out forwards;
+  --animate-star-rise: star-rise 1.4s ease-out forwards;
+  --animate-pawn-pulse: pawn-pulse 900ms ease-in-out infinite;
+
+  @keyframes stamp {
+    0% {
+      transform: scale(0.3) rotate(-12deg);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  @keyframes sparkle {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(0.4);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.1);
+    }
+  }
+
+  @keyframes star-rise {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.4);
+    }
+    25% {
+      opacity: 1;
+      transform: translateY(-6px) scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px) scale(1);
+    }
+  }
+
+  @keyframes pawn-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.18);
+    }
+  }
+}
+
+@layer base {
+  html {
+    /* Past 1920x1080 the layout scales in proportion (width or height, whichever is tighter) so 4K boards fill the screen. */
+    --root-font-size: max(clamp(16px, 0.55vw + 11px, 26px), min(1.1229vw, 1.9962vh));
+    font-size: var(--root-font-size);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus-ring, var(--color-ink));
+    outline-offset: 3px;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-tile border-3 border-ink bg-card px-5 py-2 text-lg font-bold text-ink;
+    box-shadow: 0 var(--edge, 5px) 0 var(--edge-color, var(--color-ink));
+    transition:
+      transform 90ms ease-out,
+      box-shadow 90ms ease-out;
+  }
+
+  .btn:active:not(:disabled) {
+    --edge: 2px;
+    transform: translateY(3px);
+  }
+
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-45;
+    box-shadow: none;
+  }
+
+  .btn-primary {
+    @apply bg-ink text-white;
+    --edge-color: var(--color-ink-deep);
+  }
+
+  .btn-small {
+    @apply min-h-10 px-3 text-base;
+  }
+
+  .btn-large {
+    @apply min-h-16 px-10 text-2xl;
+  }
+
+  .panel {
+    @apply rounded-card border-3 border-ink bg-card;
+    box-shadow: 0 var(--edge, 6px) 0 var(--color-ink);
+  }
+
+  .field-input {
+    @apply w-full rounded-tile border-3 border-rule bg-card px-4 py-2 text-xl font-semibold text-ink focus:border-ink;
+  }
+
+  .field-label {
+    @apply grid gap-1 text-lg font-bold;
+  }
+
+  .notice {
+    @apply rounded-tile border-3 px-4 py-3 text-lg;
+  }
+
+  /* SVG map text gets a white halo so it stays readable over sea, sand and trail. */
+  .map-label {
+    paint-order: stroke;
+    stroke: var(--color-card);
+    stroke-width: 6px;
+    stroke-linejoin: round;
+  }
+}
+
+.result-enter-active {
+  animation: result-pop 400ms ease-out;
+}
+
+@keyframes result-pop {
+  0% {
+    transform: translateY(0.5rem);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

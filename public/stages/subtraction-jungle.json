@@ -1,0 +1,374 @@
+{
+  "title": "Jungle",
+  "slug": "subtraction-jungle",
+  "order": 2,
+  "description": "Taking away",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "subtraction-01",
+      "prompt": "What is 11 − 4?",
+      "options": [
+        "6",
+        "9",
+        "7",
+        "8"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 4 from 11, or check by adding: 7 + 4 = 11. So 11 − 4 = 7."
+    },
+    {
+      "id": "subtraction-02",
+      "prompt": "What is 12 − 5?",
+      "options": [
+        "9",
+        "7",
+        "8",
+        "6"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 5 from 12, or check by adding: 7 + 5 = 12. So 12 − 5 = 7."
+    },
+    {
+      "id": "subtraction-03",
+      "prompt": "What is 18 − 9?",
+      "options": [
+        "9",
+        "11",
+        "8",
+        "10"
+      ],
+      "correctIndex": 0,
+      "explanation": "Count back 9 from 18, or check by adding: 9 + 9 = 18. So 18 − 9 = 9."
+    },
+    {
+      "id": "subtraction-04",
+      "prompt": "What is 18 − 7?",
+      "options": [
+        "9",
+        "10",
+        "11",
+        "13"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 7 from 18, or check by adding: 11 + 7 = 18. So 18 − 7 = 11."
+    },
+    {
+      "id": "subtraction-05",
+      "prompt": "What is 13 − 9?",
+      "options": [
+        "6",
+        "4",
+        "3",
+        "5"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 9 from 13, or check by adding: 4 + 9 = 13. So 13 − 9 = 4."
+    },
+    {
+      "id": "subtraction-06",
+      "prompt": "What is 14 − 7?",
+      "options": [
+        "9",
+        "7",
+        "8",
+        "6"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 7 from 14, or check by adding: 7 + 7 = 14. So 14 − 7 = 7."
+    },
+    {
+      "id": "subtraction-07",
+      "prompt": "What is 11 − 9?",
+      "options": [
+        "1",
+        "0",
+        "2",
+        "4"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 9 from 11, or check by adding: 2 + 9 = 11. So 11 − 9 = 2."
+    },
+    {
+      "id": "subtraction-08",
+      "prompt": "What is 14 − 6?",
+      "options": [
+        "6",
+        "10",
+        "7",
+        "8"
+      ],
+      "correctIndex": 3,
+      "explanation": "Count back 6 from 14, or check by adding: 8 + 6 = 14. So 14 − 6 = 8."
+    },
+    {
+      "id": "subtraction-09",
+      "prompt": "What is 17 − 4?",
+      "options": [
+        "13",
+        "15",
+        "14",
+        "12"
+      ],
+      "correctIndex": 0,
+      "explanation": "Count back 4 from 17, or check by adding: 13 + 4 = 17. So 17 − 4 = 13."
+    },
+    {
+      "id": "subtraction-10",
+      "prompt": "What is 11 − 3?",
+      "options": [
+        "8",
+        "10",
+        "6",
+        "7"
+      ],
+      "correctIndex": 0,
+      "explanation": "Count back 3 from 11, or check by adding: 8 + 3 = 11. So 11 − 3 = 8."
+    },
+    {
+      "id": "subtraction-11",
+      "prompt": "What is 19 − 4?",
+      "options": [
+        "16",
+        "14",
+        "17",
+        "15"
+      ],
+      "correctIndex": 3,
+      "explanation": "Count back 4 from 19, or check by adding: 15 + 4 = 19. So 19 − 4 = 15."
+    },
+    {
+      "id": "subtraction-12",
+      "prompt": "What is 16 − 8?",
+      "options": [
+        "10",
+        "6",
+        "7",
+        "8"
+      ],
+      "correctIndex": 3,
+      "explanation": "Count back 8 from 16, or check by adding: 8 + 8 = 16. So 16 − 8 = 8."
+    },
+    {
+      "id": "subtraction-13",
+      "prompt": "What is 11 − 7?",
+      "options": [
+        "4",
+        "6",
+        "2",
+        "5"
+      ],
+      "correctIndex": 0,
+      "explanation": "Count back 7 from 11, or check by adding: 4 + 7 = 11. So 11 − 7 = 4."
+    },
+    {
+      "id": "subtraction-14",
+      "prompt": "What is 15 − 7?",
+      "options": [
+        "6",
+        "9",
+        "8",
+        "10"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 7 from 15, or check by adding: 8 + 7 = 15. So 15 − 7 = 8."
+    },
+    {
+      "id": "subtraction-15",
+      "prompt": "What is 11 − 6?",
+      "options": [
+        "4",
+        "5",
+        "3",
+        "7"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 6 from 11, or check by adding: 5 + 6 = 11. So 11 − 6 = 5."
+    },
+    {
+      "id": "subtraction-16",
+      "prompt": "What is 18 − 5?",
+      "options": [
+        "11",
+        "14",
+        "13",
+        "12"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 5 from 18, or check by adding: 13 + 5 = 18. So 18 − 5 = 13."
+    },
+    {
+      "id": "subtraction-17",
+      "prompt": "What is 14 − 5?",
+      "options": [
+        "8",
+        "10",
+        "11",
+        "9"
+      ],
+      "correctIndex": 3,
+      "explanation": "Count back 5 from 14, or check by adding: 9 + 5 = 14. So 14 − 5 = 9."
+    },
+    {
+      "id": "subtraction-18",
+      "prompt": "What is 16 − 6?",
+      "options": [
+        "10",
+        "9",
+        "8",
+        "11"
+      ],
+      "correctIndex": 0,
+      "explanation": "Count back 6 from 16, or check by adding: 10 + 6 = 16. So 16 − 6 = 10."
+    },
+    {
+      "id": "subtraction-19",
+      "prompt": "What is 19 − 7?",
+      "options": [
+        "13",
+        "10",
+        "14",
+        "12"
+      ],
+      "correctIndex": 3,
+      "explanation": "Count back 7 from 19, or check by adding: 12 + 7 = 19. So 19 − 7 = 12."
+    },
+    {
+      "id": "subtraction-20",
+      "prompt": "What is 14 − 3?",
+      "options": [
+        "10",
+        "11",
+        "13",
+        "9"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 3 from 14, or check by adding: 11 + 3 = 14. So 14 − 3 = 11."
+    },
+    {
+      "id": "subtraction-21",
+      "prompt": "What is 16 − 9?",
+      "options": [
+        "8",
+        "6",
+        "7",
+        "5"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 9 from 16, or check by adding: 7 + 9 = 16. So 16 − 9 = 7."
+    },
+    {
+      "id": "subtraction-22",
+      "prompt": "What is 12 − 9?",
+      "options": [
+        "4",
+        "3",
+        "5",
+        "2"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 9 from 12, or check by adding: 3 + 9 = 12. So 12 − 9 = 3."
+    },
+    {
+      "id": "subtraction-23",
+      "prompt": "What is 13 − 3?",
+      "options": [
+        "10",
+        "8",
+        "9",
+        "11"
+      ],
+      "correctIndex": 0,
+      "explanation": "Count back 3 from 13, or check by adding: 10 + 3 = 13. So 13 − 3 = 10."
+    },
+    {
+      "id": "subtraction-24",
+      "prompt": "What is 12 − 6?",
+      "options": [
+        "6",
+        "4",
+        "7",
+        "8"
+      ],
+      "correctIndex": 0,
+      "explanation": "Count back 6 from 12, or check by adding: 6 + 6 = 12. So 12 − 6 = 6."
+    },
+    {
+      "id": "subtraction-25",
+      "prompt": "What is 16 − 3?",
+      "options": [
+        "12",
+        "11",
+        "13",
+        "15"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 3 from 16, or check by adding: 13 + 3 = 16. So 16 − 3 = 13."
+    },
+    {
+      "id": "subtraction-26",
+      "prompt": "What is 13 − 4?",
+      "options": [
+        "7",
+        "9",
+        "10",
+        "11"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 4 from 13, or check by adding: 9 + 4 = 13. So 13 − 4 = 9."
+    },
+    {
+      "id": "subtraction-27",
+      "prompt": "What is 12 − 7?",
+      "options": [
+        "6",
+        "5",
+        "4",
+        "7"
+      ],
+      "correctIndex": 1,
+      "explanation": "Count back 7 from 12, or check by adding: 5 + 7 = 12. So 12 − 7 = 5."
+    },
+    {
+      "id": "subtraction-28",
+      "prompt": "What is 14 − 9?",
+      "options": [
+        "4",
+        "7",
+        "3",
+        "5"
+      ],
+      "correctIndex": 3,
+      "explanation": "Count back 9 from 14, or check by adding: 5 + 9 = 14. So 14 − 9 = 5."
+    },
+    {
+      "id": "subtraction-29",
+      "prompt": "What is 15 − 4?",
+      "options": [
+        "10",
+        "12",
+        "11",
+        "13"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 4 from 15, or check by adding: 11 + 4 = 15. So 15 − 4 = 11."
+    },
+    {
+      "id": "subtraction-30",
+      "prompt": "What is 15 − 8?",
+      "options": [
+        "9",
+        "6",
+        "7",
+        "5"
+      ],
+      "correctIndex": 2,
+      "explanation": "Count back 8 from 15, or check by adding: 7 + 8 = 15. So 15 − 8 = 7."
+    }
+  ]
+}

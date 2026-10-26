@@ -1,0 +1,374 @@
+{
+  "title": "Harbour",
+  "slug": "addition-harbour",
+  "order": 1,
+  "description": "Adding within 20",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "addition-01",
+      "prompt": "What is 4 + 7?",
+      "options": [
+        "12",
+        "13",
+        "11",
+        "10"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 4 + 6 = 10, then add the 1 left over. 4 + 7 = 11."
+    },
+    {
+      "id": "addition-02",
+      "prompt": "What is 8 + 7?",
+      "options": [
+        "17",
+        "25",
+        "16",
+        "15"
+      ],
+      "correctIndex": 3,
+      "explanation": "Make ten first: 8 + 2 = 10, then add the 5 left over. 8 + 7 = 15."
+    },
+    {
+      "id": "addition-03",
+      "prompt": "What is 6 + 7?",
+      "options": [
+        "12",
+        "11",
+        "13",
+        "14"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 6 + 4 = 10, then add the 3 left over. 6 + 7 = 13."
+    },
+    {
+      "id": "addition-04",
+      "prompt": "What is 7 + 7?",
+      "options": [
+        "13",
+        "14",
+        "16",
+        "24"
+      ],
+      "correctIndex": 1,
+      "explanation": "Make ten first: 7 + 3 = 10, then add the 4 left over. 7 + 7 = 14."
+    },
+    {
+      "id": "addition-05",
+      "prompt": "What is 7 + 5?",
+      "options": [
+        "14",
+        "12",
+        "13",
+        "10"
+      ],
+      "correctIndex": 1,
+      "explanation": "Make ten first: 7 + 3 = 10, then add the 2 left over. 7 + 5 = 12."
+    },
+    {
+      "id": "addition-06",
+      "prompt": "What is 6 + 8?",
+      "options": [
+        "15",
+        "16",
+        "14",
+        "24"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 6 + 4 = 10, then add the 4 left over. 6 + 8 = 14."
+    },
+    {
+      "id": "addition-07",
+      "prompt": "What is 4 + 8?",
+      "options": [
+        "10",
+        "12",
+        "22",
+        "13"
+      ],
+      "correctIndex": 1,
+      "explanation": "Make ten first: 4 + 6 = 10, then add the 2 left over. 4 + 8 = 12."
+    },
+    {
+      "id": "addition-08",
+      "prompt": "What is 7 + 9?",
+      "options": [
+        "26",
+        "18",
+        "16",
+        "17"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 7 + 3 = 10, then add the 6 left over. 7 + 9 = 16."
+    },
+    {
+      "id": "addition-09",
+      "prompt": "What is 7 + 6?",
+      "options": [
+        "15",
+        "12",
+        "13",
+        "23"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 7 + 3 = 10, then add the 3 left over. 7 + 6 = 13."
+    },
+    {
+      "id": "addition-10",
+      "prompt": "What is 9 + 9?",
+      "options": [
+        "20",
+        "18",
+        "17",
+        "19"
+      ],
+      "correctIndex": 1,
+      "explanation": "Make ten first: 9 + 1 = 10, then add the 8 left over. 9 + 9 = 18."
+    },
+    {
+      "id": "addition-11",
+      "prompt": "What is 5 + 6?",
+      "options": [
+        "11",
+        "13",
+        "21",
+        "12"
+      ],
+      "correctIndex": 0,
+      "explanation": "Make ten first: 5 + 5 = 10, then add the 1 left over. 5 + 6 = 11."
+    },
+    {
+      "id": "addition-12",
+      "prompt": "What is 8 + 8?",
+      "options": [
+        "15",
+        "14",
+        "17",
+        "16"
+      ],
+      "correctIndex": 3,
+      "explanation": "Make ten first: 8 + 2 = 10, then add the 6 left over. 8 + 8 = 16."
+    },
+    {
+      "id": "addition-13",
+      "prompt": "What is 5 + 9?",
+      "options": [
+        "24",
+        "15",
+        "14",
+        "16"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 5 + 5 = 10, then add the 4 left over. 5 + 9 = 14."
+    },
+    {
+      "id": "addition-14",
+      "prompt": "What is 9 + 7?",
+      "options": [
+        "16",
+        "26",
+        "15",
+        "14"
+      ],
+      "correctIndex": 0,
+      "explanation": "Make ten first: 9 + 1 = 10, then add the 6 left over. 9 + 7 = 16."
+    },
+    {
+      "id": "addition-15",
+      "prompt": "What is 7 + 4?",
+      "options": [
+        "21",
+        "12",
+        "9",
+        "11"
+      ],
+      "correctIndex": 3,
+      "explanation": "Make ten first: 7 + 3 = 10, then add the 1 left over. 7 + 4 = 11."
+    },
+    {
+      "id": "addition-16",
+      "prompt": "What is 8 + 3?",
+      "options": [
+        "13",
+        "21",
+        "12",
+        "11"
+      ],
+      "correctIndex": 3,
+      "explanation": "Make ten first: 8 + 2 = 10, then add the 1 left over. 8 + 3 = 11."
+    },
+    {
+      "id": "addition-17",
+      "prompt": "What is 8 + 5?",
+      "options": [
+        "13",
+        "15",
+        "14",
+        "23"
+      ],
+      "correctIndex": 0,
+      "explanation": "Make ten first: 8 + 2 = 10, then add the 3 left over. 8 + 5 = 13."
+    },
+    {
+      "id": "addition-18",
+      "prompt": "What is 9 + 3?",
+      "options": [
+        "22",
+        "14",
+        "12",
+        "10"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 9 + 1 = 10, then add the 2 left over. 9 + 3 = 12."
+    },
+    {
+      "id": "addition-19",
+      "prompt": "What is 9 + 5?",
+      "options": [
+        "12",
+        "14",
+        "16",
+        "24"
+      ],
+      "correctIndex": 1,
+      "explanation": "Make ten first: 9 + 1 = 10, then add the 4 left over. 9 + 5 = 14."
+    },
+    {
+      "id": "addition-20",
+      "prompt": "What is 6 + 5?",
+      "options": [
+        "13",
+        "11",
+        "12",
+        "21"
+      ],
+      "correctIndex": 1,
+      "explanation": "Make ten first: 6 + 4 = 10, then add the 1 left over. 6 + 5 = 11."
+    },
+    {
+      "id": "addition-21",
+      "prompt": "What is 9 + 6?",
+      "options": [
+        "15",
+        "13",
+        "14",
+        "17"
+      ],
+      "correctIndex": 0,
+      "explanation": "Make ten first: 9 + 1 = 10, then add the 5 left over. 9 + 6 = 15."
+    },
+    {
+      "id": "addition-22",
+      "prompt": "What is 6 + 9?",
+      "options": [
+        "16",
+        "13",
+        "15",
+        "14"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 6 + 4 = 10, then add the 5 left over. 6 + 9 = 15."
+    },
+    {
+      "id": "addition-23",
+      "prompt": "What is 6 + 6?",
+      "options": [
+        "10",
+        "22",
+        "13",
+        "12"
+      ],
+      "correctIndex": 3,
+      "explanation": "Make ten first: 6 + 4 = 10, then add the 2 left over. 6 + 6 = 12."
+    },
+    {
+      "id": "addition-24",
+      "prompt": "What is 5 + 7?",
+      "options": [
+        "14",
+        "13",
+        "12",
+        "10"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 5 + 5 = 10, then add the 2 left over. 5 + 7 = 12."
+    },
+    {
+      "id": "addition-25",
+      "prompt": "What is 9 + 4?",
+      "options": [
+        "13",
+        "12",
+        "14",
+        "23"
+      ],
+      "correctIndex": 0,
+      "explanation": "Make ten first: 9 + 1 = 10, then add the 3 left over. 9 + 4 = 13."
+    },
+    {
+      "id": "addition-26",
+      "prompt": "What is 8 + 9?",
+      "options": [
+        "18",
+        "27",
+        "19",
+        "17"
+      ],
+      "correctIndex": 3,
+      "explanation": "Make ten first: 8 + 2 = 10, then add the 7 left over. 8 + 9 = 17."
+    },
+    {
+      "id": "addition-27",
+      "prompt": "What is 7 + 8?",
+      "options": [
+        "14",
+        "15",
+        "16",
+        "17"
+      ],
+      "correctIndex": 1,
+      "explanation": "Make ten first: 7 + 3 = 10, then add the 5 left over. 7 + 8 = 15."
+    },
+    {
+      "id": "addition-28",
+      "prompt": "What is 9 + 8?",
+      "options": [
+        "27",
+        "16",
+        "17",
+        "18"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 9 + 1 = 10, then add the 7 left over. 9 + 8 = 17."
+    },
+    {
+      "id": "addition-29",
+      "prompt": "What is 8 + 4?",
+      "options": [
+        "14",
+        "22",
+        "12",
+        "10"
+      ],
+      "correctIndex": 2,
+      "explanation": "Make ten first: 8 + 2 = 10, then add the 2 left over. 8 + 4 = 12."
+    },
+    {
+      "id": "addition-30",
+      "prompt": "What is 8 + 6?",
+      "options": [
+        "14",
+        "15",
+        "13",
+        "24"
+      ],
+      "correctIndex": 0,
+      "explanation": "Make ten first: 8 + 2 = 10, then add the 4 left over. 8 + 6 = 14."
+    }
+  ]
+}
