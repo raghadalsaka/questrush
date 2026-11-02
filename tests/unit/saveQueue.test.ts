@@ -1,15 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ApiError } from '../../src/services/apiError'
 import { createSaveQueue } from '../../src/services/saveQueue'
-import type { AbsenceRow, SheetWrite } from '../../src/services/sheetRules'
+import type { AbsenceRow } from '../../src/services/sheetRules'
+import type { PendingWrite } from '../../src/services/sheetSync'
 
-function write(studentId: string): SheetWrite {
+function write(studentId: string): PendingWrite {
   const row: AbsenceRow = { rowNumber: null, session_id: 'session', student_id: studentId, created_at: '' }
-  return { kind: 'append', table: 'absences', rows: [row] }
+  return { write: { kind: 'append', table: 'absences', rows: [row] }, before: null }
 }
 
-function studentsOf(saved: SheetWrite): string[] {
-  return saved.kind === 'append' ? saved.rows.map((row) => (row as AbsenceRow).student_id) : []
+function studentsOf(saved: PendingWrite): string[] {
+  return saved.write.kind === 'append' ? saved.write.rows.map((row) => (row as AbsenceRow).student_id) : []
 }
 
 describe('createSaveQueue', () => {
@@ -26,11 +27,12 @@ describe('createSaveQueue', () => {
 
   it('saves writes one at a time, in the order they were made', async () => {
     let release: () => void = () => {}
-    const run = vi.fn(async (item: SheetWrite) => {
+    const run = vi.fn(async (item: PendingWrite) => {
       if (studentsOf(item)[0] === 'a') {
         await new Promise<void>((resolve) => (release = resolve))
       }
       saved.push(...studentsOf(item))
+      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait })
 
@@ -47,11 +49,12 @@ describe('createSaveQueue', () => {
   it('sends waiting appends to the same tab as one write, in order', async () => {
     let release: () => void = () => {}
     const sent: string[][] = []
-    const run = vi.fn(async (item: SheetWrite) => {
-      sent.push(item.kind === 'append' ? item.rows.map((row) => (row as AbsenceRow).student_id) : [])
+    const run = vi.fn(async (item: PendingWrite) => {
+      sent.push(studentsOf(item))
       if (sent.length === 1) {
         await new Promise<void>((resolve) => (release = resolve))
       }
+      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait })
 
@@ -66,11 +69,12 @@ describe('createSaveQueue', () => {
 
   it('retries network failures with growing waits', async () => {
     let failures = 2
-    const run = vi.fn(async (item: SheetWrite) => {
+    const run = vi.fn(async (item: PendingWrite) => {
       if (failures-- > 0) {
         throw new ApiError(0, 'network', 'offline')
       }
       saved.push(...studentsOf(item))
+      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait, firstDelayMs: 100 })
 
@@ -83,11 +87,12 @@ describe('createSaveQueue', () => {
 
   it('keeps the writes when Google stays unreachable, and saves them on retry', async () => {
     let online = false
-    const run = vi.fn(async (item: SheetWrite) => {
+    const run = vi.fn(async (item: PendingWrite) => {
       if (!online) {
         throw new ApiError(503, 'sheet_error', 'Google Sheets is unavailable.')
       }
       saved.push(...studentsOf(item))
+      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait, attempts: 2 })
 
@@ -102,11 +107,12 @@ describe('createSaveQueue', () => {
 
   it('pauses on an expired sign-in and keeps queueing until resumed', async () => {
     let signedIn = false
-    const run = vi.fn(async (item: SheetWrite) => {
+    const run = vi.fn(async (item: PendingWrite) => {
       if (!signedIn) {
         throw new ApiError(401, 'google_sign_in_expired', 'Sign in again.')
       }
       saved.push(...studentsOf(item))
+      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait })
 
@@ -133,6 +139,29 @@ describe('createSaveQueue', () => {
     expect(onRefused).toHaveBeenCalledWith(expect.objectContaining({ code: 'sheet_changed' }))
     expect(queue.status.value).toEqual({ state: 'refused', pending: 0, message: 'The sheet was changed somewhere else.' })
     expect(run).toHaveBeenCalledTimes(1)
+    queue.dismiss()
+    expect(queue.status.value.state).toBe('idle')
+  })
+
+  it('keeps every change in browser storage as the queue moves', async () => {
+    const kept: number[] = []
+    const queue = createSaveQueue({ run: async () => 0, onRefused, wait, onChange: (items) => kept.push(items.length) })
+
+    queue.enqueue([write('a'), write('b')])
+    await queue.resume()
+
+    expect(kept).toEqual([2, 0])
+  })
+
+  it('reports changes the sheet made it drop until the teacher dismisses the notice', async () => {
+    const queue = createSaveQueue({ run: async (item: PendingWrite) => (studentsOf(item).includes('b') ? 1 : 0), onRefused, wait })
+
+    queue.enqueue([write('a')])
+    await queue.resume()
+    queue.replace([write('b')], 2)
+    await queue.resume()
+
+    expect(queue.status.value).toEqual({ state: 'dropped', pending: 0, message: '3 changes were dropped because the sheet changed.' })
     queue.dismiss()
     expect(queue.status.value.state).toBe('idle')
   })

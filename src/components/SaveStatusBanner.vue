@@ -22,7 +22,7 @@ function signIn(): void {
       <p class="flex-1">{{ signInError || saveStatus.message }}</p>
       <button v-if="saveStatus.state === 'needs-sign-in'" type="button" class="btn btn-small btn-primary" @click="signIn">Sign In Again</button>
       <button v-if="saveStatus.state === 'offline'" type="button" class="btn btn-small" @click="retrySaving()">Try Again</button>
-      <button v-if="saveStatus.state === 'refused'" type="button" class="btn btn-small" @click="dismissSaveMessage()">OK</button>
+      <button v-if="saveStatus.state === 'refused' || saveStatus.state === 'dropped'" type="button" class="btn btn-small" @click="dismissSaveMessage()">OK</button>
     </div>
   </div>
 </template>

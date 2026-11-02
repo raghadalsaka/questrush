@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { loadSheet, writeToSheet, type SheetConnection } from '../../src/services/googleSheets'
+import { loadSheet, pushWrite, type SheetConnection } from '../../src/services/googleSheets'
 import { TABLES, type StudentRow, type TableName, type TurnRow } from '../../src/services/sheetRules'
 import { jsonResponse as json } from './helpers'
 
@@ -99,43 +99,58 @@ describe('googleSheets', () => {
     })
   })
 
-  describe('writeToSheet', () => {
+  describe('pushWrite', () => {
     const connection: SheetConnection = { spreadsheetId: ID, token: () => 'token-2', sheetIds: new Map<TableName, number>([['students', 11]]) }
+    const HEADER: string[] = [...TABLES.students]
 
-    it('appends rows as raw text after the table and says where they landed', async () => {
-      const turns: TurnRow[] = [
-        { rowNumber: null, classroom_slug: 'year-3', stage_slug: 'stage-1', session_id: 'x', student_id: 's1', question_id: '007', status: 'correct', created_at: 't' },
-        { rowNumber: null, classroom_slug: 'year-3', stage_slug: 'stage-1', session_id: 'x', student_id: 's2', question_id: '=1+1', status: 'incorrect', created_at: 't' },
-      ]
-      vi.mocked(fetch).mockResolvedValueOnce(json({ updates: { updatedRange: 'turns!A5:G6' } }))
+    function cells(row: StudentRow): string[] {
+      return [row.id, row.classroom_slug, row.name, row.emoji, row.position, row.created_at]
+    }
 
-      expect(await writeToSheet(connection, { kind: 'append', table: 'turns', rows: turns })).toEqual({ kind: 'appended', firstRow: 5 })
-      expect(request(0).url).toContain('/values/turns!A1:append?valueInputOption=RAW&insertDataOption=OVERWRITE')
-      expect(request(0).body).toEqual({ values: [['year-3', 'stage-1', 'x', 's1', '007', 'correct', 't'], ['year-3', 'stage-1', 'x', 's2', '=1+1', 'incorrect', 't']] })
+    it('appends new rows as raw text after the table, skipping rows already there and dropping rows the sheet holds differently', async () => {
+      const turn = (studentId: string, questionId: string): TurnRow => ({
+        rowNumber: null, classroom_slug: 'year-3', stage_slug: 'stage-1', session_id: 'x', student_id: studentId, question_id: questionId, status: 'correct', created_at: 't',
+      })
+      const saved = turn('s1', 'q1')
+      vi.mocked(fetch)
+        .mockResolvedValueOnce(json({ values: [[...TABLES.turns], ['year-3', 'stage-1', 'x', 's1', 'q1', 'correct', 't'], ['year-3', 'stage-1', 'y', 's2', 'q9', 'incorrect', 't']] }))
+        .mockResolvedValueOnce(json({ updates: { updatedRange: 'turns!A4:G4' } }))
+
+      const dropped = await pushWrite(connection, { write: { kind: 'append', table: 'turns', rows: [saved, turn('s2', 'q2'), turn('s3', '=1+1')] }, before: null })
+
+      expect(dropped).toBe(1)
+      expect(request(0)).toMatchObject({ method: 'GET', url: expect.stringContaining('/values/turns!A1:G') })
+      expect(request(1).url).toContain('/values/turns!A1:append?valueInputOption=RAW&insertDataOption=OVERWRITE')
+      expect(request(1).body).toEqual({ values: [['year-3', 'stage-1', 'x', 's3', '=1+1', 'correct', 't']] })
     })
 
-    it('re-reads a row before updating it', async () => {
-      const row = student(3, 's1')
-      row.name = 'Amira H'
-      vi.mocked(fetch).mockResolvedValueOnce(json({ values: [['s1', 'year-3', 'Amira', '🦊', '1', '']] })).mockResolvedValueOnce(json({}))
+    it('finds the row by its key, even after rows above it moved, before updating it', async () => {
+      const before = student(null, 's1')
+      const after = { ...before, name: 'Amira H' }
+      vi.mocked(fetch).mockResolvedValueOnce(json({ values: [HEADER, cells(student(null, 's9')), cells(before)] })).mockResolvedValueOnce(json({}))
 
-      expect(await writeToSheet(connection, { kind: 'update', table: 'students', row })).toEqual({ kind: 'updated' })
-      expect(request(0)).toMatchObject({ method: 'GET', url: expect.stringContaining('/values/students!A3:F3') })
-      expect(request(1)).toMatchObject({ method: 'PUT', body: { values: [['s1', 'year-3', 'Amira H', '🦊', '1', '']] } })
+      expect(await pushWrite(connection, { write: { kind: 'update', table: 'students', row: after }, before })).toBe(0)
+      expect(request(1)).toMatchObject({ method: 'PUT', url: expect.stringContaining('/values/students!A3:F3'), body: { values: [cells(after)] } })
     })
 
-    it('refuses to touch a row that no longer holds the same record', async () => {
-      vi.mocked(fetch).mockResolvedValueOnce(json({ values: [['someone-else']] }))
+    it('drops an update when the sheet changed that row first, and treats one already there as done', async () => {
+      const before = student(null, 's1')
+      const after = { ...before, name: 'Amira H' }
+      vi.mocked(fetch)
+        .mockResolvedValueOnce(json({ values: [HEADER, cells({ ...before, name: 'Someone else' })] }))
+        .mockResolvedValueOnce(json({ values: [HEADER, cells(after)] }))
 
-      await expect(writeToSheet(connection, { kind: 'update', table: 'students', row: student(3, 's1') })).rejects.toMatchObject({ status: 409, code: 'sheet_changed' })
-      expect(fetch).toHaveBeenCalledTimes(1)
+      expect(await pushWrite(connection, { write: { kind: 'update', table: 'students', row: after }, before })).toBe(1)
+      expect(await pushWrite(connection, { write: { kind: 'update', table: 'students', row: after }, before })).toBe(0)
+      expect(fetch).toHaveBeenCalledTimes(2)
     })
 
-    it('deletes the verified row and says which one', async () => {
-      vi.mocked(fetch).mockResolvedValueOnce(json({ values: [['s1']] })).mockResolvedValueOnce(json({}))
+    it('deletes the row found by its key', async () => {
+      const row = student(null, 's1')
+      vi.mocked(fetch).mockResolvedValueOnce(json({ values: [HEADER, cells(student(null, 's9')), [], cells(row)] })).mockResolvedValueOnce(json({}))
 
-      expect(await writeToSheet(connection, { kind: 'delete', table: 'students', row: student(3, 's1') })).toEqual({ kind: 'deleted', rowNumber: 3 })
-      expect(request(1).body).toEqual({ requests: [{ deleteDimension: { range: { sheetId: 11, dimension: 'ROWS', startIndex: 2, endIndex: 3 } } }] })
+      expect(await pushWrite(connection, { write: { kind: 'delete', table: 'students', row }, before: row })).toBe(0)
+      expect(request(1).body).toEqual({ requests: [{ deleteDimension: { range: { sheetId: 11, dimension: 'ROWS', startIndex: 3, endIndex: 4 } } }] })
     })
   })
 })

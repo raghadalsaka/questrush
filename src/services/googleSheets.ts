@@ -1,18 +1,10 @@
 import { columnLabel } from '../utils/roster'
 import { ApiError } from './apiError'
-import { cellsOf, emptyDb, rowFrom, TABLES, type ColumnOf, type SheetDb, type SheetRow, type SheetWrite, type TableName } from './sheetRules'
+import { cellsOf, emptyDb, rowFrom, TABLES, type SheetDb, type SheetRow, type TableName } from './sheetRules'
+import { decideRow, findRow, rowKey, type PendingWrite } from './sheetSync'
 
 const SHEETS_API: string = 'https://sheets.googleapis.com/v4/spreadsheets'
 const TABLE_NAMES: readonly TableName[] = Object.keys(TABLES) as TableName[]
-
-// The cells that identify a row, re-read before an update or delete so a sheet edited elsewhere is never overwritten.
-const ROW_KEYS: { [T in TableName]: readonly ColumnOf<T>[] } = {
-  classrooms: ['slug'],
-  students: ['id'],
-  turns: ['classroom_slug', 'stage_slug', 'student_id'],
-  sessions: ['id'],
-  absences: ['session_id', 'student_id'],
-}
 
 export interface SheetConnection {
   spreadsheetId: string
@@ -24,9 +16,6 @@ export interface LoadedSheet {
   db: SheetDb
   sheetIds: Map<TableName, number>
 }
-
-// Where a write landed, so the caller can keep the row numbers it holds in step with the sheet.
-export type WriteOutcome = { kind: 'appended'; firstRow: number } | { kind: 'updated' } | { kind: 'deleted'; rowNumber: number }
 
 type ValueRanges = { valueRanges?: { values?: unknown[][] }[] }
 
@@ -50,7 +39,7 @@ async function call<T>(token: string, method: string, url: string, body?: unknow
     })
   } catch (error) {
     console.error(`${method} ${url} failed`, error)
-    throw new ApiError(0, 'network', "Can't reach Google Sheets. Check the connection; your changes are kept in this tab.")
+    throw new ApiError(0, 'network', "Can't reach Google Sheets. Check the connection; your changes are kept in this browser.")
   }
   if (response.ok) {
     return (await response.json()) as T
@@ -143,30 +132,34 @@ async function writeHeaders(id: string, token: string, tables: readonly TableNam
   console.info('sheet header rows written', tables.join(', '))
 }
 
+// Each push re-reads its tab and finds rows by key, because rows deleted elsewhere move every row number below them.
 // RAW keeps every cell as typed text: "=1+1" is never a formula and "007" keeps its zeros. OVERWRITE fills the rows
-// after the table without shifting rows below, so the row numbers kept in the browser stay right.
-export async function writeToSheet(connection: SheetConnection, write: SheetWrite): Promise<WriteOutcome> {
+// after the table without shifting rows below. Resolves to the number of rows dropped because the sheet changed first.
+export async function pushWrite(connection: SheetConnection, item: PendingWrite): Promise<number> {
   const { spreadsheetId: id, token } = connection
+  const { write } = item
   const table = write.table
+  const current = await readTab(connection, table)
   if (write.kind === 'append') {
-    const appended = await call<{ updates?: { updatedRange?: string } }>(
-      token(),
-      'POST',
-      `${SHEETS_API}/${id}/values/${encodeURIComponent(`${table}!A1`)}:append?valueInputOption=RAW&insertDataOption=OVERWRITE`,
-      { values: write.rows.map((row) => cellsOf(table, row)) },
-    )
-    const firstRow = Number(/![A-Z]+(\d+)/.exec(appended.updates?.updatedRange ?? '')?.[1] ?? Number.NaN)
-    if (!Number.isInteger(firstRow)) {
-      throw new ApiError(500, 'sheet_error', 'Google Sheets saved the rows but did not say where.')
+    const decisions = write.rows.map((row) => decideRow(current, table, 'append', row, null))
+    const rows = write.rows.filter((_, index) => decisions[index] === 'push')
+    if (rows.length > 0) {
+      await call(token(), 'POST', `${SHEETS_API}/${id}/values/${encodeURIComponent(`${table}!A1`)}:append?valueInputOption=RAW&insertDataOption=OVERWRITE`, {
+        values: rows.map((row) => cellsOf(table, row)),
+      })
     }
-    return { kind: 'appended', firstRow }
+    return decisions.filter((decision) => decision === 'drop').length
   }
-  const rowNumber = await verifiedRowNumber(connection, table, write.row)
+  const decision = decideRow(current, table, write.kind, write.row, item.before)
+  if (decision !== 'push') {
+    return decision === 'drop' ? 1 : 0
+  }
+  const rowNumber = (findRow(current, table, rowKey(table, write.row)) as SheetRow).rowNumber as number
   if (write.kind === 'update') {
     await call(token(), 'PUT', `${SHEETS_API}/${id}/values/${encodeURIComponent(rangeOf(table, rowNumber))}?valueInputOption=RAW`, {
       values: [cellsOf(table, write.row)],
     })
-    return { kind: 'updated' }
+    return 0
   }
   const sheetId = connection.sheetIds.get(table)
   if (sheetId === undefined) {
@@ -175,21 +168,10 @@ export async function writeToSheet(connection: SheetConnection, write: SheetWrit
   await call(token(), 'POST', `${SHEETS_API}/${id}:batchUpdate`, {
     requests: [{ deleteDimension: { range: { sheetId, dimension: 'ROWS', startIndex: rowNumber - 1, endIndex: rowNumber } } }],
   })
-  return { kind: 'deleted', rowNumber }
+  return 0
 }
 
-async function verifiedRowNumber(connection: SheetConnection, table: TableName, row: SheetRow): Promise<number> {
-  const rowNumber = row.rowNumber
-  if (rowNumber === null) {
-    throw new ApiError(500, 'sheet_error', 'This row was never saved to the sheet.')
-  }
-  const current = await call<{ values?: unknown[][] }>(connection.token(), 'GET', `${SHEETS_API}/${connection.spreadsheetId}/values/${encodeURIComponent(rangeOf(table, rowNumber))}`)
-  const columns: readonly string[] = TABLES[table]
-  const onSheet = cellsOf(table, rowFrom(table, rowNumber, current.values?.[0] ?? []))
-  const expected = cellsOf(table, row)
-  const keyIndexes = (ROW_KEYS[table] as readonly string[]).map((column) => columns.indexOf(column))
-  if (keyIndexes.some((index) => onSheet[index] !== expected[index])) {
-    throw new ApiError(409, 'sheet_changed', 'The sheet was changed somewhere else, so QuestRush reloaded it. Check the classroom and try again.')
-  }
-  return rowNumber
+async function readTab(connection: SheetConnection, table: TableName): Promise<SheetRow[]> {
+  const data = await call<{ values?: unknown[][] }>(connection.token(), 'GET', `${SHEETS_API}/${connection.spreadsheetId}/values/${encodeURIComponent(rangeOf(table))}`)
+  return (data.values ?? []).slice(1).map((cells, offset) => rowFrom(table, offset + 2, cells))
 }

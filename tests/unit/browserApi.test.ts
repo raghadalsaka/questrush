@@ -4,7 +4,7 @@ import type { BrowserStore } from '../../src/services/browserStore'
 import type { SheetDb } from '../../src/services/sheetRules'
 
 // Copies on the way in and out, as IndexedDB's structured clone does.
-function memoryStore(): BrowserStore & { copies: Map<string, SheetDb>; failSaves: boolean } {
+function memoryStore(): BrowserStore<SheetDb> & { copies: Map<string, SheetDb>; failSaves: boolean } {
   const copies = new Map<string, SheetDb>()
   const store = {
     copies,
@@ -18,6 +18,9 @@ function memoryStore(): BrowserStore & { copies: Map<string, SheetDb>; failSaves
         throw new Error('QuotaExceededError')
       }
       copies.set(key, structuredClone(db))
+    },
+    remove: async (key: string) => {
+      copies.delete(key)
     },
   }
   return store

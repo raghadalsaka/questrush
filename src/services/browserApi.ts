@@ -5,14 +5,15 @@ import type { BrowserStore } from './browserStore'
 import { rulesApi } from './rulesApi'
 import * as rules from './sheetRules'
 import type { Change, SheetDb } from './sheetRules'
+import { teacherTabLock } from './teacherTabLock'
 
 const LOCAL_COPY_KEY: string = 'local'
 const TEACHER_TAB_LOCK: string = 'questrush-teacher-local'
 
 // Classrooms kept only in this browser: no sign-in, every change saved to IndexedDB before it is shown.
-export function createBrowserApi(store: BrowserStore, locks: LockManager | undefined = globalThis.navigator?.locks): Api {
+export function createBrowserApi(store: BrowserStore<SheetDb>, locks: LockManager | undefined = globalThis.navigator?.locks ?? undefined): Api {
   let db: Promise<SheetDb> | null = null
-  let tabHeld: Promise<boolean> | null = null
+  const holdTeacherTab = teacherTabLock(TEACHER_TAB_LOCK, locks)
 
   async function readCopy(): Promise<SheetDb> {
     let stored: SheetDb | null
@@ -31,23 +32,6 @@ export function createBrowserApi(store: BrowserStore, locks: LockManager | undef
       throw error
     })
     return db
-  }
-
-  // Two teacher tabs would each keep their own copy and overwrite each other's saves.
-  async function holdTeacherTab(): Promise<void> {
-    if (locks === undefined) {
-      return
-    }
-    tabHeld ??= new Promise<boolean>((resolve) => {
-      void locks.request(TEACHER_TAB_LOCK, { ifAvailable: true }, (lock) => {
-        resolve(lock !== null)
-        return lock === null ? undefined : new Promise<void>(() => {})
-      })
-    })
-    if (!(await tabHeld)) {
-      tabHeld = null
-      throw new ApiError(409, 'open_in_another_tab', 'QuestRush is already open for teaching in another tab of this browser. Close that tab, then try again.')
-    }
   }
 
   async function change(apply: (current: SheetDb) => Change): Promise<ClassroomDetail> {
