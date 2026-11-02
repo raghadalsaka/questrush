@@ -17,7 +17,7 @@ const finished = computed(() => props.session.finished.value)
 </script>
 
 <template>
-  <div class="fixed inset-0 z-20 overflow-y-auto bg-ink/60 p-3 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="turn-heading">
+  <div class="fixed inset-0 z-20 overflow-y-auto bg-sea-night/70 p-3 backdrop-blur-sm sm:p-6" role="dialog" aria-modal="true" aria-labelledby="turn-heading">
     <div class="panel mx-auto grid max-w-5xl gap-5 p-5 lg:p-8">
       <header class="flex flex-wrap items-center gap-4">
         <PawnBadge v-if="student !== null" :student="student" size="lg" />

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { usePractice } from '../composables/usePractice'
 import type { Question } from '../types/contest'
 import QuestionCard from './QuestionCard.vue'
+import TreasureChest from './TreasureChest.vue'
 
 const props = defineProps<{
   questions: readonly Question[]
@@ -41,7 +42,13 @@ const resultTitle = computed(() => (practice.isCorrect.value ? 'Correct!' : 'Not
     </template>
 
     <div v-else class="grid justify-items-start gap-4" role="status">
-      <p class="font-display text-4xl font-extrabold">You got {{ practice.correctCount.value }} of {{ practice.total.value }} right.</p>
+      <div class="flex flex-wrap items-center gap-4">
+        <svg viewBox="-40 -42 80 76" class="h-20 w-22 shrink-0" aria-hidden="true">
+          <ellipse cx="4" cy="28" rx="32" ry="7" class="fill-shadow-cast" opacity="0.25" />
+          <TreasureChest />
+        </svg>
+        <p class="font-display text-4xl font-extrabold">You got {{ practice.correctCount.value }} of {{ practice.total.value }} right.</p>
+      </div>
       <div class="flex flex-wrap gap-3">
         <button type="button" class="btn btn-primary btn-large" @click="practice.restart()">Practise Again</button>
         <a :href="mapLink" class="btn btn-large">Back to the Map</a>

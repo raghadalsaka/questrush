@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { groupByCheckpoint, levelMark, studentHistory } from '../../src/utils/progress'
+import { finishedStageSlugs, groupByCheckpoint, levelMark, studentHistory } from '../../src/utils/progress'
 import { makeLevel, makeResult, makeStudent } from './helpers'
 
 const stages = [makeLevel('a', 1), makeLevel('b', 2), makeLevel('c', 3, 'locked'), makeLevel('', 4, 'missing')]
@@ -34,5 +34,14 @@ describe('pawn checkpoints', () => {
     const students = [makeStudent('s1'), makeStudent('s2'), makeStudent('s3')]
     const groups = groupByCheckpoint(stages, students, [makeResult('s1', 'a', 'correct')])
     expect(groups.map((group) => group.map((student) => student.id))).toEqual([['s2', 's3'], ['s1'], [], [], []])
+  })
+})
+
+describe('finished stages', () => {
+  it('finishes a stage only when every current student has a result there', () => {
+    const students = [makeStudent('s1'), makeStudent('s2')]
+    const results = [makeResult('s1', 'a', 'correct'), makeResult('s2', 'a', 'incorrect'), makeResult('s1', 'b', 'correct'), makeResult('gone', 'b', 'correct')]
+    expect([...finishedStageSlugs(students, results)]).toEqual(['a'])
+    expect(finishedStageSlugs([], results).size).toBe(0)
   })
 })

@@ -10,6 +10,7 @@ import MapLegend from './MapLegend.vue'
 import MessagePanel from './MessagePanel.vue'
 import PawnPicker from './PawnPicker.vue'
 import StudentProgressPanel from './StudentProgressPanel.vue'
+import BrandIcon from './BrandIcon.vue'
 
 const props = defineProps<{
   classroomSlug: string
@@ -66,7 +67,7 @@ function pickHidden(studentId: string): void {
   <p v-else-if="classroom === null" class="p-8 text-xl" role="status">Loading…</p>
   <main v-else class="grid gap-4 px-3 py-4 lg:grid-cols-[minmax(0,1fr)_28rem] lg:px-6">
     <header class="lg:col-span-2">
-      <h1 class="font-display text-xl font-extrabold text-sea-deep">QuestRush</h1>
+      <h1 class="brand-kicker text-xl"><BrandIcon />QuestRush</h1>
       <p class="text-lg">Tap your pawn to see your progress. Tap an open stage to practise at home.</p>
     </header>
 

@@ -70,6 +70,26 @@ export function groupByCheckpoint(levels: readonly Level[], students: readonly S
   return groups
 }
 
+// Every student in the classroom has an official result there, the same rule sheetRules uses to refuse reopening.
+export function finishedStageSlugs(students: readonly Student[], results: readonly Result[]): Set<string> {
+  const classIds = new Set(students.map((student) => student.id))
+  const playedBy = new Map<string, Set<string>>()
+  for (const result of results) {
+    if (classIds.has(result.studentId)) {
+      const played = playedBy.get(result.stageSlug) ?? new Set<string>()
+      played.add(result.studentId)
+      playedBy.set(result.stageSlug, played)
+    }
+  }
+  const finished = new Set<string>()
+  for (const [stageSlug, played] of playedBy) {
+    if (classIds.size > 0 && played.size === classIds.size) {
+      finished.add(stageSlug)
+    }
+  }
+  return finished
+}
+
 export function starsLabel(points: number): string {
   return points === 1 ? '1 star' : `${points} stars`
 }

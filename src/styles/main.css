@@ -17,47 +17,97 @@
 }
 
 @theme {
+  /* Typography: a hyperlegible body face for projected questions, a chunky display face for the adventure. */
   --font-sans: "Atkinson Hyperlegible Next", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --text-hero: 3.25rem;
+  --text-hero--line-height: 1.05;
+  --text-hero--font-weight: 800;
+  --text-title: 2.25rem;
+  --text-title--line-height: 1.1;
+  --text-title--font-weight: 800;
 
-  --color-board: #f2f6fb;
-  --color-card: #ffffff;
-  --color-ink: #16213e;
-  --color-ink-deep: #0a1022;
-  --color-ink-soft: #4a5775;
-  --color-rule: #c9d5e6;
-  --color-track: #dde6f1;
-  --color-margin: #f0b7be;
+  /* Surfaces: questions and controls always sit on cream parchment with navy ink. */
+  --color-board: #e6f6f4;
+  --color-card: #fffcf3;
+  --color-parchment: #fbf1d9;
+  --color-ink: #12283d;
+  --color-ink-deep: #071624;
+  --color-ink-soft: #42566b;
+  --color-rule: #cfd9e2;
+  --color-track: #e7eef3;
+  --color-margin: #f2b8a8;
 
-  --color-good: #178047;
-  --color-good-deep: #0f5e33;
-  --color-good-soft: #e2f5e9;
-  --color-bad: #d6283a;
-  --color-bad-soft: #fce5e8;
-  --color-warn: #7d5c00;
-  --color-warn-soft: #fff4cc;
+  --color-good: #157a43;
+  --color-good-deep: #0e5a31;
+  --color-good-soft: #dff4e6;
+  --color-bad: #cf2638;
+  --color-bad-soft: #fde4e6;
+  --color-warn: #7a5600;
+  --color-warn-soft: #fff2c4;
 
-  --color-sea: #4fa3d9;
-  --color-sea-deep: #1f6fd1;
-  --color-sea-foam: #bfe3f7;
-  --color-sand: #f2e2b6;
-  --color-sand-deep: #d9bf7c;
-  --color-jungle: #5fae5a;
-  --color-trail: #8a5a2b;
+  /* World palette: muted set masses, saturated accents reserved for small things (flags, coins, treasure). */
+  --color-sea-night: #08304a;
+  --color-sea-abyss: #0b5b78;
+  --color-sea: #19a7bd;
+  --color-sea-deep: #0a6a80;
+  --color-sea-shallow: #62d3cf;
+  --color-sea-foam: #c8f1ec;
+  --color-sky: #bfe8f2;
+
+  /* Materials: each has a lit, mid and shade value for facets under the single top-left key light. */
+  --color-sand-lit: #fdebb8;
+  --color-sand: #f2d38a;
+  --color-sand-shade: #d6a85b;
+  --color-sand-deep: #a9773b;
+  --color-leaf-lit: #93d66b;
+  --color-jungle: #4dab4b;
+  --color-leaf-shade: #2c7a3d;
+  --color-rock-lit: #c4bdb0;
+  --color-rock: #918a7f;
+  --color-rock-shade: #605a52;
+  --color-wood-lit: #d39a5a;
+  --color-trail: #9a5f2e;
+  --color-wood-shade: #5f3818;
+  --color-gold-lit: #ffe07a;
   --color-gold: #f5b700;
-  --color-gold-deep: #b98a00;
+  --color-gold-deep: #b07f00;
+  --color-coral: #ff6b4a;
+  --color-coral-deep: #b8321a;
+  --color-lava: #ff8a2a;
+  --color-crystal: #a98bff;
+  --color-fog: #f3f6f9;
   --color-locked: #8994a8;
   --color-locked-soft: #e4e8ef;
+
+  /* Lighting: one warm key from the top left, cool sea-tinted shadows falling to the bottom right. */
+  --color-light-key: #fff4d6;
+  --color-light-glint: #ffffff;
+  --color-shadow-cast: #06364a;
+
+  --spacing-gutter: 1rem;
+  --spacing-panel: 1.25rem;
 
   --radius-card: 1.75rem;
   --radius-tile: 1rem;
 
+  --shadow-chunky: 0 6px 0 var(--color-ink);
+  --shadow-soft: 0 14px 28px -12px rgb(6 54 74 / 0.45);
+  --shadow-lift: 0 10px 0 var(--color-ink), 0 22px 30px -14px rgb(6 54 74 / 0.5);
+
   --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-sway: cubic-bezier(0.45, 0.05, 0.55, 0.95);
 
   --animate-stamp: stamp 400ms var(--ease-pop);
   --animate-sparkle: sparkle 800ms ease-out forwards;
   --animate-star-rise: star-rise 1.4s ease-out forwards;
   --animate-pawn-pulse: pawn-pulse 900ms ease-in-out infinite;
+  --animate-ripple: ripple 9s linear infinite;
+  --animate-bob: bob 4.2s var(--ease-sway) infinite;
+  --animate-flag-wave: flag-wave 1.8s var(--ease-sway) infinite;
+  --animate-glint: glint 3.6s ease-in-out infinite;
+  --animate-spotlight: spotlight 900ms ease-in-out infinite;
+  --animate-ring-turn: ring-turn 14s linear infinite;
 
   @keyframes stamp {
     0% {
@@ -105,6 +155,66 @@
       transform: scale(1.18);
     }
   }
+
+  @keyframes ripple {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-180px);
+    }
+  }
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-2deg);
+    }
+    50% {
+      transform: translateY(-4px) rotate(2deg);
+    }
+  }
+
+  @keyframes flag-wave {
+    0%,
+    100% {
+      transform: skewY(0deg) scaleX(1);
+    }
+    50% {
+      transform: skewY(-7deg) scaleX(0.9);
+    }
+  }
+
+  @keyframes glint {
+    0%,
+    70%,
+    100% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes spotlight {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(0.92);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.12);
+    }
+  }
+
+  @keyframes ring-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 @layer base {
@@ -113,6 +223,14 @@
     --root-font-size: max(clamp(16px, 0.55vw + 11px, 26px), min(1.1229vw, 1.9962vh));
     font-size: var(--root-font-size);
     -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background:
+      radial-gradient(60rem 30rem at 10% -8%, rgb(255 244 214 / 0.9), transparent 70%),
+      radial-gradient(70rem 40rem at 100% 110%, rgb(98 211 207 / 0.35), transparent 70%),
+      linear-gradient(180deg, var(--color-sky) 0%, var(--color-board) 38%, var(--color-board) 100%);
+    background-attachment: fixed;
   }
 
   h1,
@@ -136,7 +254,12 @@
     box-shadow: 0 var(--edge, 5px) 0 var(--edge-color, var(--color-ink));
     transition:
       transform 90ms ease-out,
-      box-shadow 90ms ease-out;
+      box-shadow 90ms ease-out,
+      background-color 120ms ease-out;
+  }
+
+  .btn:hover:not(:disabled) {
+    @apply bg-parchment;
   }
 
   .btn:active:not(:disabled) {
@@ -154,6 +277,22 @@
     --edge-color: var(--color-ink-deep);
   }
 
+  .btn-primary:hover:not(:disabled) {
+    @apply bg-sea-night;
+  }
+
+  /* The treasure button is kept for the one action that moves the game forward on each screen. */
+  .btn-treasure {
+    @apply bg-gold text-ink;
+    --edge-color: var(--color-gold-deep);
+    background-image: linear-gradient(180deg, var(--color-gold-lit), var(--color-gold) 55%);
+  }
+
+  .btn-treasure:hover:not(:disabled) {
+    @apply bg-gold;
+    background-image: linear-gradient(180deg, var(--color-gold-lit), var(--color-gold-lit) 20%, var(--color-gold) 70%);
+  }
+
   .btn-small {
     @apply min-h-10 px-3 text-base;
   }
@@ -164,11 +303,13 @@
 
   .panel {
     @apply rounded-card border-3 border-ink bg-card;
-    box-shadow: 0 var(--edge, 6px) 0 var(--color-ink);
+    box-shadow:
+      0 var(--edge, 6px) 0 var(--color-ink),
+      var(--shadow-soft);
   }
 
   .field-input {
-    @apply w-full rounded-tile border-3 border-rule bg-card px-4 py-2 text-xl font-semibold text-ink focus:border-ink;
+    @apply w-full rounded-tile border-3 border-rule bg-white px-4 py-2 text-xl font-semibold text-ink focus:border-ink;
   }
 
   .field-label {
@@ -179,12 +320,25 @@
     @apply rounded-tile border-3 px-4 py-3 text-lg;
   }
 
-  /* SVG map text gets a white halo so it stays readable over sea, sand and trail. */
+  .brand-kicker {
+    @apply inline-flex items-center gap-2 font-display text-2xl font-extrabold text-sea-deep;
+  }
+
+  .link-back {
+    @apply justify-self-start text-lg font-bold text-sea-deep underline decoration-2 underline-offset-4 hover:text-ink;
+  }
+
+  /* SVG map text gets a cream halo so it stays readable over sea, sand and bridge planks. */
   .map-label {
     paint-order: stroke;
     stroke: var(--color-card);
-    stroke-width: 6px;
+    stroke-width: 7px;
     stroke-linejoin: round;
+  }
+
+  .map-motion {
+    transform-box: fill-box;
+    transform-origin: center;
   }
 }
 

@@ -46,7 +46,16 @@ describe('AdventureMap', () => {
       props: { levels, students, results: [], selectedStudentId: null, currentStageSlug: 'b' },
     })
     expect(wrapper.find('[aria-label="Stage 2: Stage 2. Open. The class is here"]').exists()).toBe(true)
-    expect(wrapper.text()).toContain('🚩')
+    expect(wrapper.findAll('.class-flag')).toHaveLength(1)
+  })
+
+  it('marks a stage every student has played', () => {
+    const results = [makeResult('s1', 'a', 'correct'), makeResult('s2', 'a', 'incorrect')]
+    const wrapper = mount(AdventureMap, {
+      props: { levels, students: students.slice(0, 2), results, selectedStudentId: null, currentStageSlug: 'a' },
+    })
+    expect(wrapper.find('[aria-label="Stage 1: Stage 1. Open. Everyone has played. The class is here"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-label="Stage 2: Stage 2. Open"]').exists()).toBe(true)
   })
 
   it('emits selection for pawns and stages', async () => {

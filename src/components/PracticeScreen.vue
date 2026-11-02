@@ -46,7 +46,7 @@ onMounted(start)
   </MessagePanel>
   <p v-else-if="stage === null" class="p-8 text-xl" role="status">Loading the questions…</p>
   <main v-else class="mx-auto grid max-w-5xl gap-4 px-3 py-4 lg:px-6">
-    <a :href="mapLink" class="text-lg font-bold text-sea-deep underline">Back to the map</a>
+    <a :href="mapLink" class="link-back">Back to the map</a>
     <PracticeRun :questions="stage.questions" :title="`${stage.order}. ${stage.title}`" :map-link="mapLink" />
   </main>
 </template>

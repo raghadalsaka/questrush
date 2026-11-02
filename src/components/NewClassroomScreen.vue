@@ -41,8 +41,8 @@ async function create(): Promise<void> {
 
 <template>
   <main class="mx-auto grid max-w-4xl gap-6 px-4 py-8">
-    <a :href="routeHash({ name: 'classrooms' })" class="text-lg font-bold text-sea-deep underline">All classrooms</a>
-    <h1 class="font-display text-5xl leading-tight font-extrabold">New classroom</h1>
+    <a :href="routeHash({ name: 'classrooms' })" class="link-back">All classrooms</a>
+    <h1 class="font-display text-hero">New classroom</h1>
     <form class="panel grid gap-6 p-6" @submit.prevent="create">
       <label class="field-label">
         Classroom name
@@ -55,7 +55,7 @@ async function create(): Promise<void> {
           <li v-for="error in errors" :key="error">{{ error }}</li>
         </ul>
       </div>
-      <button type="submit" class="btn btn-primary btn-large justify-self-start" :disabled="saving">
+      <button type="submit" class="btn btn-treasure btn-large justify-self-start" :disabled="saving">
         {{ saving ? 'Saving…' : drafts.length === 0 ? 'Create Classroom' : `Create Classroom with ${drafts.length} Students` }}
       </button>
     </form>

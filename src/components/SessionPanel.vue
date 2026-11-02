@@ -36,15 +36,15 @@ async function close(): Promise<void> {
       <h2 id="session-heading" class="font-display text-3xl leading-tight font-extrabold">{{ stage.order }}. {{ stage.title }}</h2>
     </div>
     <dl class="grid grid-cols-3 gap-2 text-center">
-      <div class="rounded-tile border-3 border-rule p-2">
+      <div class="rounded-tile border-3 border-sand-shade bg-parchment p-2">
         <dt class="text-base text-ink-soft">Had a turn</dt>
         <dd class="font-display text-3xl font-extrabold">{{ assessedCount }}/{{ studentCount }}</dd>
       </div>
-      <div class="rounded-tile border-3 border-rule p-2">
+      <div class="rounded-tile border-3 border-sand-shade bg-parchment p-2">
         <dt class="text-base text-ink-soft">Waiting</dt>
         <dd class="font-display text-3xl font-extrabold">{{ session.eligible.value.length }}</dd>
       </div>
-      <div class="rounded-tile border-3 border-rule p-2">
+      <div class="rounded-tile border-3 border-sand-shade bg-parchment p-2">
         <dt class="text-base text-ink-soft">Questions left</dt>
         <dd class="font-display text-3xl font-extrabold">{{ session.deck.value === null ? '…' : session.unused.value.length }}</dd>
       </div>
@@ -65,7 +65,7 @@ async function close(): Promise<void> {
 
     <button
       type="button"
-      class="btn btn-large btn-primary"
+      class="btn btn-large btn-treasure"
       :disabled="session.pickBlocker.value !== null || session.phase.value !== 'idle' || teacher.busy.value"
       @click="session.pick()"
     >

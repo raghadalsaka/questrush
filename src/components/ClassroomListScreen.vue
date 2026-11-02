@@ -4,6 +4,8 @@ import { injectAuth } from '../composables/useAuth'
 import { api, errorMessage, googleSignIn } from '../services/api'
 import type { ClassroomSummary } from '../types/api'
 import { routeHash } from '../utils/route'
+import BrandIcon from './BrandIcon.vue'
+import IslandGlyph from './IslandGlyph.vue'
 
 const auth = injectAuth()
 const classrooms = shallowRef<ClassroomSummary[] | null>(null)
@@ -25,15 +27,15 @@ onMounted(load)
   <main class="mx-auto grid max-w-4xl gap-6 px-4 py-8">
     <header class="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <p class="font-display text-2xl font-extrabold text-sea-deep">QuestRush</p>
-        <h1 class="font-display text-5xl leading-tight font-extrabold">Your classrooms</h1>
+        <p class="brand-kicker"><BrandIcon />QuestRush</p>
+        <h1 class="font-display text-hero">Your classrooms</h1>
       </div>
       <div class="flex flex-wrap items-center gap-3">
         <button v-if="googleSignIn" type="button" class="btn btn-small" @click="auth.logout()">Sign Out</button>
       </div>
     </header>
 
-    <a :href="routeHash({ name: 'new-classroom' })" class="btn btn-primary btn-large justify-self-start">New Classroom</a>
+    <a :href="routeHash({ name: 'new-classroom' })" class="btn btn-treasure btn-large justify-self-start">New Classroom</a>
 
     <div v-if="error !== ''" role="alert" class="notice grid justify-items-start gap-2 border-bad bg-bad-soft">
       <p>{{ error }}</p>
@@ -43,9 +45,15 @@ onMounted(load)
     <p v-else-if="classrooms.length === 0" class="text-xl">No classrooms yet. Create one to start the adventure.</p>
     <ul v-else class="grid gap-3 sm:grid-cols-2">
       <li v-for="classroom in classrooms" :key="classroom.slug">
-        <a :href="routeHash({ name: 'classroom', slug: classroom.slug })" class="panel grid gap-1 p-5 [--edge:5px] hover:bg-sea-foam">
-          <span class="font-display text-3xl leading-tight font-extrabold">{{ classroom.name }}</span>
-          <span class="text-lg text-ink-soft">{{ classroom.studentCount }} students</span>
+        <a
+          :href="routeHash({ name: 'classroom', slug: classroom.slug })"
+          class="panel flex items-center gap-4 p-5 [--edge:5px] transition-transform duration-150 hover:-translate-y-0.5 hover:bg-parchment"
+        >
+          <IslandGlyph />
+          <span class="grid gap-1">
+            <span class="font-display text-3xl leading-tight font-extrabold">{{ classroom.name }}</span>
+            <span class="text-lg text-ink-soft">{{ classroom.studentCount }} students</span>
+          </span>
         </a>
       </li>
     </ul>

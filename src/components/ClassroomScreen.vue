@@ -74,7 +74,7 @@ function setAbsent(studentId: string, absent: boolean): void {
   <p v-else-if="classroom === null" class="p-8 text-xl" role="status">Loading…</p>
   <main v-else class="grid gap-4 px-3 py-4 lg:grid-cols-[minmax(0,1fr)_30rem] lg:px-6">
     <header class="flex flex-wrap items-center gap-x-6 gap-y-2 lg:col-span-2">
-      <a :href="routeHash({ name: 'classrooms' })" class="text-lg font-bold text-sea-deep underline">All classrooms</a>
+      <a :href="routeHash({ name: 'classrooms' })" class="link-back">All classrooms</a>
       <h1 class="flex-1 font-display text-4xl leading-tight font-extrabold">{{ classroom.name }}</h1>
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-base text-ink-soft">Student link:</span>

@@ -18,8 +18,8 @@ interface OptionStyle {
 }
 
 const OPTION_STYLES: Record<OptionState, OptionStyle> = {
-  open: { tile: 'border-rule bg-card text-ink enabled:hover:border-ink', letter: 'bg-ink', mark: null },
-  'chosen-open': { tile: 'border-ink bg-track text-ink', letter: 'bg-ink', mark: null },
+  open: { tile: 'border-rule bg-white text-ink enabled:hover:-translate-y-0.5 enabled:hover:border-ink enabled:hover:shadow-soft', letter: 'bg-ink', mark: null },
+  'chosen-open': { tile: 'border-ink bg-parchment text-ink', letter: 'bg-ink', mark: null },
   correct: {
     tile: 'border-good bg-good-soft text-ink',
     letter: 'bg-good',
@@ -39,6 +39,8 @@ const SPARKLE_OFFSETS: readonly { dx: string; dy: string }[] = [
   { dx: '-5rem', dy: '2.5rem' },
   { dx: '5rem', dy: '2.5rem' },
   { dx: '0rem', dy: '-3.5rem' },
+  { dx: '-9rem', dy: '0rem' },
+  { dx: '9rem', dy: '0rem' },
 ]
 
 const props = defineProps<{
@@ -135,11 +137,11 @@ function focusResult(): void {
               <span
                 v-for="(offset, index) in SPARKLE_OFFSETS"
                 :key="`${question.id}-${index}`"
-                class="absolute top-1/2 left-1/2 animate-sparkle text-3xl text-gold motion-reduce:hidden"
+                class="absolute top-1/2 left-1/2 animate-sparkle text-3xl text-gold [-webkit-text-stroke:1.5px_var(--color-ink)] motion-reduce:hidden"
                 :style="{ '--dx': offset.dx, '--dy': offset.dy }"
                 aria-hidden="true"
               >
-                ✦
+                {{ index % 2 === 0 ? '★' : '✦' }}
               </span>
             </template>
           </div>

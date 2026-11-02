@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 import { injectAuth } from '../composables/useAuth'
 import { googleSignIn, preloadSignIn } from '../services/api'
+import BrandIcon from './BrandIcon.vue'
 
 const auth = injectAuth()
 
@@ -13,7 +14,7 @@ onMounted(preloadSignIn)
     <!-- Google sign-in opens its popup inside this submit, so nothing is awaited before auth.login. -->
     <form v-if="googleSignIn" class="panel grid gap-5 p-8" @submit.prevent="auth.login()">
       <div>
-        <p class="font-display text-2xl font-extrabold text-sea-deep">QuestRush</p>
+        <p class="brand-kicker"><BrandIcon />QuestRush</p>
         <h1 class="font-display text-4xl leading-tight font-extrabold">Teacher sign in</h1>
       </div>
       <p class="text-lg">Sign in with the Google account that can edit the QuestRush sheet.</p>
@@ -25,7 +26,7 @@ onMounted(preloadSignIn)
     </form>
     <section v-else class="panel grid gap-5 p-8">
       <div>
-        <p class="font-display text-2xl font-extrabold text-sea-deep">QuestRush</p>
+        <p class="brand-kicker"><BrandIcon />QuestRush</p>
         <h1 class="font-display text-4xl leading-tight font-extrabold">The classrooms couldn't open</h1>
       </div>
       <p v-if="auth.error.value !== ''" role="alert" class="notice border-bad bg-bad-soft">{{ auth.error.value }}</p>
