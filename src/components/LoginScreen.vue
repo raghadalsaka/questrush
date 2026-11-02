@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { injectAuth } from '../composables/useAuth'
-import { googleSignIn } from '../services/api'
-import { preloadGoogleSignIn } from '../services/googleAuth'
+import { googleSignIn, preloadSignIn } from '../services/api'
 
 const auth = injectAuth()
 
-onMounted(() => {
-  if (googleSignIn) {
-    preloadGoogleSignIn().catch((error: unknown) => console.warn('Google sign-in did not preload', error))
-  }
-})
+onMounted(preloadSignIn)
 </script>
 
 <template>

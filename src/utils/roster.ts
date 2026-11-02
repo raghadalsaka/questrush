@@ -38,22 +38,32 @@ export interface ColumnGuess {
 
 const HEADER_PATTERN: RegExp = /^(student\s*)?(full\s*)?names?$|^student$|^pupil$|^الاسم$|^اسم/i
 
+export type NameProblem = 'empty' | 'too_long' | 'control' | 'no_letters'
+
+export function collapseSpaces(raw: string): string {
+  return raw.trim().split(/\s+/u).join(' ')
+}
+
 // Same rules as the Go API (roster.NormalizeName), so the preview predicts what the server accepts.
-export function normalizeName(raw: string): { ok: true; name: string } | { ok: false; reason: string } {
-  const name = raw.trim().split(/\s+/u).join(' ')
+export function normalizeName(raw: string): { ok: true; name: string } | { ok: false; name: string; problem: NameProblem; reason: string } {
+  const name = collapseSpaces(raw)
   if (name === '') {
-    return { ok: false, reason: 'is empty' }
+    return { ok: false, name, problem: 'empty', reason: 'is empty' }
   }
   if ([...name].length > MAX_NAME_LENGTH) {
-    return { ok: false, reason: `is longer than ${MAX_NAME_LENGTH} characters` }
+    return { ok: false, name, problem: 'too_long', reason: `is longer than ${MAX_NAME_LENGTH} characters` }
   }
   if (/\p{Cc}/u.test(name)) {
-    return { ok: false, reason: 'contains control characters' }
+    return { ok: false, name, problem: 'control', reason: 'contains control characters' }
   }
   if (!/\p{L}/u.test(name)) {
-    return { ok: false, reason: 'has no letters, so it does not look like a name' }
+    return { ok: false, name, problem: 'no_letters', reason: 'has no letters, so it does not look like a name' }
   }
   return { ok: true, name }
+}
+
+export function emojiChoices(current: string): readonly string[] {
+  return EMOJI_POOL.includes(current) ? EMOJI_POOL : [current, ...EMOJI_POOL]
 }
 
 // The byte cap matches the Go API's roster.NormalizeEmoji, which counts UTF-8 bytes as well as characters.

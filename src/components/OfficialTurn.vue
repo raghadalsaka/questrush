@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 
 const teacher = injectClassroom()
-const stage = computed(() => teacher.activeLevel.value?.stage ?? null)
+const stage = teacher.activeStage
 const student = computed(() => props.session.shownStudent.value)
 const question = computed(() => props.session.shownQuestion.value)
 const finished = computed(() => props.session.finished.value)

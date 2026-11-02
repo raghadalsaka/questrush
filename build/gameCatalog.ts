@@ -14,9 +14,10 @@ export function gameCatalog(): Plugin {
 
   async function readCatalog(): Promise<GameCatalog> {
     const stagesDir = path.join(publicDir, STAGES_DIR)
-    const names = (await readdir(stagesDir)).filter((name) => name.endsWith('.json')).sort()
+    const [entries, settingsText] = await Promise.all([readdir(stagesDir), readFile(path.join(publicDir, GAME_SETTINGS_FILE), 'utf8')])
+    const names = entries.filter((name) => name.endsWith('.json')).sort()
     const stageFiles = await Promise.all(names.map(async (name) => ({ name, text: await readFile(path.join(stagesDir, name), 'utf8') })))
-    const settingsFile = { name: GAME_SETTINGS_FILE, text: await readFile(path.join(publicDir, GAME_SETTINGS_FILE), 'utf8') }
+    const settingsFile = { name: GAME_SETTINGS_FILE, text: settingsText }
     const result = buildGameCatalog(settingsFile, stageFiles)
     if (!result.ok) {
       throw new Error(`Invalid game files in ${publicDir}:\n${result.errors.join('\n')}`)

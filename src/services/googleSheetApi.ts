@@ -1,11 +1,10 @@
-import type { ClassroomDetail, NewStudent, Outcome, PublicClassroom } from '../types/api'
+import type { ClassroomDetail, PublicClassroom } from '../types/api'
 import type { Api } from './api'
 import { ApiError, GENERIC_ERROR_MESSAGE, networkError, notSignedIn } from './apiError'
 import { currentToken, forgetToken, googleClientId, requestToken } from './googleAuth'
 import { loadSheet, spreadsheetId, writeToSheet, type LoadedSheet, type WriteOutcome } from './googleSheets'
-import { previewRosterFile } from './rosterFile'
+import { rulesApi } from './rulesApi'
 import { createSaveQueue } from './saveQueue'
-import * as rules from './sheetRules'
 import type { Change, SheetDb, SheetRow, SheetWrite, TableName } from './sheetRules'
 
 // The whole sheet is read once at sign-in; every screen then reads this copy, and changes are written in the background.
@@ -171,21 +170,7 @@ export const googleSheetApi: Api = {
     }
   },
 
-  listClassrooms: async () => rules.listClassrooms(loaded()),
-  createClassroom: (name: string, students: NewStudent[]) => change((current) => rules.createClassroom(current, rules.systemClock, name, students)),
-  getClassroom: async (id: string) => rules.getClassroom(loaded(), id),
-  previewRoster: previewRosterFile,
-
-  updateStudent: (id: string, student: NewStudent) => change((current) => rules.updateStudent(current, id, student)),
-  deleteStudent: (id: string) => change((current) => rules.deleteStudent(current, id)),
-
-  setCurrentStage: (classroomSlug: string, currentStageSlug: string | null) => change((current) => rules.setCurrentStage(current, classroomSlug, currentStageSlug)),
-  openSession: (classroomSlug: string, stageSlug: string) => change((current) => rules.openSession(current, rules.systemClock, classroomSlug, stageSlug)),
-
-  closeSession: (id: string) => change((current) => rules.closeSession(current, rules.systemClock, id)),
-  setAbsent: (sessionId: string, studentId: string, absent: boolean) => change((current) => rules.setAbsent(current, rules.systemClock, sessionId, studentId, absent)),
-  recordResult: (sessionId: string, studentId: string, questionId: string, outcome: Outcome) =>
-    change((current) => rules.recordResult(current, rules.systemClock, sessionId, studentId, questionId, outcome)),
+  ...rulesApi(loaded, change),
 
   getPublicClassroom: readPublicClassroom,
 }

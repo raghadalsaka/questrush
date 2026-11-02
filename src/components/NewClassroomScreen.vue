@@ -48,7 +48,7 @@ async function create(): Promise<void> {
         Classroom name
         <input v-model="name" class="field-input" :maxlength="MAX_CLASSROOM_NAME_LENGTH" placeholder="For example, Year 3 Explorers" required />
       </label>
-      <RosterImport v-model:students="drafts" :taken-emojis="[]" />
+      <RosterImport v-model:students="drafts" />
       <p class="text-base text-ink-soft">The Excel file is only read once. The students are saved with the classroom, so check the list now: students can't be added later.</p>
       <div v-if="errors.length > 0" role="alert" class="notice border-bad bg-bad-soft">
         <ul class="list-disc pl-6">

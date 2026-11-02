@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { eligibleStudents, missingQuestionIds, planPick, questionShortage, unusedQuestions } from '../../src/utils/selection'
+import { pickRandom } from '../../src/utils/random'
+import { eligibleStudents, missingQuestionIds, questionShortage, unusedQuestions } from '../../src/utils/selection'
 import { makeQuestion, makeResult, makeStudent, seededRandomInt } from './helpers'
 
 const students = [makeStudent('s1'), makeStudent('s2'), makeStudent('s3'), makeStudent('s4')]
@@ -23,22 +24,15 @@ describe('official question draws', () => {
     const randomInt = seededRandomInt(7)
     const used: string[] = []
     let waiting = Array.from({ length: 10 }, (_, index) => makeStudent(`s${index + 1}`))
-    for (;;) {
-      const plan = planPick(waiting, unusedQuestions(questions, used), randomInt)
-      if (!plan.ok) {
-        expect(plan.reason).toBe('deck-exhausted')
-        break
-      }
-      expect(used).not.toContain(plan.pick.question.id)
-      used.push(plan.pick.question.id)
-      waiting = waiting.filter((student) => student.id !== plan.pick.student.id)
+    for (let unused = unusedQuestions(questions, used); unused.length > 0; unused = unusedQuestions(questions, used)) {
+      const student = pickRandom(waiting, randomInt)
+      const question = pickRandom(unused, randomInt)
+      expect(used).not.toContain(question.id)
+      used.push(question.id)
+      waiting = waiting.filter((candidate) => candidate.id !== student.id)
     }
     expect(used.sort()).toEqual(questions.map((question) => question.id).sort())
     expect(waiting).toHaveLength(4)
-  })
-
-  it('reports when nobody is left before checking the deck', () => {
-    expect(planPick([], [makeQuestion('q1')], seededRandomInt(1))).toEqual({ ok: false, reason: 'no-students' })
   })
 })
 

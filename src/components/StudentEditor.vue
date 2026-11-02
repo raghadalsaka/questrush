@@ -4,7 +4,7 @@ import { MAX_NAME_LENGTH } from '../config'
 import { injectClassroom } from '../composables/useTeacherClassroom'
 import { api } from '../services/api'
 import type { Student } from '../types/api'
-import { EMOJI_POOL, isValidEmoji, normalizeName } from '../utils/roster'
+import { emojiChoices, isValidEmoji, normalizeName } from '../utils/roster'
 import ConfirmDialog from './ConfirmDialog.vue'
 
 const props = defineProps<{
@@ -22,7 +22,6 @@ const localError = ref('')
 const confirmDelete = ref(false)
 
 const hasResults = computed(() => teacher.classroom.value?.results.some((result) => result.studentId === props.student.id) ?? false)
-const emojiChoices = computed(() => (EMOJI_POOL.includes(emoji.value) ? EMOJI_POOL : [emoji.value, ...EMOJI_POOL]))
 const changed = computed(() => name.value !== props.student.name || emoji.value !== props.student.emoji)
 
 watch(
@@ -67,7 +66,7 @@ async function removeStudent(): Promise<void> {
       <label class="field-label">
         Pawn
         <select v-model="emoji" class="field-input text-2xl" aria-label="Pawn">
-          <option v-for="choice in emojiChoices" :key="choice" :value="choice">{{ choice }}</option>
+          <option v-for="choice in emojiChoices(emoji)" :key="choice" :value="choice">{{ choice }}</option>
         </select>
       </label>
     </div>

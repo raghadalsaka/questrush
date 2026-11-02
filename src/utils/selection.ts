@@ -1,13 +1,5 @@
 import type { Question } from '../types/contest'
 import type { Result, Student } from '../types/api'
-import { pickRandom, type RandomInt } from './random'
-
-export interface Pick {
-  student: Student
-  question: Question
-}
-
-export type PickPlan = { ok: true; pick: Pick } | { ok: false; reason: 'no-students' | 'deck-exhausted' }
 
 // Eligible: no official result on this stage yet and not marked absent in the open session.
 export function eligibleStudents(
@@ -34,14 +26,4 @@ export function missingQuestionIds(questions: readonly Question[], usedIds: read
 
 export function questionShortage(unusedCount: number, eligibleCount: number): number {
   return Math.max(0, eligibleCount - unusedCount)
-}
-
-export function planPick(eligible: readonly Student[], unused: readonly Question[], randomInt: RandomInt): PickPlan {
-  if (eligible.length === 0) {
-    return { ok: false, reason: 'no-students' }
-  }
-  if (unused.length === 0) {
-    return { ok: false, reason: 'deck-exhausted' }
-  }
-  return { ok: true, pick: { student: pickRandom(eligible, randomInt), question: pickRandom(unused, randomInt) } }
 }

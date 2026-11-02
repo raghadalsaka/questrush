@@ -1,6 +1,6 @@
 import { MAX_CLASSROOM_NAME_LENGTH, MAX_NAME_LENGTH, MAX_STUDENTS } from '../config'
 import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, PublicClassroom, Result, Student } from '../types/api'
-import { isValidEmoji } from '../utils/roster'
+import { collapseSpaces, isValidEmoji, normalizeName as checkStudentName, type NameProblem } from '../utils/roster'
 import { ApiError } from './apiError'
 
 // Same tabs and column order as apps-script/Code.js, which reads them for the student link.
@@ -422,22 +422,20 @@ function withPrefix<T>(prefix: string, work: () => T): T {
   }
 }
 
-// Same rules and messages as the Go API's roster.NormalizeName.
+// Same messages as the Go API's roster.NormalizeName.
+const NAME_PROBLEM_MESSAGES: Record<NameProblem, (name: string) => string> = {
+  empty: () => "A student name can't be empty.",
+  too_long: () => `A student name can be at most ${MAX_NAME_LENGTH} characters.`,
+  control: () => "A student name can't contain control characters.",
+  no_letters: (name) => `${JSON.stringify(name)} doesn't look like a name; it has no letters.`,
+}
+
 function normalizeName(raw: string): string {
-  const name = collapseSpaces(raw)
-  if (name === '') {
-    throw new ApiError(400, 'invalid_name', "A student name can't be empty.")
+  const checked = checkStudentName(raw)
+  if (!checked.ok) {
+    throw new ApiError(400, 'invalid_name', NAME_PROBLEM_MESSAGES[checked.problem](checked.name))
   }
-  if ([...name].length > MAX_NAME_LENGTH) {
-    throw new ApiError(400, 'invalid_name', `A student name can be at most ${MAX_NAME_LENGTH} characters.`)
-  }
-  if (/\p{Cc}/u.test(name)) {
-    throw new ApiError(400, 'invalid_name', "A student name can't contain control characters.")
-  }
-  if (!/\p{L}/u.test(name)) {
-    throw new ApiError(400, 'invalid_name', `${JSON.stringify(name)} doesn't look like a name; it has no letters.`)
-  }
-  return name
+  return checked.name
 }
 
 function normalizeEmoji(raw: string): string {
@@ -445,14 +443,6 @@ function normalizeEmoji(raw: string): string {
     throw new ApiError(400, 'invalid_emoji', 'Choose one emoji for the pawn.')
   }
   return raw.trim()
-}
-
-function collapseSpaces(raw: string): string {
-  return raw
-    .trim()
-    .split(/\s+/u)
-    .filter((part) => part !== '')
-    .join(' ')
 }
 
 function compareText(a: string, b: string): number {

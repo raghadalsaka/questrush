@@ -15,6 +15,7 @@ export function useTeacherClassroom(classroomSlug: string) {
     const session = activeSession.value
     return session === null ? null : levelForSlug(session.stageSlug)
   })
+  const activeStage = computed(() => activeLevel.value?.stage ?? null)
 
   async function load(): Promise<void> {
     loadError.value = ''
@@ -57,6 +58,7 @@ export function useTeacherClassroom(classroomSlug: string) {
     classroom,
     activeSession,
     activeLevel,
+    activeStage,
     loadError: readonly(loadError),
     actionError,
     busy,

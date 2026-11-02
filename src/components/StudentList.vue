@@ -7,8 +7,8 @@ import PawnBadge from './PawnBadge.vue'
 type RowStatus = 'correct' | 'incorrect' | 'turn' | 'away' | 'waiting'
 
 const STATUS_STYLES: Record<RowStatus, { label: string; badge: string }> = {
-  correct: { label: `${STAGE_MARKS.correct.symbol} Correct`, badge: STAGE_MARKS.correct.badge },
-  incorrect: { label: `${STAGE_MARKS.incorrect.symbol} Incorrect`, badge: STAGE_MARKS.incorrect.badge },
+  correct: { label: `${STAGE_MARKS.correct.symbol} ${STAGE_MARKS.correct.label}`, badge: STAGE_MARKS.correct.badge },
+  incorrect: { label: `${STAGE_MARKS.incorrect.symbol} ${STAGE_MARKS.incorrect.label}`, badge: STAGE_MARKS.incorrect.badge },
   turn: { label: 'On turn', badge: 'border-gold-deep bg-warn-soft text-warn' },
   away: { label: 'Away', badge: 'border-locked bg-locked-soft text-ink-soft' },
   waiting: { label: 'Waiting', badge: 'border-rule bg-card text-ink-soft' },
@@ -20,11 +20,11 @@ const props = defineProps<{
   students: readonly Student[]
   results: readonly Result[]
   selectedId: string | null
-  stageSlug?: string | null
-  absentIds?: readonly string[]
-  turnStudentId?: string | null
-  attendance?: boolean
-  disabled?: boolean
+  stageSlug: string | null
+  absentIds: readonly string[]
+  turnStudentId: string | null
+  attendance: boolean
+  disabled: boolean
 }>()
 
 const emit = defineEmits<{
@@ -40,32 +40,27 @@ const visible = computed(() => {
   return query === '' ? props.students : props.students.filter((student) => student.name.toLocaleLowerCase().includes(query))
 })
 
-// Each row asks for its status and absence several times, so both are looked up once per change.
-const stageOutcomes = computed<Map<string, Outcome>>(() => {
-  const stageSlug = props.stageSlug ?? null
-  return new Map(props.results.filter((result) => result.stageSlug === stageSlug).map((result) => [result.studentId, result.outcome]))
+const rows = computed<{ student: Student; status: RowStatus | null; absent: boolean }[]>(() => {
+  const outcomes = new Map<string, Outcome>(props.results.filter((result) => result.stageSlug === props.stageSlug).map((result) => [result.studentId, result.outcome]))
+  const absent = new Set(props.absentIds)
+  return visible.value.map((student) => ({ student, status: rowStatus(student, outcomes, absent), absent: absent.has(student.id) }))
 })
-const absent = computed<Set<string>>(() => new Set(props.absentIds ?? []))
 
-function status(student: Student): RowStatus | null {
-  if ((props.stageSlug ?? null) === null) {
+function rowStatus(student: Student, outcomes: ReadonlyMap<string, Outcome>, absent: ReadonlySet<string>): RowStatus | null {
+  if (props.stageSlug === null) {
     return null
   }
-  const outcome = stageOutcomes.value.get(student.id)
+  const outcome = outcomes.get(student.id)
   if (outcome !== undefined) {
     return outcome
   }
   if (student.id === props.turnStudentId) {
     return 'turn'
   }
-  if (absent.value.has(student.id)) {
+  if (absent.has(student.id)) {
     return 'away'
   }
   return 'waiting'
-}
-
-function isAbsent(student: Student): boolean {
-  return absent.value.has(student.id)
 }
 
 function focus(): void {
@@ -88,7 +83,7 @@ defineExpose({ focus })
     </div>
     <p v-if="students.length === 0" class="text-lg text-ink-soft">No students yet.</p>
     <ul class="grid gap-2">
-      <li v-for="student in visible" :key="student.id" class="flex items-center gap-2">
+      <li v-for="{ student, status, absent } in rows" :key="student.id" class="flex items-center gap-2">
         <button
           type="button"
           class="flex min-h-14 flex-1 items-center gap-3 rounded-tile border-3 px-3 py-1 text-left transition-colors"
@@ -101,22 +96,22 @@ defineExpose({ focus })
           <span class="font-display text-lg font-extrabold whitespace-nowrap text-warn" :aria-label="starsLabel(student.points)">★ {{ student.points }}</span>
         </button>
         <span
-          v-if="status(student) !== null"
+          v-if="status !== null"
           class="hidden rounded-full border-2 px-2 py-0.5 text-sm font-bold whitespace-nowrap sm:inline-block"
-          :class="STATUS_STYLES[status(student) as RowStatus].badge"
+          :class="STATUS_STYLES[status].badge"
         >
-          {{ STATUS_STYLES[status(student) as RowStatus].label }}
+          {{ STATUS_STYLES[status].label }}
         </span>
         <button
           v-if="attendance"
           type="button"
           class="btn btn-small w-24"
           :disabled="disabled || student.id === turnStudentId"
-          :aria-pressed="isAbsent(student)"
-          :aria-label="isAbsent(student) ? `${student.name} is away. Mark as here.` : `${student.name} is here. Mark as away.`"
-          @click="emit('toggleAbsent', student.id, !isAbsent(student))"
+          :aria-pressed="absent"
+          :aria-label="absent ? `${student.name} is away. Mark as here.` : `${student.name} is here. Mark as away.`"
+          @click="emit('toggleAbsent', student.id, !absent)"
         >
-          {{ isAbsent(student) ? 'Away' : 'Here' }}
+          {{ absent ? 'Away' : 'Here' }}
         </button>
       </li>
     </ul>

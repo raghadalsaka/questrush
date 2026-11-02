@@ -3,10 +3,9 @@ import { PICK_ANIMATION_MS, PICK_STEP_MS, STAR_ANIMATION_MS } from '../config'
 import { api } from '../services/api'
 import { loadStage as fetchStage } from '../services/stageService'
 import type { Outcome } from '../types/api'
-import type { Question } from '../types/contest'
 import type { StageFile, StageLoadResult } from '../types/stage'
 import { cryptoRandomInt, pickRandom, type RandomInt } from '../utils/random'
-import { eligibleStudents, missingQuestionIds, planPick, questionShortage, unusedQuestions } from '../utils/selection'
+import { eligibleStudents, missingQuestionIds, questionShortage, unusedQuestions } from '../utils/selection'
 import type { TeacherClassroom } from './useTeacherClassroom'
 
 export interface OfficialSessionOptions {
@@ -35,7 +34,7 @@ function defaultPickAnimationMs(): number {
   return PICK_ANIMATION_MS
 }
 
-// The browser runs each turn in memory only; the server stores answers and has the final say on every rule.
+// The browser runs each turn in memory only; only the answer is saved, and the shared rules have the final say.
 export function useOfficialSession(teacher: TeacherClassroom, options: OfficialSessionOptions = {}) {
   const randomInt = options.randomInt ?? cryptoRandomInt
   const pickAnimationMs = options.pickAnimationMs ?? defaultPickAnimationMs
@@ -174,16 +173,14 @@ export function useOfficialSession(teacher: TeacherClassroom, options: OfficialS
     if (phase.value !== 'idle' || teacher.busy.value || pickBlocker.value !== null) {
       return
     }
-    const plan = planPick(eligible.value, unused.value, randomInt)
-    if (!plan.ok) {
-      return
-    }
-    const candidates = eligible.value.map((student) => student.id)
+    const student = pickRandom(eligible.value, randomInt)
+    const question = pickRandom(unused.value, randomInt)
+    const candidates = eligible.value.map((candidate) => candidate.id)
     phase.value = 'picking'
     teacher.clearError()
-    await spotlight(candidates, plan.pick.student.id)
+    await spotlight(candidates, student.id)
     setAsideIds.value = []
-    startTurn({ studentId: plan.pick.student.id, questionId: plan.pick.question.id })
+    startTurn({ studentId: student.id, questionId: question.id })
     spotlightId.value = null
     phase.value = 'idle'
   }
@@ -204,37 +201,25 @@ export function useOfficialSession(teacher: TeacherClassroom, options: OfficialS
     chosenIndex.value = null
   }
 
-  function outcomeOf(question: Question, index: number): Outcome {
-    return index === question.correctIndex ? 'correct' : 'incorrect'
-  }
-
   // Tapping an option is the student's final answer: it is shown and saved at once.
   async function answer(index: number): Promise<void> {
-    const question = shownQuestion.value
-    if (revealed.value || teacher.busy.value || question === null || pendingTurn.value === null) {
+    if (revealed.value || teacher.busy.value || shownQuestion.value === null || pendingTurn.value === null) {
       return
     }
     chosenIndex.value = index
-    await record(outcomeOf(question, index))
+    await record()
   }
 
-  // A failed save leaves the answer on screen, so the retry records that same answer.
-  async function saveAgain(): Promise<void> {
-    const question = shownQuestion.value
-    const chosen = chosenIndex.value
-    if (question === null || chosen === null) {
-      return
-    }
-    await record(outcomeOf(question, chosen))
-  }
-
-  async function record(outcome: Outcome): Promise<void> {
+  // A failed save leaves the answer on screen, so the retry (saveAgain) records that same answer.
+  async function record(): Promise<void> {
     const turn = pendingTurn.value
     const current = session.value
-    if (turn === null || current === null || !revealed.value) {
+    const question = shownQuestion.value
+    const chosen = chosenIndex.value
+    if (turn === null || current === null || question === null || chosen === null) {
       return
     }
-    const chosen = chosenIndex.value
+    const outcome: Outcome = chosen === question.correctIndex ? 'correct' : 'incorrect'
     // Set together, before the classroom is applied, so the card never unmounts between the pending and finished turn.
     await teacher.run(async () => {
       const detail = await api.recordResult(current.id, turn.studentId, turn.questionId, outcome)
@@ -296,7 +281,7 @@ export function useOfficialSession(teacher: TeacherClassroom, options: OfficialS
     pickBlocker,
     pick,
     answer,
-    saveAgain,
+    saveAgain: record,
     swapQuestion,
     leaveTurn,
     dismiss,

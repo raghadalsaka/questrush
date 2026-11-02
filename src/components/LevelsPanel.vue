@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { injectClassroom } from '../composables/useTeacherClassroom'
 import { api } from '../services/api'
 import { catalog, levelForSlug, levels } from '../services/game'
@@ -12,9 +13,21 @@ const emit = defineEmits<{
 
 const teacher = injectClassroom()
 
+interface Readiness {
+  remaining: number
+  available: number
+  shortage: number
+  played: boolean
+  finished: boolean
+}
+
+const rows = computed<{ level: Level; readiness: Readiness | null }[]>(() =>
+  levels.map((level) => ({ level, readiness: level.stage === null ? null : readiness(level.stage) })),
+)
+
 // Before the session: unused questions in the stage file against students still without a result.
-// A stage every student has played is finished: it can't be opened again or made current (the server agrees).
-function readiness(stage: StageInfo): { remaining: number; available: number; shortage: number; played: boolean; finished: boolean } {
+// A stage every student has played is finished: it can't be opened again or made current (sheetRules agrees).
+function readiness(stage: StageInfo): Readiness {
   const classroom = teacher.classroom.value
   const remaining = classroom === null ? 0 : eligibleStudents(classroom.students, classroom.results, stage.slug, []).length
   const used = classroom?.usedQuestionIds[stage.slug] ?? []
@@ -66,7 +79,7 @@ async function makeCurrent(stage: StageInfo): Promise<void> {
     </div>
     <ol class="grid gap-3">
       <li
-        v-for="level in levels"
+        v-for="{ level, readiness: ready } in rows"
         :key="level.order"
         class="grid gap-2 rounded-tile border-3 p-4"
         :class="level.state === 'open' ? 'border-ink bg-card' : 'border-dashed border-locked bg-board'"
@@ -88,18 +101,18 @@ async function makeCurrent(stage: StageInfo): Promise<void> {
           <p class="text-base text-ink-soft">{{ level.stage.questionCount }} questions</p>
         </template>
         <p v-if="level.state !== 'open'" class="text-base text-ink-soft">{{ stateNote(level) }}</p>
-        <template v-else-if="level.stage !== null && readiness(level.stage).finished">
+        <template v-else-if="level.stage !== null && ready !== null && ready.finished">
           <p class="text-base font-bold text-good-deep">
             ✓ Finished: every student has played this stage.
             <span v-if="teacher.activeSession.value?.stageSlug === level.stage.slug" class="text-warn">Session open</span>
           </p>
         </template>
-        <template v-else-if="level.stage !== null">
+        <template v-else-if="level.stage !== null && ready !== null">
           <p class="text-base">
-            {{ readiness(level.stage).available }} unused questions for {{ readiness(level.stage).remaining }} students without a result.
+            {{ ready.available }} unused questions for {{ ready.remaining }} students without a result.
           </p>
-          <p v-if="readiness(level.stage).shortage > 0" class="notice border-warn bg-warn-soft text-base">
-            Not enough questions: {{ readiness(level.stage).shortage }} {{ readiness(level.stage).shortage === 1 ? 'student' : 'students' }} can't get a turn unless questions are added to the stage file.
+          <p v-if="ready.shortage > 0" class="notice border-warn bg-warn-soft text-base">
+            Not enough questions: {{ ready.shortage }} {{ ready.shortage === 1 ? 'student' : 'students' }} can't get a turn unless questions are added to the stage file.
           </p>
           <div class="flex flex-wrap gap-2">
             <button
@@ -109,7 +122,7 @@ async function makeCurrent(stage: StageInfo): Promise<void> {
               :disabled="teacher.busy.value"
               @click="startSession(level.stage)"
             >
-              {{ readiness(level.stage).played ? 'Reopen Session' : 'Start Session' }}
+              {{ ready.played ? 'Reopen Session' : 'Start Session' }}
             </button>
             <span v-else-if="teacher.activeSession.value.stageSlug === level.stage.slug" class="self-center font-bold text-warn">Session open</span>
             <button v-if="!isCurrent(level.stage)" type="button" class="btn btn-small" :disabled="teacher.busy.value" @click="makeCurrent(level.stage)">

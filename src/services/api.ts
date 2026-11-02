@@ -1,7 +1,9 @@
 import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, PublicClassroom, RosterGrid } from '../types/api'
+import { routeHash } from '../utils/route'
 import { ApiError, GENERIC_ERROR_MESSAGE } from './apiError'
 import { createBrowserApi } from './browserApi'
 import { indexedDbStore } from './browserStore'
+import { preloadGoogleSignIn } from './googleAuth'
 import {
   dismissSaveMessage,
   googleSheetApi,
@@ -51,8 +53,14 @@ export const googleSignIn: boolean = usesGoogleSheet()
 // Without the sheet, classrooms live in this browser only, so the student link opens nowhere else.
 export const studentLinkThisDeviceOnly: boolean = !usesGoogleSheet()
 
+export function preloadSignIn(): void {
+  if (googleSignIn) {
+    preloadGoogleSignIn().catch((error: unknown) => console.warn('Google sign-in did not preload', error))
+  }
+}
+
 export function publicLink(classroomSlug: string): string {
-  return `${window.location.origin}${import.meta.env.BASE_URL}#/p/${encodeURIComponent(classroomSlug)}`
+  return `${window.location.origin}${import.meta.env.BASE_URL}${routeHash({ name: 'public', slug: classroomSlug })}`
 }
 
 export function errorMessage(error: unknown): string {

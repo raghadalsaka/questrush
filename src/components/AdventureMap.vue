@@ -4,7 +4,7 @@ import { PAWNS_PER_CLUSTER } from '../config'
 import type { Result, Student } from '../types/api'
 import type { Level } from '../types/stage'
 import { MAP_HEIGHT, MAP_WIDTH, checkpointPositions, clusterLayout, trailPath, type Point } from '../utils/mapLayout'
-import { groupByCheckpoint, levelMark, levelTitle, outcomeFor, STAGE_MARKS, starsLabel } from '../utils/progress'
+import { groupByCheckpoint, levelMark, levelTitle, outcomeFor, starsLabel } from '../utils/progress'
 
 interface PawnView {
   student: Student
@@ -15,7 +15,6 @@ interface PawnView {
 interface ClusterView {
   checkpoint: number
   pawns: PawnView[]
-  overflow: number
   hidden: Student[]
   overflowAt: Point | null
   overflowSize: number
@@ -77,16 +76,12 @@ const markers = computed<MarkerView[]>(() =>
     const title = levelTitle(level)
     const current = level.stage !== null && level.stage.slug === props.currentStageSlug
     const selected = selectedStudent.value
-    if (selected !== null) {
-      const mark = levelMark(level, level.stage === null ? null : outcomeFor(props.results, selected.id, level.stage.slug))
-      return { level, current, title, at, fill: mark.fill, text: mark.text, symbol: mark.symbol, status: mark.label, labelY }
+    if (selected === null && level.state === 'open') {
+      const playing = level.stage?.slug === props.activeStageSlug
+      return { level, current, title, at, fill: 'fill-gold', text: 'fill-ink', symbol: String(level.order), status: playing ? 'Playing now' : 'Open', labelY }
     }
-    if (level.state !== 'open') {
-      const mark = STAGE_MARKS[level.state]
-      return { level, current, title, at, fill: mark.fill, text: mark.text, symbol: mark.symbol, status: mark.label, labelY }
-    }
-    const playing = level.stage?.slug === props.activeStageSlug
-    return { level, current, title, at, fill: 'fill-gold', text: 'fill-ink', symbol: String(level.order), status: playing ? 'Playing now' : 'Open', labelY }
+    const mark = levelMark(level, selected === null || level.stage === null ? null : outcomeFor(props.results, selected.id, level.stage.slug))
+    return { level, current, title, at, fill: mark.fill, text: mark.text, symbol: mark.symbol, status: mark.label, labelY }
   }),
 )
 
@@ -103,7 +98,7 @@ const clusters = computed<ClusterView[]>(() => {
     const visibleCount = group.length - layout.overflow
     const pawns = group.slice(0, visibleCount).map((student, index) => ({ student, at: layout.slots[index] as Point, size: layout.pawnSize }))
     const overflowAt = layout.overflow > 0 ? (layout.slots[layout.slots.length - 1] ?? null) : null
-    return { checkpoint, pawns, overflow: layout.overflow, hidden: group.slice(visibleCount), overflowAt, overflowSize: layout.pawnSize }
+    return { checkpoint, pawns, hidden: group.slice(visibleCount), overflowAt, overflowSize: layout.pawnSize }
   })
 })
 
@@ -118,6 +113,10 @@ const hiddenSelected = computed(() => {
 
 function island(index: number): { rx: number; ry: number; tilt: number } {
   return ISLAND_SHAPES[index % ISLAND_SHAPES.length] as { rx: number; ry: number; tilt: number }
+}
+
+function highlighted(studentId: string): boolean {
+  return studentId === props.selectedStudentId || studentId === props.spotlightId || studentId === props.turnStudentId
 }
 
 function pawnRing(studentId: string): string {
@@ -265,10 +264,10 @@ function onKey(event: KeyboardEvent, action: () => void): void {
         >
           <g class="origin-center [transform-box:fill-box]" :class="pawn.student.id === spotlightId ? 'animate-pawn-pulse' : ''">
             <circle
-              :r="pawn.size / 2 + (pawn.student.id === selectedStudentId || pawn.student.id === spotlightId || pawn.student.id === turnStudentId ? 4 : 0)"
+              :r="pawn.size / 2 + (highlighted(pawn.student.id) ? 4 : 0)"
               class="pawn-ring fill-card"
               :class="pawnRing(pawn.student.id)"
-              :stroke-width="pawn.student.id === selectedStudentId || pawn.student.id === spotlightId || pawn.student.id === turnStudentId ? 6 : 3"
+              :stroke-width="highlighted(pawn.student.id) ? 6 : 3"
             />
             <text text-anchor="middle" dominant-baseline="central" :style="{ fontSize: `${pawn.size * 0.62}px` }">{{ pawn.student.emoji }}</text>
           </g>
@@ -290,12 +289,12 @@ function onKey(event: KeyboardEvent, action: () => void): void {
           role="button"
           tabindex="0"
           class="cursor-pointer focus:outline-none"
-          :aria-label="`${cluster.overflow} more pawns here. Show them.`"
+          :aria-label="`${cluster.hidden.length} more pawns here. Show them.`"
           @click="emit('showList', cluster.hidden)"
           @keydown="onKey($event, () => emit('showList', cluster.hidden))"
         >
           <circle :r="cluster.overflowSize / 2" class="fill-ink stroke-card" stroke-width="3" />
-          <text text-anchor="middle" dominant-baseline="central" class="fill-white font-display text-[16px] font-extrabold">+{{ cluster.overflow }}</text>
+          <text text-anchor="middle" dominant-baseline="central" class="fill-white font-display text-[16px] font-extrabold">+{{ cluster.hidden.length }}</text>
         </g>
       </g>
 

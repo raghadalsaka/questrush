@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { groupByCheckpoint, levelMark, pawnCheckpoint, studentHistory } from '../../src/utils/progress'
+import { groupByCheckpoint, levelMark, studentHistory } from '../../src/utils/progress'
 import { makeLevel, makeResult, makeStudent } from './helpers'
 
 const stages = [makeLevel('a', 1), makeLevel('b', 2), makeLevel('c', 3, 'locked'), makeLevel('', 4, 'missing')]
@@ -26,9 +26,8 @@ describe('stage marks', () => {
 describe('pawn checkpoints', () => {
   it('moves a pawn to the furthest stage with any result, including an incorrect one', () => {
     const results = [makeResult('s1', 'a', 'incorrect'), makeResult('s1', 'b', 'correct'), makeResult('s2', 'a', 'correct')]
-    expect(pawnCheckpoint(stages, results, 's1')).toBe(2)
-    expect(pawnCheckpoint(stages, results, 's2')).toBe(1)
-    expect(pawnCheckpoint(stages, results, 's3')).toBe(0)
+    const groups = groupByCheckpoint(stages, [makeStudent('s1'), makeStudent('s2'), makeStudent('s3')], results)
+    expect(groups.map((group) => group.map((student) => student.id))).toEqual([['s3'], ['s2'], ['s1'], [], []])
   })
 
   it('groups every student at exactly one checkpoint', () => {

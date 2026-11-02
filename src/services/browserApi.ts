@@ -1,8 +1,8 @@
-import type { ClassroomDetail, NewStudent, Outcome } from '../types/api'
+import type { ClassroomDetail } from '../types/api'
 import type { Api } from './api'
 import { ApiError } from './apiError'
 import type { BrowserStore } from './browserStore'
-import { previewRosterFile } from './rosterFile'
+import { rulesApi } from './rulesApi'
 import * as rules from './sheetRules'
 import type { Change, SheetDb } from './sheetRules'
 
@@ -14,15 +14,22 @@ export function createBrowserApi(store: BrowserStore, locks: LockManager | undef
   let db: Promise<SheetDb> | null = null
   let tabHeld: Promise<boolean> | null = null
 
+  async function readCopy(): Promise<SheetDb> {
+    let stored: SheetDb | null
+    try {
+      stored = await store.load(LOCAL_COPY_KEY)
+    } catch (error) {
+      console.error('reading the browser copy failed', error)
+      throw storageError()
+    }
+    return stored ?? rules.emptyDb()
+  }
+
   function loaded(): Promise<SheetDb> {
-    db ??= store.load(LOCAL_COPY_KEY).then(
-      (stored) => stored ?? rules.emptyDb(),
-      (error: unknown) => {
-        db = null
-        console.error('reading the browser copy failed', error)
-        throw storageError()
-      },
-    )
+    db ??= readCopy().catch((error: unknown) => {
+      db = null
+      throw error
+    })
     return db
   }
 
@@ -59,44 +66,20 @@ export function createBrowserApi(store: BrowserStore, locks: LockManager | undef
     return result.detail
   }
 
+  async function openTeacherCopy(): Promise<void> {
+    await holdTeacherTab()
+    await loaded()
+  }
+
   return {
-    login: async () => {
-      await holdTeacherTab()
-      await loaded()
-    },
+    login: openTeacherCopy,
     logout: async () => {},
-    me: async () => {
-      await holdTeacherTab()
-      await loaded()
-    },
+    me: openTeacherCopy,
 
-    listClassrooms: async () => rules.listClassrooms(await loaded()),
-    createClassroom: (name: string, students: NewStudent[]) => change((current) => rules.createClassroom(current, rules.systemClock, name, students)),
-    getClassroom: async (id: string) => rules.getClassroom(await loaded(), id),
-    previewRoster: previewRosterFile,
-
-    updateStudent: (id: string, student: NewStudent) => change((current) => rules.updateStudent(current, id, student)),
-    deleteStudent: (id: string) => change((current) => rules.deleteStudent(current, id)),
-
-    setCurrentStage: (classroomSlug: string, currentStageSlug: string | null) => change((current) => rules.setCurrentStage(current, classroomSlug, currentStageSlug)),
-    openSession: (classroomSlug: string, stageSlug: string) => change((current) => rules.openSession(current, rules.systemClock, classroomSlug, stageSlug)),
-
-    closeSession: (id: string) => change((current) => rules.closeSession(current, rules.systemClock, id)),
-    setAbsent: (sessionId: string, studentId: string, absent: boolean) => change((current) => rules.setAbsent(current, rules.systemClock, sessionId, studentId, absent)),
-    recordResult: (sessionId: string, studentId: string, questionId: string, outcome: Outcome) =>
-      change((current) => rules.recordResult(current, rules.systemClock, sessionId, studentId, questionId, outcome)),
+    ...rulesApi(loaded, change),
 
     // The student link opened in this browser reads the copy fresh, since the teacher tab may have saved since.
-    getPublicClassroom: async (classroomSlug: string) => {
-      let stored: SheetDb | null
-      try {
-        stored = await store.load(LOCAL_COPY_KEY)
-      } catch (error) {
-        console.error('reading the browser copy failed', error)
-        throw storageError()
-      }
-      return rules.getPublicClassroom(stored ?? rules.emptyDb(), classroomSlug)
-    },
+    getPublicClassroom: async (classroomSlug: string) => rules.getPublicClassroom(await readCopy(), classroomSlug),
   }
 }
 

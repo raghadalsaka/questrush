@@ -3,11 +3,7 @@ import { computed, ref, shallowRef, watch } from 'vue'
 import { MAX_NAME_LENGTH, ROSTER_PREVIEW_ROWS } from '../config'
 import { api, errorMessage } from '../services/api'
 import type { RosterGrid } from '../types/api'
-import { assignEmojis, columnCount, columnLabel, EMOJI_POOL, extractNames, guessNameColumn, type DraftStudent } from '../utils/roster'
-
-const props = defineProps<{
-  takenEmojis: readonly string[]
-}>()
+import { assignEmojis, columnCount, columnLabel, emojiChoices, extractNames, guessNameColumn, type DraftStudent } from '../utils/roster'
 
 const students = defineModel<DraftStudent[]>('students', { required: true })
 
@@ -33,7 +29,7 @@ watch(extraction, (result) => {
   if (result === null) {
     return
   }
-  const emojis = assignEmojis(result.entries.length, props.takenEmojis)
+  const emojis = assignEmojis(result.entries.length, [])
   students.value = result.entries.map((entry, index) => ({
     key: nextKey++,
     name: entry.name,
@@ -73,7 +69,7 @@ async function upload(event: Event): Promise<void> {
 }
 
 function addByHand(): void {
-  const [emoji] = assignEmojis(1, [...props.takenEmojis, ...students.value.map((student) => student.emoji)])
+  const [emoji] = assignEmojis(1, students.value.map((student) => student.emoji))
   students.value = [...students.value, { key: nextKey++, name: '', emoji: emoji as string, note: '' }]
 }
 
@@ -154,7 +150,7 @@ function remove(key: number): void {
           <span class="w-8 text-right text-ink-soft">{{ index + 1 }}</span>
           <label class="w-20 shrink-0">
             <select v-model="student.emoji" class="field-input px-2 text-2xl" :aria-label="`Pawn for student ${index + 1}`">
-              <option v-for="choice in EMOJI_POOL.includes(student.emoji) ? EMOJI_POOL : [student.emoji, ...EMOJI_POOL]" :key="choice" :value="choice">{{ choice }}</option>
+              <option v-for="choice in emojiChoices(student.emoji)" :key="choice" :value="choice">{{ choice }}</option>
             </select>
           </label>
           <label class="flex-1">

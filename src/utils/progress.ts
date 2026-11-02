@@ -47,18 +47,7 @@ export function studentHistory(levels: readonly Level[], results: readonly Resul
   return levels.map((level) => ({ level, mark: levelMark(level, level.stage === null ? null : outcomeFor(results, studentId, level.stage.slug)) }))
 }
 
-// 0 is the starting harbour; otherwise the order of the furthest level with any official result.
-export function pawnCheckpoint(levels: readonly Level[], results: readonly Result[], studentId: string): number {
-  let checkpoint = 0
-  for (const level of levels) {
-    if (level.stage !== null && outcomeFor(results, studentId, level.stage.slug) !== null) {
-      checkpoint = level.order
-    }
-  }
-  return checkpoint
-}
-
-// One pass over the results, giving each student the same checkpoint pawnCheckpoint would.
+// Group 0 is the starting harbour; otherwise a pawn stands at the order of its furthest level with any official result.
 export function groupByCheckpoint(levels: readonly Level[], students: readonly Student[], results: readonly Result[]): Student[][] {
   const levelIndex = new Map<string, number>()
   levels.forEach((level, index) => {

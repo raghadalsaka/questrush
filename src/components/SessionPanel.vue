@@ -12,7 +12,7 @@ defineProps<{
 const teacher = injectClassroom()
 const confirmClose = ref(false)
 
-const stage = computed(() => teacher.activeLevel.value?.stage ?? null)
+const stage = teacher.activeStage
 const assessedCount = computed(() => {
   const stageSlug = teacher.activeSession.value?.stageSlug
   return teacher.classroom.value?.results.filter((result) => result.stageSlug === stageSlug).length ?? 0
