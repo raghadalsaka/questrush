@@ -1,10 +1,11 @@
 import { columnLabel } from '../utils/roster'
-import { ApiError } from './apiError'
+import { ApiError, GENERIC_ERROR_MESSAGE } from './apiError'
 import { cellsOf, emptyDb, rowFrom, TABLES, type SheetDb, type SheetRow, type TableName } from './sheetRules'
-import { decideRow, findRow, rowKey, type PendingWrite } from './sheetSync'
+import type { PendingWrite } from './sheetSync'
 
 const SHEETS_API: string = 'https://sheets.googleapis.com/v4/spreadsheets'
 const TABLE_NAMES: readonly TableName[] = Object.keys(TABLES) as TableName[]
+const OFFLINE_MESSAGE: string = "Can't reach Google Sheets. Check the connection; your changes are kept in this browser."
 
 export interface SheetConnection {
   spreadsheetId: string
@@ -12,15 +13,22 @@ export interface SheetConnection {
   sheetIds: Map<TableName, number>
 }
 
+// Where a write landed, so the caller can keep the row numbers it holds in step with the sheet.
+export type WriteOutcome = { kind: 'appended'; firstRow: number } | { kind: 'updated' } | { kind: 'deleted'; rowNumber: number }
+
 export interface LoadedSheet {
   db: SheetDb
   sheetIds: Map<TableName, number>
 }
 
-type ValueRanges = { valueRanges?: { values?: unknown[][] }[] }
+type ScriptTabs = { tabs: Partial<Record<TableName, { sheetId?: number; values?: unknown[][] } | null>> }
 
 export function spreadsheetId(): string {
   return (import.meta.env.VITE_SHEET_ID ?? '').trim()
+}
+
+export function scriptUrl(): string {
+  return (import.meta.env.VITE_SHEET_API_URL ?? '').trim()
 }
 
 function rangeOf(table: TableName, rowNumber?: number): string {
@@ -39,7 +47,7 @@ async function call<T>(token: string, method: string, url: string, body?: unknow
     })
   } catch (error) {
     console.error(`${method} ${url} failed`, error)
-    throw new ApiError(0, 'network', "Can't reach Google Sheets. Check the connection; your changes are kept in this browser.")
+    throw new ApiError(0, 'network', OFFLINE_MESSAGE)
   }
   if (response.ok) {
     return (await response.json()) as T
@@ -58,29 +66,27 @@ async function call<T>(token: string, method: string, url: string, body?: unknow
   throw new ApiError(response.status, 'sheet_error', `Google Sheets refused the change${problem === '' ? '' : `: ${problem}`}`)
 }
 
-function readTabs(id: string, token: string): Promise<ValueRanges> {
-  const ranges = TABLE_NAMES.map((table) => `ranges=${encodeURIComponent(rangeOf(table))}`).join('&')
-  return call<ValueRanges>(token, 'GET', `${SHEETS_API}/${id}/values:batchGet?${ranges}&majorDimension=ROWS`)
-}
-
-// The tab list and every tab's rows are requested together; only a sheet missing tabs needs a second read.
+// The tab list and every tab's rows come from the script in one request; only a sheet missing tabs is written to here.
 export async function loadSheet(id: string, token: string): Promise<LoadedSheet> {
-  const [sheetIds, firstRead] = await Promise.all([readSheetIds(id, token), readTabs(id, token).catch((error: unknown) => error)])
+  const { tabs } = await readFromScript<ScriptTabs>({ action: 'sheet' })
+  const sheetIds = new Map<TableName, number>()
+  for (const table of TABLE_NAMES) {
+    const sheetId = tabs[table]?.sheetId
+    if (sheetId !== undefined) {
+      sheetIds.set(table, sheetId)
+    }
+  }
   const missing = TABLE_NAMES.filter((table) => !sheetIds.has(table))
   if (missing.length > 0) {
     await createTabs(id, token, missing, sheetIds)
   }
-  if (missing.length === 0 && firstRead instanceof Error) {
-    throw firstRead
-  }
-  const data = missing.length === 0 ? (firstRead as ValueRanges) : await readTabs(id, token)
   const db = emptyDb()
   const headerless: TableName[] = []
-  TABLE_NAMES.forEach((table, index) => {
-    const values = data.valueRanges?.[index]?.values ?? []
+  for (const table of TABLE_NAMES) {
+    const values = tabs[table]?.values ?? []
     if (values.length === 0) {
       headerless.push(table)
-      return
+      continue
     }
     const header = (values[0] ?? []).map((cell) => String(cell))
     if (header.join(',') !== TABLES[table].join(',')) {
@@ -91,23 +97,32 @@ export async function loadSheet(id: string, token: string): Promise<LoadedSheet>
       .map((cells, offset) => rowFrom(table, offset + 2, cells))
       .filter((row) => cellsOf(table, row).some((cell) => cell !== ''))
     ;(db[table] as SheetRow[]).push(...rows)
-  })
+  }
   if (headerless.length > 0) {
     await writeHeaders(id, token, headerless)
   }
   return { db, sheetIds }
 }
 
-async function readSheetIds(id: string, token: string): Promise<Map<TableName, number>> {
-  const data = await call<{ sheets?: { properties?: { sheetId?: number; title?: string } }[] }>(token, 'GET', `${SHEETS_API}/${id}?fields=sheets.properties(sheetId,title)`)
-  const sheetIds = new Map<TableName, number>()
-  for (const sheet of data.sheets ?? []) {
-    const title = sheet.properties?.title ?? ''
-    if ((TABLE_NAMES as readonly string[]).includes(title) && sheet.properties?.sheetId !== undefined) {
-      sheetIds.set(title as TableName, sheet.properties.sheetId)
-    }
+// Reads never use the teacher's Google sign-in: the read-only Apps Script answers them, as it does for the student link.
+async function readFromScript<T>(params: Record<string, string>): Promise<T> {
+  const url = `${scriptUrl()}?${new URLSearchParams(params).toString()}`
+  let response: Response
+  try {
+    response = await fetch(url, { cache: 'no-store', redirect: 'follow' })
+  } catch (error) {
+    console.error(`GET ${url} failed`, error)
+    throw new ApiError(0, 'network', OFFLINE_MESSAGE)
   }
-  return sheetIds
+  const body = (await response.json().catch(() => null)) as { data?: T; error?: { status?: number; code?: string; message?: string } } | null
+  if (!response.ok || body === null || typeof body !== 'object') {
+    console.error(`GET ${url} answered ${response.status} without a readable body`)
+    throw new ApiError(502, 'script_unreadable', "The QuestRush script didn't answer as expected. Check that it is deployed as a web app anyone can open.")
+  }
+  if (body.error !== undefined) {
+    throw new ApiError(body.error.status ?? 500, body.error.code ?? 'script_error', body.error.message ?? GENERIC_ERROR_MESSAGE)
+  }
+  return body.data as T
 }
 
 async function createTabs(id: string, token: string, tables: readonly TableName[], sheetIds: Map<TableName, number>): Promise<void> {
@@ -132,34 +147,35 @@ async function writeHeaders(id: string, token: string, tables: readonly TableNam
   console.info('sheet header rows written', tables.join(', '))
 }
 
-// Each push re-reads its tab and finds rows by key, because rows deleted elsewhere move every row number below them.
+// Saves are plain writes: nothing is read first, so updates and deletes use the row numbers this browser keeps in step.
 // RAW keeps every cell as typed text: "=1+1" is never a formula and "007" keeps its zeros. OVERWRITE fills the rows
-// after the table without shifting rows below. Resolves to the number of rows dropped because the sheet changed first.
-export async function pushWrite(connection: SheetConnection, item: PendingWrite): Promise<number> {
+// after the table without shifting rows below.
+export async function pushWrite(connection: SheetConnection, item: PendingWrite): Promise<WriteOutcome> {
   const { spreadsheetId: id, token } = connection
   const { write } = item
   const table = write.table
-  const current = await readTab(connection, table)
   if (write.kind === 'append') {
-    const decisions = write.rows.map((row) => decideRow(current, table, 'append', row, null))
-    const rows = write.rows.filter((_, index) => decisions[index] === 'push')
-    if (rows.length > 0) {
-      await call(token(), 'POST', `${SHEETS_API}/${id}/values/${encodeURIComponent(`${table}!A1`)}:append?valueInputOption=RAW&insertDataOption=OVERWRITE`, {
-        values: rows.map((row) => cellsOf(table, row)),
-      })
+    const appended = await call<{ updates?: { updatedRange?: string } }>(
+      token(),
+      'POST',
+      `${SHEETS_API}/${id}/values/${encodeURIComponent(`${table}!A1`)}:append?valueInputOption=RAW&insertDataOption=OVERWRITE`,
+      { values: write.rows.map((row) => cellsOf(table, row)) },
+    )
+    const firstRow = Number(/![A-Z]+(\d+)/.exec(appended.updates?.updatedRange ?? '')?.[1] ?? Number.NaN)
+    if (!Number.isInteger(firstRow)) {
+      throw new ApiError(500, 'sheet_error', 'Google Sheets saved the rows but did not say where.')
     }
-    return decisions.filter((decision) => decision === 'drop').length
+    return { kind: 'appended', firstRow }
   }
-  const decision = decideRow(current, table, write.kind, write.row, item.before)
-  if (decision !== 'push') {
-    return decision === 'drop' ? 1 : 0
+  const rowNumber = write.row.rowNumber
+  if (rowNumber === null) {
+    throw new ApiError(500, 'sheet_error', 'This row was never saved to the sheet.')
   }
-  const rowNumber = (findRow(current, table, rowKey(table, write.row)) as SheetRow).rowNumber as number
   if (write.kind === 'update') {
     await call(token(), 'PUT', `${SHEETS_API}/${id}/values/${encodeURIComponent(rangeOf(table, rowNumber))}?valueInputOption=RAW`, {
       values: [cellsOf(table, write.row)],
     })
-    return 0
+    return { kind: 'updated' }
   }
   const sheetId = connection.sheetIds.get(table)
   if (sheetId === undefined) {
@@ -168,10 +184,5 @@ export async function pushWrite(connection: SheetConnection, item: PendingWrite)
   await call(token(), 'POST', `${SHEETS_API}/${id}:batchUpdate`, {
     requests: [{ deleteDimension: { range: { sheetId, dimension: 'ROWS', startIndex: rowNumber - 1, endIndex: rowNumber } } }],
   })
-  return 0
-}
-
-async function readTab(connection: SheetConnection, table: TableName): Promise<SheetRow[]> {
-  const data = await call<{ values?: unknown[][] }>(connection.token(), 'GET', `${SHEETS_API}/${connection.spreadsheetId}/values/${encodeURIComponent(rangeOf(table))}`)
-  return (data.values ?? []).slice(1).map((cells, offset) => rowFrom(table, offset + 2, cells))
+  return { kind: 'deleted', rowNumber }
 }

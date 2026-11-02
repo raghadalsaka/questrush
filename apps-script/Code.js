@@ -2,11 +2,13 @@
  * @OnlyCurrentDoc
  */
 
-// Read-only: the teacher's browser writes the sheet through the Sheets API; this answers the student link only.
+// Read-only: answers the student link and the teacher's reads; the teacher's browser writes through the Sheets API.
 const TABLES = {
   classrooms: ['slug', 'name', 'current_stage_slug', 'created_at'],
   students: ['id', 'classroom_slug', 'name', 'emoji', 'position', 'created_at'],
   turns: ['classroom_slug', 'stage_slug', 'session_id', 'student_id', 'question_id', 'status', 'created_at'],
+  sessions: ['id', 'classroom_slug', 'stage_slug', 'opened_at', 'closed_at'],
+  absences: ['session_id', 'student_id', 'created_at'],
 }
 
 const MAX_CLASSROOM_SLUG_LENGTH = 90
@@ -24,10 +26,13 @@ class AppError_ extends Error {
 function doGet(e) {
   return respond_(() => {
     const params = (e && e.parameter) || {}
-    if (params.action !== 'public') {
-      throw new AppError_(404, 'unknown_action', 'This request is not supported.')
+    if (params.action === 'public') {
+      return publicClassroom_(params.slug)
     }
-    return publicClassroom_(params.slug)
+    if (params.action === 'sheet') {
+      return sheetTabs_()
+    }
+    throw new AppError_(404, 'unknown_action', 'This request is not supported.')
   })
 }
 
@@ -84,6 +89,26 @@ function publicClassroom_(classroomSlug) {
     students,
     results: turns.map((turn) => ({ studentId: turn.student_id, stageSlug: turn.stage_slug, outcome: turn.status })),
   }
+}
+
+// Every tab as text rows, header first, for the teacher's browser, which checks the headers and the game rules itself.
+// A missing tab is null so the browser can create it; trailing blank rows are cut, inner ones keep row numbers right.
+function sheetTabs_() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+  const tabs = {}
+  Object.keys(TABLES).forEach((name) => {
+    const sheet = spreadsheet.getSheetByName(name)
+    if (sheet === null) {
+      tabs[name] = null
+      return
+    }
+    const values = sheet.getDataRange().getValues().map((cells) => cells.map(cellText_))
+    while (values.length > 0 && values[values.length - 1].every((cell) => cell === '')) {
+      values.pop()
+    }
+    tabs[name] = { sheetId: sheet.getSheetId(), values }
+  })
+  return { tabs }
 }
 
 // Rows are matched to columns by position, so a reordered or renamed header row is refused rather than misread.

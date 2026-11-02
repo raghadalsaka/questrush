@@ -33,7 +33,8 @@ const TURNS: unknown[][] = [
 ]
 
 function loadScript(tabs: Map<string, unknown[][]>): Script {
-  const sheet = (rows: unknown[][]) => ({
+  const sheet = (name: string, rows: unknown[][]) => ({
+    getSheetId: () => [...tabs.keys()].indexOf(name) + 100,
     getDataRange: () => ({
       getValues: () => {
         const width = Math.max(...rows.map((row) => row.length))
@@ -42,7 +43,7 @@ function loadScript(tabs: Map<string, unknown[][]>): Script {
     }),
   })
   const globals = {
-    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: (name: string) => (tabs.has(name) ? sheet(tabs.get(name) as unknown[][]) : null) }) },
+    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: (name: string) => (tabs.has(name) ? sheet(name, tabs.get(name) as unknown[][]) : null) }) },
     ContentService: {
       MimeType: { JSON: 'application/json' },
       createTextOutput: (text: string) => ({ text, setMimeType: function () { return this } }),
@@ -105,5 +106,27 @@ describe('Apps Script student link', () => {
     for (const [table, columns] of Object.entries(script.TABLES)) {
       expect(columns).toEqual(TABLES[table as keyof typeof TABLES])
     }
+  })
+})
+
+describe('Apps Script teacher reads', () => {
+  interface Tabs {
+    tabs: Record<string, { sheetId: number; values: string[][] } | null>
+  }
+
+  function sheet(script: Script): ScriptBody<Tabs> {
+    return JSON.parse(script.doGet({ parameter: { action: 'sheet' } }).text)
+  }
+
+  it('returns every tab as text rows with its tab id, and null for a tab that is missing', () => {
+    const blankTail = [...TURNS, ['', '', '', '', '', '', '']]
+    const script = loadScript(new Map([['classrooms', CLASSROOMS], ['students', STUDENTS], ['turns', blankTail]]))
+
+    const tabs = sheet(script).data?.tabs
+
+    expect(Object.keys(tabs ?? {})).toEqual(Object.keys(TABLES))
+    expect(tabs?.students).toEqual({ sheetId: 101, values: STUDENTS.map((row) => row.map(String)) })
+    expect(tabs?.turns?.values).toHaveLength(TURNS.length)
+    expect(tabs?.sessions).toBeNull()
   })
 })

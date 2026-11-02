@@ -1,14 +1,14 @@
-import { SHEET_FOCUS_SYNC_GAP_MS, SHEET_SYNC_INTERVAL_MS } from '../config'
+import { SIGN_OUT_SAVE_WAIT_MS } from '../config'
 import type { ClassroomDetail, PublicClassroom } from '../types/api'
 import type { Api } from './api'
 import { ApiError, GENERIC_ERROR_MESSAGE, networkError, notSignedIn } from './apiError'
 import { indexedDbStore } from './browserStore'
 import { currentToken, forgetToken, googleClientId, requestToken } from './googleAuth'
-import { loadSheet, pushWrite, spreadsheetId, type LoadedSheet } from './googleSheets'
+import { loadSheet, pushWrite, scriptUrl, spreadsheetId, type LoadedSheet, type WriteOutcome } from './googleSheets'
 import { rulesApi } from './rulesApi'
 import { createSaveQueue } from './saveQueue'
-import type { Change, SheetDb, TableName } from './sheetRules'
-import { cloneDb, pendingFrom, reconcile, type PendingWrite } from './sheetSync'
+import type { Change, SheetDb, SheetRow, TableName } from './sheetRules'
+import { cloneDb, pendingFrom, reconcile, rowKey, type PendingWrite } from './sheetSync'
 import { teacherTabLock } from './teacherTabLock'
 
 // What this browser keeps for one sheet: the last merged copy and the changes the sheet hasn't taken yet.
@@ -22,35 +22,39 @@ const TEACHER_TAB_LOCK: string = 'questrush-teacher-sheet'
 let db: SheetDb | null = null
 let sheetIds: Map<TableName, number> = new Map()
 let onSignedOut: () => void = () => {}
-let syncing: Promise<void> | null = null
-let pullAgain: boolean = false
-let syncTimer: ReturnType<typeof setInterval> | null = null
-let lastPull: number = 0
 const reloadListeners: Set<() => void> = new Set()
 const copies = indexedDbStore<SheetCopy>()
 const holdTeacherTab = teacherTabLock(TEACHER_TAB_LOCK)
 
 const queue = createSaveQueue({
-  run: (item) => pushWrite({ spreadsheetId: spreadsheetId(), token: currentToken, sheetIds }, item),
-  // Not awaited: the refusal can come from inside a sync, which then pulls once more when it finishes.
+  run: async (item) => {
+    keepRowNumbers(item, await pushWrite({ spreadsheetId: spreadsheetId(), token: currentToken, sheetIds }, item))
+    return 0
+  },
+  // The one read outside sign-in: what Google refused must disappear from the screen, so the sheet is read again.
   onRefused: async (error) => {
     console.warn('sheet refused a change; reloading it', error.message)
-    void sync()
+    try {
+      adopt(await loadSheet(spreadsheetId(), currentToken()))
+    } catch (reloadError) {
+      console.warn('reloading the sheet failed', reloadError)
+    }
   },
   onChange: () => void keepCopy(),
 })
 
 export const saveStatus = queue.status
 
+// Reads go through the script and writes through the teacher's Google sign-in, so all three are needed.
 export function usesGoogleSheet(): boolean {
-  return googleClientId() !== '' && spreadsheetId() !== ''
+  return googleClientId() !== '' && spreadsheetId() !== '' && scriptUrl() !== ''
 }
 
 export function setGoogleSignedOutHandler(handler: () => void): void {
   onSignedOut = handler
 }
 
-// Lets an open classroom replace what it shows after a sync brought in the sheet's changes.
+// Lets an open classroom replace what it shows after the sheet was read again.
 export function onSheetReloaded(listener: () => void): () => void {
   reloadListeners.add(listener)
   return () => reloadListeners.delete(listener)
@@ -59,11 +63,11 @@ export function onSheetReloaded(listener: () => void): () => void {
 // Call from the click on "Sign In Again"; the popup must open inside it.
 export async function signInAgain(): Promise<void> {
   await requestToken()
-  await sync()
+  await queue.resume()
 }
 
 export function retrySaving(): Promise<void> {
-  return sync()
+  return queue.resume()
 }
 
 export function dismissSaveMessage(): void {
@@ -95,42 +99,8 @@ async function storedCopy(): Promise<SheetCopy | null> {
   }
 }
 
-// Pulls the whole sheet, replays the changes it hasn't taken yet on top, then pushes the ones that still apply.
-function sync(): Promise<void> {
-  if (syncing !== null) {
-    pullAgain = true
-    return syncing
-  }
-  syncing = (async () => {
-    do {
-      pullAgain = false
-      await pullAndPush()
-    } while (pullAgain)
-  })().finally(() => {
-    syncing = null
-  })
-  return syncing
-}
-
-async function pullAndPush(): Promise<void> {
-  if (db === null || currentToken() === '') {
-    return
-  }
-  let sheet: LoadedSheet
-  try {
-    sheet = await loadSheet(spreadsheetId(), currentToken())
-  } catch (error) {
-    console.warn('reading the sheet failed; changes stay in this browser', error)
-    queue.fail(error)
-    return
-  }
-  adopt(sheet)
-  await queue.resume()
-}
-
 // Synchronous from the read to the swap, so a change made while the sheet was loading is replayed too.
 function adopt(sheet: LoadedSheet): void {
-  lastPull = Date.now()
   sheetIds = sheet.sheetIds
   const previous = db === null ? '' : contentOf(db)
   const merged = reconcile(sheet.db, queue.pendingWrites())
@@ -149,38 +119,49 @@ function contentOf(copy: SheetDb): string {
   return JSON.stringify(copy, (key, value: unknown) => (key === 'rowNumber' ? undefined : value))
 }
 
-function syncWhenSeen(): void {
-  if (document.visibilityState === 'visible' && Date.now() - lastPull >= SHEET_FOCUS_SYNC_GAP_MS) {
-    void sync()
-  }
-}
-
-function onlineAgain(): void {
-  void sync()
-}
-
 function warnBeforeLeaving(event: BeforeUnloadEvent): void {
   if (queue.pendingWrites().length > 0) {
     event.preventDefault()
   }
 }
 
-function startSyncing(): void {
-  stopSyncing()
-  syncTimer = setInterval(() => void sync(), SHEET_SYNC_INTERVAL_MS)
-  window.addEventListener('online', onlineAgain)
-  document.addEventListener('visibilitychange', syncWhenSeen)
-  window.addEventListener('beforeunload', warnBeforeLeaving)
+// Saves don't read the sheet first, so the row numbers held here, in the copy and in the waiting changes, follow each write.
+function keepRowNumbers(item: PendingWrite, outcome: WriteOutcome): void {
+  const { write } = item
+  const rows = trackedRows(write.table)
+  if (write.kind === 'append' && outcome.kind === 'appended') {
+    write.rows.forEach((appended, index) => {
+      const key = rowKey(write.table, appended)
+      rows.filter((row) => rowKey(write.table, row) === key).forEach((row) => {
+        row.rowNumber = outcome.firstRow + index
+      })
+    })
+    return
+  }
+  if (write.kind !== 'delete' || outcome.kind !== 'deleted') {
+    return
+  }
+  const key = rowKey(write.table, write.row)
+  for (const row of rows) {
+    if (rowKey(write.table, row) === key) {
+      row.rowNumber = null
+    } else if (row.rowNumber !== null && row.rowNumber > outcome.rowNumber) {
+      row.rowNumber--
+    }
+  }
 }
 
-function stopSyncing(): void {
-  if (syncTimer !== null) {
-    clearInterval(syncTimer)
-    syncTimer = null
+function trackedRows(table: TableName): SheetRow[] {
+  const rows: SheetRow[] = db === null ? [] : [...(db[table] as SheetRow[])]
+  for (const pending of queue.pendingWrites()) {
+    if (pending.write.table === table) {
+      rows.push(...(pending.write.kind === 'append' ? pending.write.rows : [pending.write.row]))
+      if (pending.before !== null) {
+        rows.push(pending.before)
+      }
+    }
   }
-  window.removeEventListener('online', onlineAgain)
-  document.removeEventListener('visibilitychange', syncWhenSeen)
-  window.removeEventListener('beforeunload', warnBeforeLeaving)
+  return rows
 }
 
 function loaded(): SheetDb {
@@ -198,10 +179,6 @@ async function change(apply: (current: SheetDb) => Change): Promise<ClassroomDet
   const result = apply(current)
   queue.enqueue(pendingFrom(result.writes, before))
   return result.detail
-}
-
-function scriptUrl(): string {
-  return (import.meta.env.VITE_SHEET_API_URL ?? '').trim()
 }
 
 // The student link has no Google sign-in, so it reads through the read-only Apps Script.
@@ -228,7 +205,7 @@ async function readPublicClassroom(classroomSlug: string): Promise<PublicClassro
 }
 
 export const googleSheetApi: Api = {
-  // requestToken comes first: the Google popup only opens inside the sign-in click.
+  // The sheet is read once here, through the script; requestToken comes first because the popup only opens inside the click.
   login: async () => {
     const token = await requestToken()
     await holdTeacherTab()
@@ -245,15 +222,15 @@ export const googleSheetApi: Api = {
     db = kept?.db ?? null
     adopt(sheet)
     await keepCopy()
-    startSyncing()
+    window.addEventListener('beforeunload', warnBeforeLeaving)
     void queue.resume()
     console.info('sheet loaded', JSON.stringify({ classrooms: sheet.db.classrooms.length, students: sheet.db.students.length, turns: sheet.db.turns.length, unsaved: queue.pendingWrites().length }))
   },
-  // Saves what it can first; the copy kept in this browser is cleared only when nothing is left unsaved.
+  // Saves what it can in a few seconds; the copy kept in this browser is cleared only when nothing is left unsaved.
   logout: async () => {
-    stopSyncing()
+    window.removeEventListener('beforeunload', warnBeforeLeaving)
     if (currentToken() !== '') {
-      await sync()
+      await Promise.race([queue.resume(), new Promise<void>((resolve) => setTimeout(resolve, SIGN_OUT_SAVE_WAIT_MS))])
     }
     const unsaved = queue.pendingWrites().length
     if (unsaved > 0) {

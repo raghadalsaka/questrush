@@ -10,7 +10,7 @@ QuestRush reuses [Quizrush](https://github.com/raghadalsaka/quizrush)'s question
 | --- | --- |
 | This repository (Vue 3, TypeScript, Vite, Tailwind 4) | Loads and validates the game settings and stage files, picks students and questions at random, reveals answers, draws the map and runs home practice. It is a static site that can be hosted on GitHub Pages. |
 | Browser copy (`src/services/browserApi.ts`, `browserStore.ts`), the default | Classrooms, students, sessions and official results kept in this browser's IndexedDB. Every change is saved before it is shown. No sign-in, and the student link works only in this browser. |
-| Google Sheet backend (`src/services/googleSheetApi.ts`, `apps-script/`) | Optional: the teacher signs in with Google; the browser keeps a copy of a Google Sheet, saves every change there at once and syncs with the sheet in the background (the sheet wins conflicts); a read-only Apps Script serves the student link. |
+| Google Sheet backend (`src/services/googleSheetApi.ts`, `apps-script/`) | Optional: the browser reads a Google Sheet once per visit through a read-only Apps Script (which also serves the student link), keeps the copy in IndexedDB, and writes each change back with the teacher's Google sign-in (the sheet wins conflicts at sign-in). |
 | Rules (`src/services/sheetRules.ts`) | The result rules, shared by both: they answer every screen and refuse what the game doesn't allow. |
 
 The Go API (`../questrush-api`) isn't used by this frontend for now.
@@ -120,7 +120,7 @@ Routes use the URL hash (`#/p/<link>`), so every link works on Pages without rew
 
 ### Backend option: Google Sheet, no server
 
-Instead of each browser's own copy, the classroom data can live in a Google Sheet. Teachers sign in with a Google account the sheet is shared with; the browser keeps a copy of the sheet, answers every screen from it, saves changes there at once and syncs them with the sheet in the background (the sheet wins when both changed the same row), and a read-only Apps Script in `apps-script/` serves the student link. Set the repository variables `QUESTRUSH_GOOGLE_CLIENT_ID`, `QUESTRUSH_SHEET_ID` and `QUESTRUSH_SHEET_API_URL`. Setup and limits are in [`apps-script/README.md`](apps-script/README.md).
+Instead of each browser's own copy, the classroom data can live in a Google Sheet. Teachers sign in with a Google account the sheet is shared with; the browser reads the sheet once per visit through the read-only Apps Script, answers every screen from its copy and writes each change back with the teacher's Google sign-in (the sheet wins at sign-in when both changed the same row), and a read-only Apps Script in `apps-script/` serves the student link. Set the repository variables `QUESTRUSH_GOOGLE_CLIENT_ID`, `QUESTRUSH_SHEET_ID` and `QUESTRUSH_SHEET_API_URL`. Setup and limits are in [`apps-script/README.md`](apps-script/README.md).
 
 ## Configuration
 

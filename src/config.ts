@@ -22,5 +22,4 @@ export const PAWNS_PER_CLUSTER: number = 12
 export const PICK_ANIMATION_MS: number = 1600
 export const PICK_STEP_MS: number = 120
 export const STAR_ANIMATION_MS: number = 1400
-export const SHEET_SYNC_INTERVAL_MS: number = 60 * 1000
-export const SHEET_FOCUS_SYNC_GAP_MS: number = 15 * 1000
+export const SIGN_OUT_SAVE_WAIT_MS: number = 3000

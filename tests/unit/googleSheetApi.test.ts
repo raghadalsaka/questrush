@@ -54,7 +54,16 @@ function fakeGoogle(sheet: FakeSheet): typeof fetch {
       throw new TypeError('Failed to fetch')
     }
     if (url.startsWith(SCRIPT_URL)) {
-      return json({ data: { name: 'Year 3', currentStageSlug: null, students: [], results: [] } })
+      const params = new URL(url).searchParams
+      if (params.get('action') !== 'sheet') {
+        return json({ data: { name: 'Year 3', currentStageSlug: null, students: [], results: [] } })
+      }
+      const only = params.get('tab')
+      if (only === null) {
+        sheet.loads++
+      }
+      const tabs = TAB_NAMES.filter((table) => only === null || table === only).map((table) => [table, { sheetId: TAB_NAMES.indexOf(table), values: sheet.tabs.get(table) }])
+      return json({ data: { tabs: Object.fromEntries(tabs) } })
     }
     if (url.includes('?fields=sheets')) {
       sheet.loads++
@@ -113,8 +122,11 @@ describe('googleSheetApi', () => {
     vi.restoreAllMocks()
   })
 
-  it('is used when both the OAuth client and the sheet are configured', () => {
+  it('is used when the OAuth client, the sheet and the read-only script are all configured', () => {
     expect(usesGoogleSheet()).toBe(true)
+    vi.stubEnv('VITE_SHEET_API_URL', '')
+    expect(usesGoogleSheet()).toBe(false)
+    vi.stubEnv('VITE_SHEET_API_URL', SCRIPT_URL)
     vi.stubEnv('VITE_SHEET_ID', '')
     expect(usesGoogleSheet()).toBe(false)
   })
@@ -124,13 +136,13 @@ describe('googleSheetApi', () => {
     expect(fetch).not.toHaveBeenCalled()
   })
 
-  it('reads the sheet once at sign-in and answers every screen from that copy', async () => {
+  it('reads the sheet once at sign-in, through the script, and answers every screen from that copy', async () => {
     await googleSheetApi.login()
 
     expect(await googleSheetApi.listClassrooms()).toEqual([{ slug: 'year-3', name: 'Year 3', studentCount: 2, createdAt: '2026-10-01T08:00:00.000Z' }])
     expect((await googleSheetApi.getClassroom('year-3')).students.map((student) => student.name)).toEqual(['Amira', 'Ben'])
     await expect(googleSheetApi.me()).resolves.toBeUndefined()
-    expect(fetch).toHaveBeenCalledTimes(2)
+    expect(vi.mocked(fetch).mock.calls.map((call) => String(call[0]))).toEqual([`${SCRIPT_URL}?action=sheet`])
   })
 
   it('shows a change at once and writes it to the sheet in the background', async () => {
@@ -201,15 +213,15 @@ describe('googleSheetApi', () => {
 
   it('keeps unsaved changes in this browser across a sign-out and sends them after the next sign-in', async () => {
     await googleSheetApi.login()
-    sheet.offline = true
+    sheet.refuseWritesWith = 401
     const session = (await googleSheetApi.openSession('year-3', 'stage-1')).session?.id as string
     await googleSheetApi.recordResult(session, AMIRA, 'q1', 'correct')
     await retrySaving()
-    expect(saveStatus.value).toMatchObject({ state: 'offline', pending: 2 })
+    expect(saveStatus.value).toMatchObject({ state: 'needs-sign-in', pending: 2 })
 
     await googleSheetApi.logout()
     expect(kept.size).toBe(1)
-    sheet.offline = false
+    sheet.refuseWritesWith = null
     await googleSheetApi.login()
     await retrySaving()
 
@@ -217,31 +229,56 @@ describe('googleSheetApi', () => {
     expect(saveStatus.value).toMatchObject({ state: 'idle', pending: 0 })
   })
 
-  it('lets the sheet win when it changed the same row first, and says a change was dropped', async () => {
+  it('saves with plain writes: nothing is read from the sheet after sign-in', async () => {
     await googleSheetApi.login()
-    sheet.offline = true
-    await googleSheetApi.updateStudent(AMIRA, { name: 'Amira H', emoji: '🦊' })
-    ;(sheet.tabs.get('students')?.[1] as string[])[2] = 'Amira (edited on the sheet)'
-    sheet.offline = false
+    vi.mocked(fetch).mockClear()
 
+    const session = (await googleSheetApi.openSession('year-3', 'stage-1')).session?.id as string
+    await googleSheetApi.recordResult(session, AMIRA, 'q1', 'correct')
+    await googleSheetApi.updateStudent(BEN, { name: 'Ben C', emoji: '🐼' })
     await retrySaving()
+
+    expect(vi.mocked(fetch).mock.calls.some((call) => String(call[0]).startsWith(SCRIPT_URL))).toBe(false)
+    expect(sheet.tabs.get('students')?.[2]?.[2]).toBe('Ben C')
+    expect(sheet.tabs.get('turns')).toHaveLength(2)
+  })
+
+  it('lets the sheet win at the next sign-in when it changed the same row first, and says a change was dropped', async () => {
+    await googleSheetApi.login()
+    sheet.refuseWritesWith = 401
+    await googleSheetApi.updateStudent(AMIRA, { name: 'Amira H', emoji: '🦊' })
+    await retrySaving()
+    await googleSheetApi.logout()
+    sheet.refuseWritesWith = null
+    ;(sheet.tabs.get('students')?.[1] as string[])[2] = 'Amira (edited on the sheet)'
+
+    await googleSheetApi.login()
 
     expect(sheet.tabs.get('students')?.[1]?.[2]).toBe('Amira (edited on the sheet)')
     expect((await googleSheetApi.getClassroom('year-3')).students[0]?.name).toBe('Amira (edited on the sheet)')
     expect(saveStatus.value).toMatchObject({ state: 'dropped', message: '1 change was dropped because the sheet changed.' })
   })
 
-  it('brings changes made on another device into the open screens on the next sync', async () => {
+  it('shows changes made on another device only after the site is opened again', async () => {
     await googleSheetApi.login()
-    const reloaded = vi.fn()
-    const stop = onSheetReloaded(reloaded)
     sheet.tabs.get('classrooms')?.push(['year-4', 'Year 4', '', '2026-10-02T08:00:00.000Z'])
 
     await retrySaving()
+    expect((await googleSheetApi.listClassrooms()).map((classroom) => classroom.slug)).toEqual(['year-3'])
 
+    await googleSheetApi.logout()
+    await googleSheetApi.login()
     expect((await googleSheetApi.listClassrooms()).map((classroom) => classroom.slug)).toEqual(['year-4', 'year-3'])
-    expect(reloaded).toHaveBeenCalledTimes(1)
-    stop()
+  })
+
+  it('keeps the row numbers it holds in step when rows are deleted and added', async () => {
+    await googleSheetApi.login()
+    await googleSheetApi.updateStudent(AMIRA, { name: 'Amira', emoji: '🦊' })
+    await googleSheetApi.deleteStudent(AMIRA)
+    await googleSheetApi.updateStudent(BEN, { name: 'Ben C', emoji: '🐼' })
+    await retrySaving()
+
+    expect(sheet.tabs.get('students')?.map((row) => row[2])).toEqual(['name', 'Ben C'])
   })
 
   it('clears the copy kept in this browser on sign-out once everything is saved', async () => {

@@ -15,7 +15,7 @@ export interface PendingWrite {
   before: SheetRow | null
 }
 
-export type PushDecision = 'push' | 'done' | 'drop'
+type PushDecision = 'push' | 'done' | 'drop'
 
 export interface Reconciled {
   projected: SheetDb
@@ -46,15 +46,15 @@ export function cloneDb(db: SheetDb): SheetDb {
 export function pendingFrom(writes: readonly SheetWrite[], before: SheetDb): PendingWrite[] {
   return writes.map((write) => {
     if (write.kind === 'append') {
-      return { write: { kind: 'append', table: write.table, rows: write.rows.map(detached) }, before: null }
+      return { write: { kind: 'append', table: write.table, rows: write.rows.map((row) => ({ ...row })) }, before: null }
     }
     const previous = findRow(before[write.table] as SheetRow[], write.table, rowKey(write.table, write.row))
-    return { write: { kind: write.kind, table: write.table, row: detached(write.row) }, before: previous === null ? null : detached(previous) }
+    return { write: { kind: write.kind, table: write.table, row: { ...write.row } }, before: previous === null ? null : { ...previous } }
   })
 }
 
 // The sheet wins: a change goes through only while its row on the sheet is still what this browser last saw.
-export function decideRow(current: readonly SheetRow[], table: TableName, kind: SheetWrite['kind'], row: SheetRow, before: SheetRow | null): PushDecision {
+function decideRow(current: readonly SheetRow[], table: TableName, kind: SheetWrite['kind'], row: SheetRow, before: SheetRow | null): PushDecision {
   const onSheet = findRow(current, table, rowKey(table, row))
   if (kind === 'append') {
     if (onSheet === null) {
@@ -116,6 +116,8 @@ export function reconcile(sheet: SheetDb, pending: readonly PendingWrite[]): Rec
       decision = 'drop'
     }
     if (decision === 'push') {
+      // Saves don't read first, so the row number comes from the sheet just read (null while its append still waits).
+      write.row.rowNumber = findRow(projected[write.table] as SheetRow[], write.table, rowKey(write.table, write.row))?.rowNumber ?? null
       applyTo(projected, write)
       push.push(item)
     }
@@ -203,10 +205,6 @@ function clonePending(item: PendingWrite): PendingWrite {
   const write: SheetWrite =
     item.write.kind === 'append' ? { ...item.write, rows: item.write.rows.map((row) => ({ ...row })) } : { ...item.write, row: { ...item.write.row } }
   return { write, before: item.before === null ? null : { ...item.before } }
-}
-
-function detached<T extends SheetRow>(row: T): T {
-  return { ...row, rowNumber: null }
 }
 
 function sameCells(table: TableName, a: SheetRow, b: SheetRow): boolean {

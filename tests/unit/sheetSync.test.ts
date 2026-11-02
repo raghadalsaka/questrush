@@ -51,6 +51,18 @@ describe('reconcile', () => {
     expect(merged.projected.students.find((row) => row.id === AMIRA)?.name).toBe('Amira Haddad')
   })
 
+  it('gives a replayed update the row number the sheet has now, since saves do not read first', () => {
+    const db = sheet()
+    db.students.forEach((row, index) => {
+      row.rowNumber = index + 5
+    })
+    const stale = { ...student(BEN, 'Ben C'), rowNumber: 3 }
+
+    const merged = reconcile(db, [{ write: { kind: 'update', table: 'students', row: stale }, before: { ...student(BEN, 'Ben'), rowNumber: 3 } }])
+
+    expect(merged.push[0]?.write).toMatchObject({ kind: 'update', row: { name: 'Ben C', rowNumber: 6 } })
+  })
+
   it('lets the sheet win when it changed the same row first, and counts the dropped change', () => {
     const db = sheet()
     ;(db.students[0] as StudentRow).name = 'Amira (edited on the sheet)'
