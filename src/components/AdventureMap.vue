@@ -5,7 +5,7 @@ import type { Result, Student } from '../types/api'
 import type { Level, LevelState } from '../types/stage'
 import { CAST_SHADOW_OFFSET, ISLAND_DEPTH, islandShape, landmarkFor, type FacetTone, type IslandShape, type LandmarkKind } from '../utils/islandArt'
 import { MAP_HEIGHT, MAP_WIDTH, checkpointPositions, clusterLayout, trailPath, type Point } from '../utils/mapLayout'
-import { isPhotoUrl } from '../utils/photo'
+import { shownPhoto } from '../utils/photo'
 import { finishedStageSlugs, groupByCheckpoint, levelMark, levelTitle, outcomeFor, starsLabel } from '../utils/progress'
 import MapLandmark from './MapLandmark.vue'
 import TreasureChest from './TreasureChest.vue'
@@ -106,6 +106,7 @@ const points = computed(() => checkpointPositions(props.levels.length))
 const trail = computed(() => trailPath(points.value))
 const selectedStudent = computed(() => props.students.find((student) => student.id === props.selectedStudentId) ?? null)
 const finished = computed(() => finishedStageSlugs(props.students, props.results))
+const photos = computed(() => new Map(props.students.map((student) => [student.id, shownPhoto(student.photo)])))
 
 function clustersAbove(point: Point): boolean {
   return point.y < MAP_HEIGHT / 2 + 20
@@ -152,7 +153,7 @@ const clusters = computed<ClusterView[]>(() => {
     const visibleCount = group.length - layout.overflow
     const pawns = group.slice(0, visibleCount).map((student, index) => ({
       student,
-      photo: isPhotoUrl(student.photo) ? student.photo : null,
+      photo: photos.value.get(student.id) ?? null,
       at: layout.slots[index] as Point,
       size: layout.pawnSize,
       above,

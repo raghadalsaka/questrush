@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { googleSheetApi, onSheetReloaded, retrySaving, saveStatus, usesGoogleSheet } from '../../src/services/googleSheetApi'
+import { previewRosterFile } from '../../src/services/rosterFile'
 import { TABLES, type TableName } from '../../src/services/sheetRules'
 import { jsonResponse as json } from './helpers'
 
@@ -207,7 +208,7 @@ describe('googleSheetApi', () => {
   it('refuses large roster files without calling Google', async () => {
     const large = new File([new Uint8Array(2 * 1024 * 1024 + 1)], 'class.xlsx')
 
-    await expect(googleSheetApi.previewRoster(large)).rejects.toMatchObject({ code: 'file_too_large' })
+    await expect(previewRosterFile(large)).rejects.toMatchObject({ code: 'file_too_large' })
     expect(fetch).not.toHaveBeenCalled()
   })
 

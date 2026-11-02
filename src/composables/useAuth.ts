@@ -20,12 +20,10 @@ export function useAuth() {
       state.value = 'signed-in'
       error.value = ''
     } catch (caught) {
-      if (caught instanceof ApiError && caught.status === 401) {
-        signedOut()
-        return
+      if (!(caught instanceof ApiError && caught.status === 401)) {
+        error.value = errorMessage(caught)
       }
-      error.value = errorMessage(caught)
-      state.value = 'signed-out'
+      signedOut()
     }
   }
 

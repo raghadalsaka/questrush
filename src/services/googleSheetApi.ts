@@ -8,7 +8,7 @@ import { loadSheet, pushWrite, scriptUrl, spreadsheetId, type LoadedSheet, type 
 import { rulesApi } from './rulesApi'
 import { createSaveQueue } from './saveQueue'
 import type { Change, SheetDb, SheetRow, TableName } from './sheetRules'
-import { cloneDb, pendingFrom, reconcile, rowKey, type PendingWrite } from './sheetSync'
+import { cloneDb, pendingFrom, reconcile, rowKey, rowsOf, type PendingWrite } from './sheetSync'
 import { teacherTabLock } from './teacherTabLock'
 
 // What this browser keeps for one sheet: the last merged copy and the changes the sheet hasn't taken yet.
@@ -29,7 +29,6 @@ const holdTeacherTab = teacherTabLock(TEACHER_TAB_LOCK)
 const queue = createSaveQueue({
   run: async (item) => {
     keepRowNumbers(item, await pushWrite({ spreadsheetId: spreadsheetId(), token: currentToken, sheetIds }, item))
-    return 0
   },
   // The one read outside sign-in: what Google refused must disappear from the screen, so the sheet is read again.
   onRefused: async (error) => {
@@ -109,7 +108,7 @@ function adopt(sheet: LoadedSheet): void {
   if (merged.dropped > 0) {
     console.warn('changes dropped because the sheet changed', merged.dropped)
   }
-  if (contentOf(db) !== previous) {
+  if (previous === '' || contentOf(db) !== previous) {
     reloadListeners.forEach((listener) => listener())
   }
 }
@@ -130,11 +129,15 @@ function keepRowNumbers(item: PendingWrite, outcome: WriteOutcome): void {
   const { write } = item
   const rows = trackedRows(write.table)
   if (write.kind === 'append' && outcome.kind === 'appended') {
+    const rowsByKey = new Map<string, SheetRow[]>()
+    for (const row of rows) {
+      const key = rowKey(write.table, row)
+      rowsByKey.set(key, [...(rowsByKey.get(key) ?? []), row])
+    }
     write.rows.forEach((appended, index) => {
-      const key = rowKey(write.table, appended)
-      rows.filter((row) => rowKey(write.table, row) === key).forEach((row) => {
+      for (const row of rowsByKey.get(rowKey(write.table, appended)) ?? []) {
         row.rowNumber = outcome.firstRow + index
-      })
+      }
     })
     return
   }
@@ -155,10 +158,7 @@ function trackedRows(table: TableName): SheetRow[] {
   const rows: SheetRow[] = db === null ? [] : [...(db[table] as SheetRow[])]
   for (const pending of queue.pendingWrites()) {
     if (pending.write.table === table) {
-      rows.push(...(pending.write.kind === 'append' ? pending.write.rows : [pending.write.row]))
-      if (pending.before !== null) {
-        rows.push(pending.before)
-      }
+      rows.push(...rowsOf(pending))
     }
   }
   return rows
@@ -183,9 +183,6 @@ async function change(apply: (current: SheetDb) => Change): Promise<ClassroomDet
 
 // The student link has no Google sign-in, so it reads through the read-only Apps Script.
 async function readPublicClassroom(classroomSlug: string): Promise<PublicClassroom> {
-  if (scriptUrl() === '') {
-    throw new ApiError(404, 'classroom_not_found', "Classroom links aren't set up on this site yet.")
-  }
   let response: Response
   try {
     response = await fetch(`${scriptUrl()}?action=public&slug=${encodeURIComponent(classroomSlug)}`, { cache: 'no-store', redirect: 'follow' })

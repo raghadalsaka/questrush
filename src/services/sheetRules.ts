@@ -15,6 +15,8 @@ export const TABLES = {
 
 export type TableName = keyof typeof TABLES
 
+export const TABLE_NAMES: readonly TableName[] = Object.keys(TABLES) as TableName[]
+
 // Columns added after sheets were already in use; a header row that only lacks these is brought up to date.
 export const LATER_COLUMNS: { readonly [T in TableName]?: readonly string[] } = {
   students: ['photo'],
@@ -352,12 +354,43 @@ function requireStudentInClassroom(db: SheetDb, classroomSlug: string, studentId
 // Keeps a-z and 0-9 from the name and adds -2, -3... when taken, the same rule as the Go API.
 function freeClassroomSlug(db: SheetDb, name: string): string {
   const base = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'classroom'
-  const used = new Set(db.classrooms.map((classroom) => classroom.slug))
+  return firstFreeSlug(base, new Set(db.classrooms.map((classroom) => classroom.slug)))
+}
+
+export function firstFreeSlug(base: string, taken: ReadonlySet<string>): string {
   let candidate = base
-  for (let suffix = 2; used.has(candidate); suffix++) {
+  for (let suffix = 2; taken.has(candidate); suffix++) {
     candidate = `${base}-${suffix}`
   }
   return candidate
+}
+
+// Whether a change replayed on top of a freshly read sheet would now break one of the rules above.
+export function breaksRules(db: SheetDb, table: TableName, kind: SheetWrite['kind'], row: SheetRow): boolean {
+  const cells = row as Record<string, string>
+  const hasClassroom = (slug: string | undefined) => db.classrooms.some((classroom) => classroom.slug === slug)
+  const hasSession = (id: string | undefined) => db.sessions.some((session) => session.id === id)
+  const hasStudent = (id: string | undefined) => db.students.some((student) => student.id === id)
+  if (kind === 'delete') {
+    return table === 'students' && db.turns.some((turn) => turn.student_id === cells.id)
+  }
+  if (table === 'students') {
+    return !hasClassroom(cells.classroom_slug)
+  }
+  if (table === 'sessions') {
+    const otherOpen = db.sessions.some((session) => session.classroom_slug === cells.classroom_slug && session.closed_at === '' && session.id !== cells.id)
+    return !hasClassroom(cells.classroom_slug) || (cells.closed_at === '' && otherOpen)
+  }
+  if (table === 'turns') {
+    const questionTaken = db.turns.some(
+      (turn) => turn.classroom_slug === cells.classroom_slug && turn.stage_slug === cells.stage_slug && turn.question_id === cells.question_id && turn.student_id !== cells.student_id,
+    )
+    return !hasClassroom(cells.classroom_slug) || !hasSession(cells.session_id) || !hasStudent(cells.student_id) || questionTaken
+  }
+  if (table === 'absences') {
+    return !hasSession(cells.session_id) || !hasStudent(cells.student_id)
+  }
+  return false
 }
 
 function classroomNotFound(): ApiError {

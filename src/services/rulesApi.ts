@@ -1,6 +1,5 @@
 import type { ClassroomDetail, NewStudent, Outcome } from '../types/api'
 import type { Api } from './api'
-import { previewRosterFile } from './rosterFile'
 import * as rules from './sheetRules'
 import type { Change, SheetDb } from './sheetRules'
 
@@ -12,7 +11,6 @@ export function rulesApi(read: () => SheetDb | Promise<SheetDb>, change: (apply:
     listClassrooms: async () => rules.listClassrooms(await read()),
     createClassroom: (name: string, students: NewStudent[]) => change((current) => rules.createClassroom(current, rules.systemClock, name, students)),
     getClassroom: async (id: string) => rules.getClassroom(await read(), id),
-    previewRoster: previewRosterFile,
 
     updateStudent: (id: string, student: NewStudent) => change((current) => rules.updateStudent(current, id, student)),
     deleteStudent: (id: string) => change((current) => rules.deleteStudent(current, id)),

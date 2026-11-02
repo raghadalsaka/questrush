@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, shallowRef, watch } from 'vue'
 import { MAX_NAME_LENGTH, ROSTER_PREVIEW_ROWS } from '../config'
-import { api, errorMessage } from '../services/api'
+import { errorMessage } from '../services/api'
+import { previewRosterFile } from '../services/rosterFile'
 import type { RosterGrid } from '../types/api'
 import { assignEmojis, columnCount, columnLabel, emojiChoices, extractNames, guessNameColumn, type DraftStudent } from '../utils/roster'
+import { NOT_XLSX_MESSAGE } from '../utils/xlsx'
 
 const students = defineModel<DraftStudent[]>('students', { required: true })
 
@@ -49,13 +51,13 @@ async function upload(event: Event): Promise<void> {
     return
   }
   if (!file.name.toLowerCase().endsWith('.xlsx')) {
-    uploadError.value = 'Choose an Excel workbook saved as .xlsx.'
+    uploadError.value = NOT_XLSX_MESSAGE
     return
   }
   uploading.value = true
   uploadError.value = ''
   try {
-    const result = await api.previewRoster(file)
+    const result = await previewRosterFile(file)
     const guess = guessNameColumn(result.rows)
     fileName.value = file.name
     column.value = guess.column

@@ -81,6 +81,6 @@ export function clusterLayout(count: number, max: number, anchor: Point, above: 
   return { slots: slots.map((slot) => ({ x: round(slot.x + shift), y: round(slot.y) })), overflow: count - shown, pawnSize }
 }
 
-function round(value: number): number {
+export function round(value: number): number {
   return Math.round(value * 10) / 10
 }

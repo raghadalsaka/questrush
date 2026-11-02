@@ -7,6 +7,11 @@ export function isPhotoUrl(value: unknown): value is string {
   return typeof value === 'string' && value.length <= MAX_PHOTO_LENGTH && PHOTO_URL_PATTERN.test(value)
 }
 
+// Photos come from the sheet and the public script unchecked, so only a valid one is ever drawn.
+export function shownPhoto(value: unknown): string | null {
+  return isPhotoUrl(value) ? value : null
+}
+
 // Keeps the middle square of the picture, on white so a transparent PNG doesn't turn black as a JPEG.
 export async function photoFromFile(file: Blob): Promise<string> {
   const bitmap = await createImageBitmap(file)

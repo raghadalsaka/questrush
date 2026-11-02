@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { Student } from '../types/api'
-import { isPhotoUrl } from '../utils/photo'
+import { shownPhoto } from '../utils/photo'
 
 type BadgeSize = 'sm' | 'lg'
 
@@ -15,7 +15,7 @@ const props = defineProps<{
   size: BadgeSize
 }>()
 
-const photo = computed(() => (isPhotoUrl(props.student.photo) ? props.student.photo : null))
+const photo = computed(() => shownPhoto(props.student.photo))
 </script>
 
 <template>

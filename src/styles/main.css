@@ -23,9 +23,6 @@
   --text-hero: 3.25rem;
   --text-hero--line-height: 1.05;
   --text-hero--font-weight: 800;
-  --text-title: 2.25rem;
-  --text-title--line-height: 1.1;
-  --text-title--font-weight: 800;
 
   /* Surfaces: questions and controls always sit on cream parchment with navy ink. */
   --color-board: #e6f6f4;
@@ -81,19 +78,13 @@
   --color-locked-soft: #e4e8ef;
 
   /* Lighting: one warm key from the top left, cool sea-tinted shadows falling to the bottom right. */
-  --color-light-key: #fff4d6;
   --color-light-glint: #ffffff;
   --color-shadow-cast: #06364a;
-
-  --spacing-gutter: 1rem;
-  --spacing-panel: 1.25rem;
 
   --radius-card: 1.75rem;
   --radius-tile: 1rem;
 
-  --shadow-chunky: 0 6px 0 var(--color-ink);
   --shadow-soft: 0 14px 28px -12px rgb(6 54 74 / 0.45);
-  --shadow-lift: 0 10px 0 var(--color-ink), 0 22px 30px -14px rgb(6 54 74 / 0.5);
 
   --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-sway: cubic-bezier(0.45, 0.05, 0.55, 0.95);

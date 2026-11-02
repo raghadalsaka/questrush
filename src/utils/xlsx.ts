@@ -1,6 +1,7 @@
 import type { RosterGrid } from '../types/api'
 
 // Same limits as the Go API (roster.ParseGrid), so both backends read a workbook the same way.
+export const NOT_XLSX_MESSAGE: string = 'Choose an Excel workbook saved as .xlsx.'
 export const MAX_ROSTER_ROWS: number = 1000
 export const MAX_ROSTER_COLUMNS: number = 50
 const MAX_CELL_LENGTH: number = 200
@@ -29,7 +30,7 @@ export async function readRosterGrid(data: ArrayBuffer): Promise<RosterGridResul
   const bytes = new Uint8Array(data)
   const view = new DataView(data)
   if (bytes.length < 4 || view.getUint32(0, true) !== ZIP_LOCAL_SIGNATURE) {
-    return { ok: false, message: 'Choose an Excel workbook saved as .xlsx.' }
+    return { ok: false, message: NOT_XLSX_MESSAGE }
   }
   try {
     return await readFirstSheet(bytes, view)

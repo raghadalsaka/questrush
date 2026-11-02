@@ -11,8 +11,8 @@ export interface SaveStatus {
 }
 
 export interface SaveQueueOptions {
-  // Pushes one change and resolves to how many of its rows were dropped because the sheet changed first.
-  run: (item: PendingWrite) => Promise<number>
+  // Pushes one change to the sheet.
+  run: (item: PendingWrite) => Promise<void>
   // Called after Google refused a write; every queued write is dropped, so the caller reloads the sheet.
   onRefused: (error: ApiError) => Promise<void>
   // Called after every change to the queue, so it can be kept in browser storage.
@@ -111,9 +111,8 @@ export function createSaveQueue(options: SaveQueueOptions) {
       const item = mergeLeadingAppends()
       const outcome = await attempt(item)
       // A sync or sign-out may have replaced the queue meanwhile; a change no longer queued is no longer counted.
-      if (typeof outcome === 'number') {
+      if (outcome === null) {
         if (items.includes(item)) {
-          droppedUnseen += outcome
           items = items.filter((queued) => queued !== item)
           changed()
         }
@@ -162,15 +161,16 @@ export function createSaveQueue(options: SaveQueueOptions) {
     return merged
   }
 
-  // Resolves to the number of dropped rows once the write is settled, or to the error that stopped it.
-  async function attempt(item: PendingWrite): Promise<number | { error: unknown }> {
+  // Resolves to null once the write is settled, or to the error that stopped it.
+  async function attempt(item: PendingWrite): Promise<{ error: unknown } | null> {
     let delay = firstDelayMs
     for (let tried = 1; ; tried++) {
       if (!items.includes(item)) {
-        return 0
+        return null
       }
       try {
-        return await options.run(item)
+        await options.run(item)
+        return null
       } catch (error) {
         if (isRefusal(error) || tried >= attempts) {
           return { error }
@@ -199,5 +199,5 @@ export function createSaveQueue(options: SaveQueueOptions) {
     }
   }
 
-  return { status: readonly(status), enqueue, replace, resume, fail, pendingWrites, clear, dismiss }
+  return { status: readonly(status), enqueue, replace, resume, pendingWrites, clear, dismiss }
 }

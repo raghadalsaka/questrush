@@ -1,4 +1,4 @@
-import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, PublicClassroom, RosterGrid } from '../types/api'
+import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, PublicClassroom } from '../types/api'
 import { routeHash } from '../utils/route'
 import { ApiError, GENERIC_ERROR_MESSAGE } from './apiError'
 import { createBrowserApi } from './browserApi'
@@ -25,7 +25,6 @@ export interface Api {
   listClassrooms: () => Promise<ClassroomSummary[]>
   createClassroom: (name: string, students: NewStudent[]) => Promise<ClassroomDetail>
   getClassroom: (id: string) => Promise<ClassroomDetail>
-  previewRoster: (file: File) => Promise<RosterGrid>
 
   updateStudent: (id: string, student: NewStudent) => Promise<ClassroomDetail>
   deleteStudent: (id: string) => Promise<ClassroomDetail>

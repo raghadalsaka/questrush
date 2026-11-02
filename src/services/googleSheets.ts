@@ -1,10 +1,9 @@
 import { columnLabel } from '../utils/roster'
 import { ApiError, GENERIC_ERROR_MESSAGE } from './apiError'
-import { cellsOf, emptyDb, LATER_COLUMNS, rowFrom, TABLES, type SheetDb, type SheetRow, type TableName } from './sheetRules'
+import { cellsOf, emptyDb, LATER_COLUMNS, rowFrom, TABLE_NAMES, TABLES, type SheetDb, type SheetRow, type TableName } from './sheetRules'
 import type { PendingWrite } from './sheetSync'
 
 const SHEETS_API: string = 'https://sheets.googleapis.com/v4/spreadsheets'
-const TABLE_NAMES: readonly TableName[] = Object.keys(TABLES) as TableName[]
 const OFFLINE_MESSAGE: string = "Can't reach Google Sheets. Check the connection; your changes are kept in this browser."
 
 export interface SheetConnection {
@@ -81,20 +80,19 @@ export async function loadSheet(id: string, token: string): Promise<LoadedSheet>
     await createTabs(id, token, missing, sheetIds)
   }
   const db = emptyDb()
-  const headerless: TableName[] = []
-  const outdated: TableName[] = []
+  const needsHeader: TableName[] = []
   for (const table of TABLE_NAMES) {
     const values = tabs[table]?.values ?? []
     if (values.length === 0) {
-      headerless.push(table)
+      needsHeader.push(table)
       continue
     }
     const header = (values[0] ?? []).map((cell) => String(cell))
-    if (header.join(',') !== TABLES[table].join(',')) {
-      if (!lacksOnlyLaterColumns(table, header)) {
-        throw new ApiError(500, 'sheet_header_changed', `The "${table}" tab's first row must be: ${TABLES[table].join(', ')}.`)
-      }
-      outdated.push(table)
+    if (!headerFits(table, header)) {
+      throw new ApiError(500, 'sheet_header_changed', `The "${table}" tab's first row must be: ${TABLES[table].join(', ')}.`)
+    }
+    if (header.length < TABLES[table].length) {
+      needsHeader.push(table)
     }
     const rows = values
       .slice(1)
@@ -102,16 +100,17 @@ export async function loadSheet(id: string, token: string): Promise<LoadedSheet>
       .filter((row) => cellsOf(table, row).some((cell) => cell !== ''))
     ;(db[table] as SheetRow[]).push(...rows)
   }
-  if (headerless.length > 0 || outdated.length > 0) {
-    await writeHeaders(id, token, [...headerless, ...outdated])
+  if (needsHeader.length > 0) {
+    await writeHeaders(id, token, needsHeader)
   }
   return { db, sheetIds }
 }
 
-function lacksOnlyLaterColumns(table: TableName, header: readonly string[]): boolean {
+// The tab's columns in order, where only the LATER_COLUMNS at the end may still be missing.
+function headerFits(table: TableName, header: readonly string[]): boolean {
   const columns: readonly string[] = TABLES[table]
   const required = columns.length - (LATER_COLUMNS[table]?.length ?? 0)
-  return header.length >= required && header.length < columns.length && header.every((cell, index) => cell === columns[index])
+  return header.length >= required && header.length <= columns.length && header.every((cell, index) => cell === columns[index])
 }
 
 // Reads never use the teacher's Google sign-in: the read-only Apps Script answers them, as it does for the student link.

@@ -1,3 +1,5 @@
+import { round, type Point } from './mapLayout'
+
 export type FacetTone = 'lit' | 'mid' | 'shade'
 
 export interface Facet {
@@ -14,8 +16,8 @@ export interface IslandShape {
 export type LandmarkKind = 'lighthouse' | 'palms' | 'volcano' | 'arch' | 'ruins' | 'crystal'
 
 // The single key light comes from the top left (SVG y points down), so facets facing it are lit.
-export const KEY_LIGHT_ANGLE: number = Math.atan2(-1, -1)
-export const CAST_SHADOW_OFFSET: { x: number; y: number } = { x: 12, y: 16 }
+const KEY_LIGHT_ANGLE: number = Math.atan2(-1, -1)
+export const CAST_SHADOW_OFFSET: Point = { x: 12, y: 16 }
 export const ISLAND_DEPTH: number = 14
 
 const LANDMARKS: readonly LandmarkKind[] = ['lighthouse', 'palms', 'volcano', 'arch', 'ruins', 'crystal']
@@ -38,7 +40,7 @@ export function islandShape(seed: number, rx: number, ry: number): IslandShape {
   }
 }
 
-function ring(count: number, rx: number, ry: number, jitter: number, center: { x: number; y: number }, random: () => number): { x: number; y: number }[] {
+function ring(count: number, rx: number, ry: number, jitter: number, center: Point, random: () => number): Point[] {
   return Array.from({ length: count }, (_, index) => {
     const angle = (index / count) * Math.PI * 2 + (random() - 0.5) * (Math.PI / count)
     const scale = 1 + (random() - 0.5) * 2 * jitter
@@ -46,11 +48,11 @@ function ring(count: number, rx: number, ry: number, jitter: number, center: { x
   })
 }
 
-function facets(outline: readonly { x: number; y: number }[], peak: { x: number; y: number }): Facet[] {
+function facets(outline: readonly Point[], peak: Point): Facet[] {
   return outline.map((from, index) => {
-    const to = outline[(index + 1) % outline.length] as { x: number; y: number }
+    const to = outline[(index + 1) % outline.length] as Point
     const facing = Math.atan2((from.y + to.y) / 2 - peak.y, (from.x + to.x) / 2 - peak.x)
-    return { points: pointList([round2(peak), from, to]), tone: toneFor(Math.cos(facing - KEY_LIGHT_ANGLE)) }
+    return { points: pointList([{ x: round(peak.x), y: round(peak.y) }, from, to]), tone: toneFor(Math.cos(facing - KEY_LIGHT_ANGLE)) }
   })
 }
 
@@ -64,16 +66,8 @@ function toneFor(light: number): FacetTone {
   return 'mid'
 }
 
-function pointList(points: readonly { x: number; y: number }[]): string {
+function pointList(points: readonly Point[]): string {
   return points.map((point) => `${point.x},${point.y}`).join(' ')
-}
-
-function round2(point: { x: number; y: number }): { x: number; y: number } {
-  return { x: round(point.x), y: round(point.y) }
-}
-
-function round(value: number): number {
-  return Math.round(value * 10) / 10
 }
 
 function mulberry32(seed: number): () => number {

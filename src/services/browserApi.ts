@@ -11,7 +11,7 @@ const LOCAL_COPY_KEY: string = 'local'
 const TEACHER_TAB_LOCK: string = 'questrush-teacher-local'
 
 // Classrooms kept only in this browser: no sign-in, every change saved to IndexedDB before it is shown.
-export function createBrowserApi(store: BrowserStore<SheetDb>, locks: LockManager | undefined = globalThis.navigator?.locks ?? undefined): Api {
+export function createBrowserApi(store: BrowserStore<SheetDb>, locks?: LockManager): Api {
   let db: Promise<SheetDb> | null = null
   const holdTeacherTab = teacherTabLock(TEACHER_TAB_LOCK, locks)
 

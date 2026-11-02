@@ -1,7 +1,7 @@
-import { cellsOf, type ColumnOf, type SheetDb, type SheetRow, type SheetWrite, type TableName } from './sheetRules'
+import { breaksRules, cellsOf, firstFreeSlug, TABLE_NAMES, type ColumnOf, type SheetDb, type SheetRow, type SheetWrite, type TableName } from './sheetRules'
 
 // The cells that identify a row on the sheet; row numbers move when rows are deleted elsewhere, keys don't.
-export const ROW_KEYS: { [T in TableName]: readonly ColumnOf<T>[] } = {
+const ROW_KEYS: { [T in TableName]: readonly ColumnOf<T>[] } = {
   classrooms: ['slug'],
   students: ['id'],
   turns: ['classroom_slug', 'stage_slug', 'student_id'],
@@ -23,14 +23,12 @@ export interface Reconciled {
   dropped: number
 }
 
-const TABLE_NAMES: readonly TableName[] = Object.keys(ROW_KEYS) as TableName[]
-
 export function rowKey(table: TableName, row: SheetRow): string {
   const record = row as Record<string, unknown>
   return (ROW_KEYS[table] as readonly string[]).map((column) => String(record[column] ?? '')).join('\u0000')
 }
 
-export function findRow<T extends SheetRow>(rows: readonly T[], table: TableName, key: string): T | null {
+function findRow<T extends SheetRow>(rows: readonly T[], table: TableName, key: string): T | null {
   return rows.find((row) => rowKey(table, row) === key) ?? null
 }
 
@@ -44,13 +42,15 @@ export function cloneDb(db: SheetDb): SheetDb {
 
 // The rules hand back live rows; the pending log keeps copies so later edits and storage can't change them.
 export function pendingFrom(writes: readonly SheetWrite[], before: SheetDb): PendingWrite[] {
-  return writes.map((write) => {
-    if (write.kind === 'append') {
-      return { write: { kind: 'append', table: write.table, rows: write.rows.map((row) => ({ ...row })) }, before: null }
-    }
-    const previous = findRow(before[write.table] as SheetRow[], write.table, rowKey(write.table, write.row))
-    return { write: { kind: write.kind, table: write.table, row: { ...write.row } }, before: previous === null ? null : { ...previous } }
-  })
+  return writes.map((write) =>
+    clonePending({ write, before: write.kind === 'append' ? null : findRow(before[write.table] as SheetRow[], write.table, rowKey(write.table, write.row)) }),
+  )
+}
+
+// Every row a waiting change holds, its earlier copy included.
+export function rowsOf(item: PendingWrite): SheetRow[] {
+  const rows = item.write.kind === 'append' ? item.write.rows : [item.write.row]
+  return item.before === null ? rows : [...rows, item.before]
 }
 
 // The sheet wins: a change goes through only while its row on the sheet is still what this browser last saw.
@@ -62,16 +62,10 @@ function decideRow(current: readonly SheetRow[], table: TableName, kind: SheetWr
     }
     return sameCells(table, onSheet, row) ? 'done' : 'drop'
   }
-  if (kind === 'update') {
-    if (onSheet === null) {
-      return 'drop'
-    }
-    if (sameCells(table, onSheet, row)) {
-      return 'done'
-    }
-    return before !== null && sameCells(table, onSheet, before) ? 'push' : 'drop'
-  }
   if (onSheet === null) {
+    return kind === 'update' ? 'drop' : 'done'
+  }
+  if (kind === 'update' && sameCells(table, onSheet, row)) {
     return 'done'
   }
   return before !== null && sameCells(table, onSheet, before) ? 'push' : 'drop'
@@ -128,33 +122,6 @@ export function reconcile(sheet: SheetDb, pending: readonly PendingWrite[]): Rec
   return { projected, push, dropped }
 }
 
-function breaksRules(db: SheetDb, table: TableName, kind: SheetWrite['kind'], row: SheetRow): boolean {
-  const cells = row as Record<string, string>
-  const hasClassroom = (slug: string | undefined) => db.classrooms.some((classroom) => classroom.slug === slug)
-  const hasSession = (id: string | undefined) => db.sessions.some((session) => session.id === id)
-  const hasStudent = (id: string | undefined) => db.students.some((student) => student.id === id)
-  if (kind === 'delete') {
-    return table === 'students' && db.turns.some((turn) => turn.student_id === cells.id)
-  }
-  if (table === 'students') {
-    return !hasClassroom(cells.classroom_slug)
-  }
-  if (table === 'sessions') {
-    const otherOpen = db.sessions.some((session) => session.classroom_slug === cells.classroom_slug && session.closed_at === '' && session.id !== cells.id)
-    return !hasClassroom(cells.classroom_slug) || (cells.closed_at === '' && otherOpen)
-  }
-  if (table === 'turns') {
-    const questionTaken = db.turns.some(
-      (turn) => turn.classroom_slug === cells.classroom_slug && turn.stage_slug === cells.stage_slug && turn.question_id === cells.question_id && turn.student_id !== cells.student_id,
-    )
-    return !hasClassroom(cells.classroom_slug) || !hasSession(cells.session_id) || !hasStudent(cells.student_id) || questionTaken
-  }
-  if (table === 'absences') {
-    return !hasSession(cells.session_id) || !hasStudent(cells.student_id)
-  }
-  return false
-}
-
 function applyTo(db: SheetDb, write: SheetWrite): void {
   const rows = db[write.table] as SheetRow[]
   if (write.kind === 'append') {
@@ -178,18 +145,13 @@ function freeSlug(db: SheetDb, queue: readonly PendingWrite[], slug: string): st
       item.write.rows.forEach((row) => taken.add((row as Record<string, string>).slug ?? ''))
     }
   }
-  let candidate = slug
-  for (let suffix = 2; taken.has(candidate); suffix++) {
-    candidate = `${slug}-${suffix}`
-  }
-  return candidate
+  return firstFreeSlug(slug, taken)
 }
 
 function renameClassroom(queue: readonly PendingWrite[], from: string, to: string): void {
   console.warn('classroom slug taken on the sheet; saving it under a new one', from, to)
   for (const item of queue) {
-    const rows = item.write.kind === 'append' ? item.write.rows : [item.write.row]
-    for (const row of item.before === null ? rows : [...rows, item.before]) {
+    for (const row of rowsOf(item)) {
       const record = row as Record<string, string>
       if (item.write.table === 'classrooms' && record.slug === from) {
         record.slug = to

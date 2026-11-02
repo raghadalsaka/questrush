@@ -32,7 +32,6 @@ describe('createSaveQueue', () => {
         await new Promise<void>((resolve) => (release = resolve))
       }
       saved.push(...studentsOf(item))
-      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait })
 
@@ -54,7 +53,6 @@ describe('createSaveQueue', () => {
       if (sent.length === 1) {
         await new Promise<void>((resolve) => (release = resolve))
       }
-      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait })
 
@@ -74,7 +72,6 @@ describe('createSaveQueue', () => {
         throw new ApiError(0, 'network', 'offline')
       }
       saved.push(...studentsOf(item))
-      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait, firstDelayMs: 100 })
 
@@ -92,7 +89,6 @@ describe('createSaveQueue', () => {
         throw new ApiError(503, 'sheet_error', 'Google Sheets is unavailable.')
       }
       saved.push(...studentsOf(item))
-      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait, attempts: 2 })
 
@@ -112,7 +108,6 @@ describe('createSaveQueue', () => {
         throw new ApiError(401, 'google_sign_in_expired', 'Sign in again.')
       }
       saved.push(...studentsOf(item))
-      return 0
     })
     const queue = createSaveQueue({ run, onRefused, wait })
 
@@ -145,7 +140,7 @@ describe('createSaveQueue', () => {
 
   it('keeps every change in browser storage as the queue moves', async () => {
     const kept: number[] = []
-    const queue = createSaveQueue({ run: async () => 0, onRefused, wait, onChange: (items) => kept.push(items.length) })
+    const queue = createSaveQueue({ run: async () => {}, onRefused, wait, onChange: (items) => kept.push(items.length) })
 
     queue.enqueue([write('a'), write('b')])
     await queue.resume()
@@ -154,11 +149,12 @@ describe('createSaveQueue', () => {
   })
 
   it('reports changes the sheet made it drop until the teacher dismisses the notice', async () => {
-    const queue = createSaveQueue({ run: async (item: PendingWrite) => (studentsOf(item).includes('b') ? 1 : 0), onRefused, wait })
+    const queue = createSaveQueue({ run: async () => {}, onRefused, wait })
 
     queue.enqueue([write('a')])
     await queue.resume()
     queue.replace([write('b')], 2)
+    queue.replace([write('c')], 1)
     await queue.resume()
 
     expect(queue.status.value).toEqual({ state: 'dropped', pending: 0, message: '3 changes were dropped because the sheet changed.' })
