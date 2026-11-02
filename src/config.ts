@@ -12,13 +12,9 @@ export const MAX_LEVELS: number = 50
 export const MAX_NAME_LENGTH: number = 60
 export const MAX_EMOJI_LENGTH: number = 16
 export const MAX_STUDENTS: number = 200
-// Must match the backend's MAX_PHOTO_BYTES default; the server enforces its own setting.
-export const MAX_PHOTO_BYTES: number = 3 * 1024 * 1024
 // Must match the backend's MAX_ROSTER_BYTES default; the Google Sheet backend reads the workbook in the browser.
 export const MAX_ROSTER_BYTES: number = 2 * 1024 * 1024
 export const MAX_CLASSROOM_NAME_LENGTH: number = 80
-// Must match the Go API (auth.ValidPIN).
-export const MIN_PIN_LENGTH: number = 6
 export const MAX_DESCRIPTION_LENGTH: number = 500
 
 export const ROSTER_PREVIEW_ROWS: number = 8

@@ -76,7 +76,6 @@ function pickHidden(studentId: string): void {
         :current-stage-slug="classroom.currentStageSlug"
         :students="classroom.students"
         :results="classroom.results"
-        :classroom-slug="classroomSlug"
         :selected-student-id="selectedId"
         @select-student="toggleSelected"
         @select-level="selectLevel"
@@ -100,10 +99,9 @@ function pickHidden(studentId: string): void {
         :student="selectedStudent"
         :levels="levels"
         :results="classroom.results"
-        :classroom-slug="classroomSlug"
         @show-everyone="selectedId = null"
       />
     </aside>
-    <PawnPicker :students="hiddenStudents" :classroom-slug="classroomSlug" @select="pickHidden" @close="hiddenStudents = []" />
+    <PawnPicker :students="hiddenStudents" @select="pickHidden" @close="hiddenStudents = []" />
   </main>
 </template>

@@ -1,10 +1,9 @@
-import { MAX_ROSTER_BYTES } from '../config'
 import type { ClassroomDetail, NewStudent, Outcome, PublicClassroom } from '../types/api'
-import { readRosterGrid } from '../utils/xlsx'
 import type { Api } from './api'
 import { ApiError, GENERIC_ERROR_MESSAGE, networkError, notSignedIn } from './apiError'
 import { currentToken, forgetToken, googleClientId, requestToken } from './googleAuth'
 import { loadSheet, spreadsheetId, writeToSheet, type LoadedSheet, type WriteOutcome } from './googleSheets'
+import { previewRosterFile } from './rosterFile'
 import { createSaveQueue } from './saveQueue'
 import * as rules from './sheetRules'
 import type { Change, SheetDb, SheetRow, SheetWrite, TableName } from './sheetRules'
@@ -145,10 +144,6 @@ async function readPublicClassroom(classroomSlug: string): Promise<PublicClassro
   return body.data as PublicClassroom
 }
 
-function unavailablePhotos(): Promise<ClassroomDetail> {
-  return Promise.reject(new ApiError(400, 'photos_unavailable', 'Photos are not available yet. Choose an emoji pawn instead.'))
-}
-
 export const googleSheetApi: Api = {
   login: async () => {
     const token = await requestToken()
@@ -179,21 +174,10 @@ export const googleSheetApi: Api = {
   listClassrooms: async () => rules.listClassrooms(loaded()),
   createClassroom: (name: string, students: NewStudent[]) => change((current) => rules.createClassroom(current, rules.systemClock, name, students)),
   getClassroom: async (id: string) => rules.getClassroom(loaded(), id),
-  previewRoster: async (file: File) => {
-    if (file.size > MAX_ROSTER_BYTES) {
-      throw new ApiError(400, 'file_too_large', `The file is larger than ${MAX_ROSTER_BYTES / 1024} KB.`)
-    }
-    const result = await readRosterGrid(await file.arrayBuffer())
-    if (!result.ok) {
-      throw new ApiError(400, 'not_xlsx', result.message)
-    }
-    return result.grid
-  },
+  previewRoster: previewRosterFile,
 
   updateStudent: (id: string, student: NewStudent) => change((current) => rules.updateStudent(current, id, student)),
   deleteStudent: (id: string) => change((current) => rules.deleteStudent(current, id)),
-  setPhoto: unavailablePhotos,
-  removePhoto: unavailablePhotos,
 
   setCurrentStage: (classroomSlug: string, currentStageSlug: string | null) => change((current) => rules.setCurrentStage(current, classroomSlug, currentStageSlug)),
   openSession: (classroomSlug: string, stageSlug: string) => change((current) => rules.openSession(current, rules.systemClock, classroomSlug, stageSlug)),

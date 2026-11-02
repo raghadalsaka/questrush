@@ -7,7 +7,6 @@ import QuestionCard from './QuestionCard.vue'
 
 const props = defineProps<{
   session: OfficialSession
-  classroomSlug: string
 }>()
 
 const teacher = injectClassroom()
@@ -21,7 +20,7 @@ const finished = computed(() => props.session.finished.value)
   <div class="fixed inset-0 z-20 overflow-y-auto bg-ink/60 p-3 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="turn-heading">
     <div class="panel mx-auto grid max-w-5xl gap-5 p-5 lg:p-8">
       <header class="flex flex-wrap items-center gap-4">
-        <PawnBadge v-if="student !== null" :student="student" :classroom-slug="classroomSlug" size="lg" />
+        <PawnBadge v-if="student !== null" :student="student" size="lg" />
         <div class="flex-1">
           <p class="text-lg font-bold text-warn">Official turn · {{ stage?.order }}. {{ stage?.title }}</p>
           <h1 id="turn-heading" class="font-display text-4xl leading-tight font-extrabold">{{ student?.name ?? 'A student' }}'s turn</h1>

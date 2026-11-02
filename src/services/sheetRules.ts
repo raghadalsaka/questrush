@@ -1,5 +1,5 @@
 import { MAX_CLASSROOM_NAME_LENGTH, MAX_NAME_LENGTH, MAX_STUDENTS } from '../config'
-import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, Result, Student } from '../types/api'
+import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, PublicClassroom, Result, Student } from '../types/api'
 import { isValidEmoji } from '../utils/roster'
 import { ApiError } from './apiError'
 
@@ -88,6 +88,11 @@ export function listClassrooms(db: SheetDb): ClassroomSummary[] {
 export function getClassroom(db: SheetDb, classroomSlug: string): ClassroomDetail {
   requireClassroomSlug(classroomSlug)
   return classroomDetail(db, classroomSlug)
+}
+
+export function getPublicClassroom(db: SheetDb, classroomSlug: string): PublicClassroom {
+  const detail = getClassroom(db, classroomSlug)
+  return { name: detail.name, currentStageSlug: detail.progress.currentStageSlug, students: detail.students, results: detail.results }
 }
 
 export function createClassroom(db: SheetDb, clock: RuleClock, rawName: string, rawStudents: readonly NewStudent[]): Change {
@@ -268,7 +273,6 @@ function classroomDetail(db: SheetDb, classroomSlug: string): ClassroomDetail {
       id: student.id,
       name: student.name,
       emoji: student.emoji,
-      photoFile: null,
       position: Number(student.position),
       points: points.get(student.id) ?? 0,
     }))

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, shallowRef } from 'vue'
 import { injectAuth } from '../composables/useAuth'
-import { api, errorMessage } from '../services/api'
+import { api, errorMessage, googleSignIn } from '../services/api'
 import type { ClassroomSummary } from '../types/api'
 import { routeHash } from '../utils/route'
 
@@ -29,7 +29,7 @@ onMounted(load)
         <h1 class="font-display text-5xl leading-tight font-extrabold">Your classrooms</h1>
       </div>
       <div class="flex flex-wrap items-center gap-3">
-        <button type="button" class="btn btn-small" @click="auth.logout()">Sign Out</button>
+        <button v-if="googleSignIn" type="button" class="btn btn-small" @click="auth.logout()">Sign Out</button>
       </div>
     </header>
 

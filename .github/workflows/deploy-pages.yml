@@ -43,12 +43,11 @@ jobs:
 
       - name: Build
         env:
-          # Repository variables: the API's public URL, and the site's base path ("/" on a custom domain, "/<repo>/" otherwise).
-          VITE_API_BASE_URL: ${{ vars.QUESTRUSH_API_BASE_URL }}
-          # Set these three instead of QUESTRUSH_API_BASE_URL to use the Google Sheet backend (apps-script/README.md).
+          # Repository variables. Set these three to use the Google Sheet backend (apps-script/README.md); empty keeps each browser's own copy.
           VITE_GOOGLE_CLIENT_ID: ${{ vars.QUESTRUSH_GOOGLE_CLIENT_ID }}
           VITE_SHEET_ID: ${{ vars.QUESTRUSH_SHEET_ID }}
           VITE_SHEET_API_URL: ${{ vars.QUESTRUSH_SHEET_API_URL }}
+          # The site's base path: "/" on a custom domain, "/<repo>/" otherwise.
           VITE_BASE: ${{ vars.QUESTRUSH_BASE_PATH || '/' }}
         run: npx vite build
 

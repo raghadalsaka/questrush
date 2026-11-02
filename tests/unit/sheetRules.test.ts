@@ -47,9 +47,9 @@ describe('sheet rules', () => {
 
     expect(first.detail.slug).toBe('year-3-explorers')
     expect(second.slug).toBe('year-3-explorers-2')
-    expect(first.detail.students.map((student) => [student.name, student.position, student.points, student.photoFile])).toEqual([
-      ['Amira Haddad', 1, 0, null],
-      ['Ben', 2, 0, null],
+    expect(first.detail.students.map((student) => [student.name, student.position, student.points])).toEqual([
+      ['Amira Haddad', 1, 0],
+      ['Ben', 2, 0],
     ])
     expect(first.writes.map((write) => [write.kind, write.table, write.kind === 'append' ? write.rows.length : 1])).toEqual([
       ['append', 'classrooms', 1],

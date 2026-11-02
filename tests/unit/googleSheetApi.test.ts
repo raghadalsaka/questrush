@@ -100,7 +100,7 @@ describe('googleSheetApi', () => {
   })
 
   it('reads the sheet once at sign-in and answers every screen from that copy', async () => {
-    await googleSheetApi.login('')
+    await googleSheetApi.login()
 
     expect(await googleSheetApi.listClassrooms()).toEqual([{ slug: 'year-3', name: 'Year 3', studentCount: 2, createdAt: '2026-10-01T08:00:00.000Z' }])
     expect((await googleSheetApi.getClassroom('year-3')).students.map((student) => student.name)).toEqual(['Amira', 'Ben'])
@@ -109,7 +109,7 @@ describe('googleSheetApi', () => {
   })
 
   it('shows a change at once and writes it to the sheet in the background', async () => {
-    await googleSheetApi.login('')
+    await googleSheetApi.login()
 
     const detail = await googleSheetApi.openSession('year-3', 'stage-1')
 
@@ -120,7 +120,7 @@ describe('googleSheetApi', () => {
   })
 
   it('refuses rule-breaking changes in the browser without writing anything', async () => {
-    await googleSheetApi.login('')
+    await googleSheetApi.login()
     const session = (await googleSheetApi.openSession('year-3', 'stage-1')).session?.id as string
     await googleSheetApi.recordResult(session, AMIRA, 'q1', 'correct')
 
@@ -130,7 +130,7 @@ describe('googleSheetApi', () => {
   })
 
   it('keeps row numbers right when an earlier row is deleted', async () => {
-    await googleSheetApi.login('')
+    await googleSheetApi.login()
     const session = (await googleSheetApi.openSession('year-3', 'stage-1')).session?.id as string
     await googleSheetApi.setAbsent(session, AMIRA, true)
     await googleSheetApi.setAbsent(session, BEN, true)
@@ -146,7 +146,7 @@ describe('googleSheetApi', () => {
   })
 
   it('reloads the sheet and tells open screens when Google refuses a change', async () => {
-    await googleSheetApi.login('')
+    await googleSheetApi.login()
     const reloaded = vi.fn()
     const stop = onSheetReloaded(reloaded)
     sheet.refuseWritesWith = 403
@@ -168,11 +168,10 @@ describe('googleSheetApi', () => {
     expect(String(vi.mocked(fetch).mock.calls[0]?.[0])).toBe(`${SCRIPT_URL}?action=public&slug=year%203`)
   })
 
-  it('refuses photos and large roster files without calling Google', async () => {
+  it('refuses large roster files without calling Google', async () => {
     const large = new File([new Uint8Array(2 * 1024 * 1024 + 1)], 'class.xlsx')
 
     await expect(googleSheetApi.previewRoster(large)).rejects.toMatchObject({ code: 'file_too_large' })
-    await expect(googleSheetApi.setPhoto('student', large)).rejects.toMatchObject({ code: 'photos_unavailable' })
     expect(fetch).not.toHaveBeenCalled()
   })
 })

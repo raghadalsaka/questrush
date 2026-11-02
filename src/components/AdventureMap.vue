@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 import { PAWNS_PER_CLUSTER } from '../config'
-import { photoUrl } from '../services/api'
 import type { Result, Student } from '../types/api'
 import type { Level } from '../types/stage'
 import { MAP_HEIGHT, MAP_WIDTH, checkpointPositions, clusterLayout, trailPath, type Point } from '../utils/mapLayout'
@@ -45,7 +44,6 @@ const props = defineProps<{
   levels: readonly Level[]
   students: readonly Student[]
   results: readonly Result[]
-  classroomSlug: string
   selectedStudentId: string | null
   activeStageSlug?: string | null
   currentStageSlug?: string | null
@@ -61,7 +59,6 @@ const emit = defineEmits<{
 }>()
 
 const ids = useId()
-const clipId = `${ids}-pawn-clip`
 const titleId = `${ids}-title`
 const wavesId = `${ids}-waves`
 
@@ -159,9 +156,6 @@ function onKey(event: KeyboardEvent, action: () => void): void {
     >
       <title :id="titleId">Adventure map with {{ levels.length }} stages and {{ students.length }} pawns</title>
       <defs>
-        <clipPath :id="clipId" clipPathUnits="objectBoundingBox">
-          <circle cx="0.5" cy="0.5" r="0.5" />
-        </clipPath>
         <pattern :id="wavesId" width="90" height="46" patternUnits="userSpaceOnUse">
           <path d="M5 23 q 10 -9 20 0 t 20 0" class="fill-none stroke-sea-foam" stroke-width="3" stroke-linecap="round" opacity="0.7" />
         </pattern>
@@ -276,17 +270,7 @@ function onKey(event: KeyboardEvent, action: () => void): void {
               :class="pawnRing(pawn.student.id)"
               :stroke-width="pawn.student.id === selectedStudentId || pawn.student.id === spotlightId || pawn.student.id === turnStudentId ? 6 : 3"
             />
-            <image
-              v-if="pawn.student.photoFile !== null"
-              :href="photoUrl(classroomSlug, pawn.student.photoFile)"
-              :x="-pawn.size / 2"
-              :y="-pawn.size / 2"
-              :width="pawn.size"
-              :height="pawn.size"
-              :clip-path="`url(#${clipId})`"
-              preserveAspectRatio="xMidYMid slice"
-            />
-            <text v-else text-anchor="middle" dominant-baseline="central" :style="{ fontSize: `${pawn.size * 0.62}px` }">{{ pawn.student.emoji }}</text>
+            <text text-anchor="middle" dominant-baseline="central" :style="{ fontSize: `${pawn.size * 0.62}px` }">{{ pawn.student.emoji }}</text>
           </g>
           <text
             v-if="pawn.student.id === celebrateId"

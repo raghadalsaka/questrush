@@ -19,7 +19,6 @@ const FILTER_THRESHOLD: number = 10
 const props = defineProps<{
   students: readonly Student[]
   results: readonly Result[]
-  classroomSlug: string
   selectedId: string | null
   stageSlug?: string | null
   absentIds?: readonly string[]
@@ -97,7 +96,7 @@ defineExpose({ focus })
           :aria-pressed="student.id === selectedId"
           @click="emit('select', student.id)"
         >
-          <PawnBadge :student="student" :classroom-slug="classroomSlug" size="sm" />
+          <PawnBadge :student="student" size="sm" />
           <span class="flex-1 text-lg leading-tight font-bold">{{ student.name }}</span>
           <span class="font-display text-lg font-extrabold whitespace-nowrap text-warn" :aria-label="starsLabel(student.points)">★ {{ student.points }}</span>
         </button>

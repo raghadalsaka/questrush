@@ -9,7 +9,6 @@ const props = defineProps<{
   student: Student
   levels: readonly Level[]
   results: readonly Result[]
-  classroomSlug: string
 }>()
 
 defineEmits<{
@@ -22,7 +21,7 @@ const history = computed(() => studentHistory(props.levels, props.results, props
 <template>
   <section class="panel grid gap-4 p-5" aria-labelledby="progress-heading">
     <div class="flex items-center gap-4">
-      <PawnBadge :student="student" :classroom-slug="classroomSlug" size="lg" />
+      <PawnBadge :student="student" size="lg" />
       <div class="grid flex-1 gap-1">
         <h2 id="progress-heading" class="font-display text-3xl leading-tight font-extrabold">{{ student.name }}</h2>
         <p class="font-display text-2xl font-extrabold text-warn">★ {{ starsLabel(student.points) }}</p>

@@ -29,14 +29,14 @@ export function useAuth() {
     }
   }
 
-  async function login(pin: string): Promise<void> {
+  async function login(): Promise<void> {
     if (busy.value) {
       return
     }
     busy.value = true
     error.value = ''
     try {
-      await api.login(pin)
+      await api.login()
       state.value = 'signed-in'
     } catch (caught) {
       error.value = errorMessage(caught)

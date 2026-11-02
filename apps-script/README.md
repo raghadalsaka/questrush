@@ -1,6 +1,6 @@
 # Google Sheet backend
 
-The classroom data can live in a Google Sheet instead of the Go API and PostgreSQL. It costs nothing and needs no server.
+The classroom data can live in a Google Sheet instead of in each browser's own copy. It costs nothing and needs no server.
 
 - **The teacher signs in with Google**, using an account the sheet is shared with as an editor. There is no PIN.
 - **The browser reads the whole sheet once** at sign-in (two Sheets API requests). Every teacher screen then reads that copy, and the browser checks the game rules itself (`src/services/sheetRules.ts`): one result per student per stage, no repeated question in a stage, one open session per classroom, no reopening a finished stage.

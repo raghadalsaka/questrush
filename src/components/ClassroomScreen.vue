@@ -2,7 +2,7 @@
 import { computed, nextTick, onMounted, provide, ref, watch } from 'vue'
 import { useOfficialSession } from '../composables/useOfficialSession'
 import { classroomKey, useTeacherClassroom } from '../composables/useTeacherClassroom'
-import { api, publicLink } from '../services/api'
+import { api, publicLink, studentLinkThisDeviceOnly } from '../services/api'
 import { levels } from '../services/game'
 import { routeHash } from '../utils/route'
 import AdventureMap from './AdventureMap.vue'
@@ -79,6 +79,7 @@ function setAbsent(studentId: string, absent: boolean): void {
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-base text-ink-soft">Student link:</span>
         <a :href="shareLink" target="_blank" rel="noopener" class="btn btn-small">Open</a>
+        <span v-if="studentLinkThisDeviceOnly" class="text-base text-ink-soft">(works in this browser only)</span>
       </div>
     </header>
 
@@ -87,7 +88,6 @@ function setAbsent(studentId: string, absent: boolean): void {
         :levels="levels"
         :students="classroom.students"
         :results="classroom.results"
-        :classroom-slug="classroom.slug"
         :selected-student-id="selectedId"
         :active-stage-slug="session?.stageSlug ?? null"
         :current-stage-slug="classroom.progress.currentStageSlug"
@@ -115,7 +115,6 @@ function setAbsent(studentId: string, absent: boolean): void {
         :student="selectedStudent"
         :levels="levels"
         :results="classroom.results"
-        :classroom-slug="classroom.slug"
         @show-everyone="selectedId = null"
       >
         <StudentEditor :student="selectedStudent" @deleted="selectedId = null" />
@@ -148,7 +147,6 @@ function setAbsent(studentId: string, absent: boolean): void {
             ref="studentList"
             :students="classroom.students"
             :results="classroom.results"
-            :classroom-slug="classroom.slug"
             :selected-id="selectedId"
             :stage-slug="session?.stageSlug ?? null"
             :absent-ids="session?.absentStudentIds ?? []"
@@ -162,6 +160,6 @@ function setAbsent(studentId: string, absent: boolean): void {
       </div>
     </aside>
 
-    <OfficialTurn v-if="official.showCard.value" :session="official" :classroom-slug="classroom.slug" />
+    <OfficialTurn v-if="official.showCard.value" :session="official" />
   </main>
 </template>

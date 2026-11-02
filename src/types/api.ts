@@ -4,7 +4,6 @@ export interface Student {
   id: string
   name: string
   emoji: string
-  photoFile: string | null
   position: number
   points: number
 }
@@ -61,8 +60,4 @@ export interface RosterGrid {
 export interface NewStudent {
   name: string
   emoji: string
-}
-
-export interface SignedIn {
-  csrfToken: string
 }

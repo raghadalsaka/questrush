@@ -5,7 +5,6 @@ import PawnBadge from './PawnBadge.vue'
 
 defineProps<{
   students: readonly Student[]
-  classroomSlug: string
 }>()
 
 const emit = defineEmits<{
@@ -32,7 +31,7 @@ const emit = defineEmits<{
           class="flex min-h-14 w-full items-center gap-3 rounded-tile border-3 border-rule bg-card px-3 py-1 text-left hover:border-ink"
           @click="emit('select', student.id)"
         >
-          <PawnBadge :student="student" :classroom-slug="classroomSlug" size="sm" />
+          <PawnBadge :student="student" size="sm" />
           <span class="flex-1 text-lg leading-tight font-bold">{{ student.name }}</span>
         </button>
       </li>
