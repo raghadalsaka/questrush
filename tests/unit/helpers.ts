@@ -29,7 +29,7 @@ export function makeQuestion(id: string, correctIndex: number = 0): Question {
 }
 
 export function makeStudent(id: string, points: number = 0): Student {
-  return { id, name: `Student ${id}`, emoji: '🦊', position: 1, points }
+  return { id, name: `Student ${id}`, emoji: '🦊', photo: null, position: 1, points }
 }
 
 export function makeLevel(slug: string, order: number, state: LevelState = 'open'): Level {

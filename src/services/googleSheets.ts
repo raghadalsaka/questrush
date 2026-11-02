@@ -1,6 +1,6 @@
 import { columnLabel } from '../utils/roster'
 import { ApiError, GENERIC_ERROR_MESSAGE } from './apiError'
-import { cellsOf, emptyDb, rowFrom, TABLES, type SheetDb, type SheetRow, type TableName } from './sheetRules'
+import { cellsOf, emptyDb, LATER_COLUMNS, rowFrom, TABLES, type SheetDb, type SheetRow, type TableName } from './sheetRules'
 import type { PendingWrite } from './sheetSync'
 
 const SHEETS_API: string = 'https://sheets.googleapis.com/v4/spreadsheets'
@@ -82,6 +82,7 @@ export async function loadSheet(id: string, token: string): Promise<LoadedSheet>
   }
   const db = emptyDb()
   const headerless: TableName[] = []
+  const outdated: TableName[] = []
   for (const table of TABLE_NAMES) {
     const values = tabs[table]?.values ?? []
     if (values.length === 0) {
@@ -90,7 +91,10 @@ export async function loadSheet(id: string, token: string): Promise<LoadedSheet>
     }
     const header = (values[0] ?? []).map((cell) => String(cell))
     if (header.join(',') !== TABLES[table].join(',')) {
-      throw new ApiError(500, 'sheet_header_changed', `The "${table}" tab's first row must be: ${TABLES[table].join(', ')}.`)
+      if (!lacksOnlyLaterColumns(table, header)) {
+        throw new ApiError(500, 'sheet_header_changed', `The "${table}" tab's first row must be: ${TABLES[table].join(', ')}.`)
+      }
+      outdated.push(table)
     }
     const rows = values
       .slice(1)
@@ -98,10 +102,16 @@ export async function loadSheet(id: string, token: string): Promise<LoadedSheet>
       .filter((row) => cellsOf(table, row).some((cell) => cell !== ''))
     ;(db[table] as SheetRow[]).push(...rows)
   }
-  if (headerless.length > 0) {
-    await writeHeaders(id, token, headerless)
+  if (headerless.length > 0 || outdated.length > 0) {
+    await writeHeaders(id, token, [...headerless, ...outdated])
   }
   return { db, sheetIds }
+}
+
+function lacksOnlyLaterColumns(table: TableName, header: readonly string[]): boolean {
+  const columns: readonly string[] = TABLES[table]
+  const required = columns.length - (LATER_COLUMNS[table]?.length ?? 0)
+  return header.length >= required && header.length < columns.length && header.every((cell, index) => cell === columns[index])
 }
 
 // Reads never use the teacher's Google sign-in: the read-only Apps Script answers them, as it does for the student link.

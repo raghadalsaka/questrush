@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import AdventureMap from '../../src/components/AdventureMap.vue'
+import PawnBadge from '../../src/components/PawnBadge.vue'
 import QuestionCard from '../../src/components/QuestionCard.vue'
 import StudentProgressPanel from '../../src/components/StudentProgressPanel.vue'
 import { makeLevel, makeQuestion, makeResult, makeStudent } from './helpers'
@@ -20,6 +21,17 @@ describe('AdventureMap', () => {
     expect(wrapper.emitted('showList')?.[0]).toEqual([students.slice(11)])
     expect(wrapper.find('[aria-label="Stage 3: Stage 3. Locked"]').exists()).toBe(true)
     expect(wrapper.find('[aria-label="Stage 4: Mystery island. Coming soon"]').exists()).toBe(true)
+  })
+
+  it('draws a pawn with a photo as a round picture and the rest as emoji', () => {
+    const photo = 'data:image/jpeg;base64,/9j/4AAQSkZJRg=='
+    const wrapper = mount(AdventureMap, {
+      props: { levels, students: [{ ...makeStudent('s1'), photo }, makeStudent('s2')], results: [], selectedStudentId: null },
+    })
+    const pictures = wrapper.findAll('[aria-label^="Student s"] image')
+    expect(pictures).toHaveLength(1)
+    expect(pictures[0]?.attributes('href')).toBe(photo)
+    expect(wrapper.find('[aria-label^="Student s2"]').text()).toContain('🦊')
   })
 
   it('keeps the student on turn visible even in a crowded group', () => {
@@ -66,6 +78,19 @@ describe('AdventureMap', () => {
     await wrapper.find('[aria-label="Stage 2: Stage 2. Open"]').trigger('keydown', { key: 'Enter' })
     expect(wrapper.emitted('selectStudent')).toEqual([['s1']])
     expect(wrapper.emitted('selectLevel')).toEqual([[2]])
+  })
+})
+
+describe('PawnBadge', () => {
+  it('shows the photo in place of the emoji, and the emoji for a photo that is not an inline picture', () => {
+    const photo = 'data:image/jpeg;base64,/9j/4AAQSkZJRg=='
+    const withPhoto = mount(PawnBadge, { props: { student: { emoji: '🦊', photo }, size: 'sm' } })
+    expect(withPhoto.find('img').attributes('src')).toBe(photo)
+    expect(withPhoto.text()).not.toContain('🦊')
+
+    const unsafe = mount(PawnBadge, { props: { student: { emoji: '🦊', photo: 'javascript:alert(1)' }, size: 'sm' } })
+    expect(unsafe.find('img').exists()).toBe(false)
+    expect(unsafe.text()).toContain('🦊')
   })
 })
 

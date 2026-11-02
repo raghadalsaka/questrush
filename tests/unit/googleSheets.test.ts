@@ -18,7 +18,7 @@ function request(index: number): { url: string; method: string; body: unknown; a
 }
 
 function student(rowNumber: number | null, id: string): StudentRow {
-  return { rowNumber, id, classroom_slug: 'year-3', name: id, emoji: '🦊', position: '1', created_at: '' }
+  return { rowNumber, id, classroom_slug: 'year-3', name: id, emoji: '🦊', position: '1', created_at: '', photo: '' }
 }
 
 describe('googleSheets', () => {
@@ -80,8 +80,20 @@ describe('googleSheets', () => {
       expect(request(1)).toMatchObject({ method: 'POST', auth: 'Bearer token-1', body: { requests: [{ addSheet: { properties: { title: 'students' } } }, {}, {}, {}] } })
       const headers = request(2).body as { valueInputOption: string; data: { range: string }[] }
       expect(headers.valueInputOption).toBe('RAW')
-      expect(headers.data.map((entry) => entry.range)).toEqual(['students!A1:F1', 'turns!A1:G1', 'sessions!A1:E1', 'absences!A1:C1'])
+      expect(headers.data.map((entry) => entry.range)).toEqual(['students!A1:G1', 'turns!A1:G1', 'sessions!A1:E1', 'absences!A1:C1'])
       expect(sheetIds.size).toBe(5)
+    })
+
+    it('adds the photo column to a students tab made before photos, keeping its rows', async () => {
+      const olderHeader = TABLES.students.slice(0, -1)
+      vi.mocked(fetch)
+        .mockResolvedValueOnce(tabs({ students: [olderHeader, ['s1', 'year-3', 'Amira', '🦊', '1', '']] }))
+        .mockResolvedValueOnce(json({}))
+
+      const { db } = await loadSheet(ID, 'token-1')
+
+      expect(db.students).toEqual([{ rowNumber: 2, id: 's1', classroom_slug: 'year-3', name: 'Amira', emoji: '🦊', position: '1', created_at: '', photo: '' }])
+      expect(request(1)).toMatchObject({ method: 'POST', auth: 'Bearer token-1', body: { data: [{ range: 'students!A1:G1', values: [[...TABLES.students]] }] } })
     })
 
     it('refuses a tab whose header row was changed', async () => {
@@ -124,7 +136,7 @@ describe('googleSheets', () => {
 
       expect(await pushWrite(connection, { write: { kind: 'update', table: 'students', row }, before: student(3, 's1') })).toEqual({ kind: 'updated' })
       expect(fetch).toHaveBeenCalledTimes(1)
-      expect(request(0)).toMatchObject({ method: 'PUT', url: expect.stringContaining('/values/students!A3:F3'), body: { values: [['s1', 'year-3', 'Amira H', '🦊', '1', '']] } })
+      expect(request(0)).toMatchObject({ method: 'PUT', url: expect.stringContaining('/values/students!A3:G3'), body: { values: [['s1', 'year-3', 'Amira H', '🦊', '1', '', '']] } })
     })
 
     it('deletes the row number it holds and says which one', async () => {

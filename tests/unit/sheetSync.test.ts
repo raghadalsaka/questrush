@@ -10,7 +10,7 @@ function classroom(slug: string, name: string = 'Year 3'): ClassroomRow {
 }
 
 function student(id: string, name: string, classroomSlug: string = 'year-3'): StudentRow {
-  return { rowNumber: null, id, classroom_slug: classroomSlug, name, emoji: '🦊', position: '1', created_at: 't' }
+  return { rowNumber: null, id, classroom_slug: classroomSlug, name, emoji: '🦊', position: '1', created_at: 't', photo: '' }
 }
 
 function session(id: string, closedAt: string = ''): SessionRow {

@@ -1,18 +1,24 @@
 import { MAX_CLASSROOM_NAME_LENGTH, MAX_NAME_LENGTH, MAX_STUDENTS } from '../config'
 import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, PublicClassroom, Result, Student } from '../types/api'
+import { isPhotoUrl } from '../utils/photo'
 import { collapseSpaces, isValidEmoji, normalizeName as checkStudentName, type NameProblem } from '../utils/roster'
 import { ApiError } from './apiError'
 
 // Same tabs and column order as apps-script/Code.js, which reads them for the student link.
 export const TABLES = {
   classrooms: ['slug', 'name', 'current_stage_slug', 'created_at'],
-  students: ['id', 'classroom_slug', 'name', 'emoji', 'position', 'created_at'],
+  students: ['id', 'classroom_slug', 'name', 'emoji', 'position', 'created_at', 'photo'],
   turns: ['classroom_slug', 'stage_slug', 'session_id', 'student_id', 'question_id', 'status', 'created_at'],
   sessions: ['id', 'classroom_slug', 'stage_slug', 'opened_at', 'closed_at'],
   absences: ['session_id', 'student_id', 'created_at'],
 } as const
 
 export type TableName = keyof typeof TABLES
+
+// Columns added after sheets were already in use; a header row that only lacks these is brought up to date.
+export const LATER_COLUMNS: { readonly [T in TableName]?: readonly string[] } = {
+  students: ['photo'],
+}
 
 export type ColumnOf<T extends TableName> = (typeof TABLES)[T][number]
 
@@ -109,6 +115,7 @@ export function createClassroom(db: SheetDb, clock: RuleClock, rawName: string, 
     emoji: student.emoji,
     position: String(index + 1),
     created_at: now,
+    photo: student.photo,
   }))
   db.classrooms.push(classroom)
   db.students.push(...studentRows)
@@ -123,9 +130,13 @@ export function updateStudent(db: SheetDb, studentId: string, update: NewStudent
   requireId(studentId, studentNotFound)
   const name = normalizeName(update.name)
   const emoji = normalizeEmoji(update.emoji)
+  const newPhoto = update.photo === undefined ? null : normalizePhoto(update.photo)
   const student = findStudent(db, studentId)
   student.name = name
   student.emoji = emoji
+  if (newPhoto !== null) {
+    student.photo = newPhoto
+  }
   return { detail: classroomDetail(db, student.classroom_slug), writes: [{ kind: 'update', table: 'students', row: student }] }
 }
 
@@ -273,6 +284,8 @@ function classroomDetail(db: SheetDb, classroomSlug: string): ClassroomDetail {
       id: student.id,
       name: student.name,
       emoji: student.emoji,
+      // Rows kept in a browser before photos existed have no photo cell at all.
+      photo: student.photo || null,
       position: Number(student.position),
       points: points.get(student.id) ?? 0,
     }))
@@ -400,14 +413,15 @@ function normalizeClassroomName(raw: string): string {
   return name
 }
 
-function normalizeStudents(students: readonly NewStudent[]): NewStudent[] {
+function normalizeStudents(students: readonly NewStudent[]): { name: string; emoji: string; photo: string }[] {
   if (students.length > MAX_STUDENTS) {
     throw new ApiError(400, 'too_many_students', `A classroom can have at most ${MAX_STUDENTS} students.`)
   }
   return students.map((student, index) => {
     const name = withPrefix(`Student ${index + 1}: `, () => normalizeName(student.name))
     const emoji = withPrefix(`Student ${index + 1} (${name}): `, () => normalizeEmoji(student.emoji))
-    return { name, emoji }
+    const photo = withPrefix(`Student ${index + 1} (${name}): `, () => normalizePhoto(student.photo ?? null))
+    return { name, emoji, photo }
   })
 }
 
@@ -443,6 +457,17 @@ function normalizeEmoji(raw: string): string {
     throw new ApiError(400, 'invalid_emoji', 'Choose one emoji for the pawn.')
   }
   return raw.trim()
+}
+
+// The sheet keeps "no photo" as an empty cell.
+function normalizePhoto(raw: string | null): string {
+  if (raw === null || raw === '') {
+    return ''
+  }
+  if (!isPhotoUrl(raw)) {
+    throw new ApiError(400, 'invalid_photo', 'The photo must be a small JPEG, PNG or WebP picture.')
+  }
+  return raw
 }
 
 function compareText(a: string, b: string): number {

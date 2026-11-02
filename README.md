@@ -1,6 +1,6 @@
 # QuestRush
 
-QuestRush is a classroom adventure game for the classroom screen. Each student has an emoji pawn on a treasure map, and the class moves through stages of questions. By default the classrooms are kept in the teacher's browser and nobody signs in; with the Google Sheet backend the teacher signs in with Google and the classrooms live in the sheet. The teacher picks students at random, shows a question, and records whether each answer was correct. Students open a public classroom link at home, find their pawn, see their progress and practise the open stages. Practice never changes classroom points.
+QuestRush is a classroom adventure game for the classroom screen. Each student has an emoji or photo pawn on a treasure map, and the class moves through stages of questions. By default the classrooms are kept in the teacher's browser and nobody signs in; with the Google Sheet backend the teacher signs in with Google and the classrooms live in the sheet. The teacher picks students at random, shows a question, and records whether each answer was correct. Students open a public classroom link at home, find their pawn, see their progress and practise the open stages. Practice never changes classroom points.
 
 QuestRush reuses [Quizrush](https://github.com/raghadalsaka/quizrush)'s question files, question card, fonts, design tokens and conventions.
 

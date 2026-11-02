@@ -5,12 +5,14 @@ import type { Result, Student } from '../types/api'
 import type { Level, LevelState } from '../types/stage'
 import { CAST_SHADOW_OFFSET, ISLAND_DEPTH, islandShape, landmarkFor, type FacetTone, type IslandShape, type LandmarkKind } from '../utils/islandArt'
 import { MAP_HEIGHT, MAP_WIDTH, checkpointPositions, clusterLayout, trailPath, type Point } from '../utils/mapLayout'
+import { isPhotoUrl } from '../utils/photo'
 import { finishedStageSlugs, groupByCheckpoint, levelMark, levelTitle, outcomeFor, starsLabel } from '../utils/progress'
 import MapLandmark from './MapLandmark.vue'
 import TreasureChest from './TreasureChest.vue'
 
 interface PawnView {
   student: Student
+  photo: string | null
   at: Point
   size: number
   above: boolean
@@ -98,6 +100,7 @@ const seaId = `${ids}-sea`
 const shadowId = `${ids}-shadow`
 const glowId = `${ids}-glow`
 const lockedId = `${ids}-locked`
+const pawnClipId = `${ids}-pawn-clip`
 
 const points = computed(() => checkpointPositions(props.levels.length))
 const trail = computed(() => trailPath(points.value))
@@ -147,7 +150,13 @@ const clusters = computed<ClusterView[]>(() => {
     const above = clustersAbove(anchor)
     const layout = clusterLayout(group.length, PAWNS_PER_CLUSTER, anchor, above)
     const visibleCount = group.length - layout.overflow
-    const pawns = group.slice(0, visibleCount).map((student, index) => ({ student, at: layout.slots[index] as Point, size: layout.pawnSize, above }))
+    const pawns = group.slice(0, visibleCount).map((student, index) => ({
+      student,
+      photo: isPhotoUrl(student.photo) ? student.photo : null,
+      at: layout.slots[index] as Point,
+      size: layout.pawnSize,
+      above,
+    }))
     const overflowAt = layout.overflow > 0 ? (layout.slots[layout.slots.length - 1] ?? null) : null
     return { checkpoint, pawns, hidden: group.slice(visibleCount), overflowAt, overflowSize: layout.pawnSize }
   })
@@ -237,6 +246,9 @@ function onKey(event: KeyboardEvent, action: () => void): void {
     >
       <title :id="titleId">Adventure map with {{ levels.length }} stages and {{ students.length }} pawns</title>
       <defs>
+        <clipPath :id="pawnClipId" clipPathUnits="objectBoundingBox">
+          <circle cx="0.5" cy="0.5" r="0.5" />
+        </clipPath>
         <radialGradient :id="seaId" cx="45%" cy="48%" r="75%">
           <stop offset="0%" class="[stop-color:var(--color-sea-shallow)]" />
           <stop offset="45%" class="[stop-color:var(--color-sea)]" />
@@ -448,7 +460,17 @@ function onKey(event: KeyboardEvent, action: () => void): void {
               :class="pawnRing(pawn.student.id)"
               :stroke-width="highlighted(pawn.student.id) ? 6 : 3"
             />
-            <text text-anchor="middle" dominant-baseline="central" :style="{ fontSize: `${pawn.size * 0.62}px` }">{{ pawn.student.emoji }}</text>
+            <image
+              v-if="pawn.photo !== null"
+              :href="pawn.photo"
+              :x="-pawn.size / 2 + 1.5"
+              :y="-pawn.size / 2 + 1.5"
+              :width="pawn.size - 3"
+              :height="pawn.size - 3"
+              preserveAspectRatio="xMidYMid slice"
+              :clip-path="`url(#${pawnClipId})`"
+            />
+            <text v-else text-anchor="middle" dominant-baseline="central" :style="{ fontSize: `${pawn.size * 0.62}px` }">{{ pawn.student.emoji }}</text>
           </g>
           <g v-if="pawn.student.id === celebrateId" :key="`star-${pawn.student.id}`" aria-hidden="true">
             <text

@@ -5,10 +5,15 @@
 // Read-only: answers the student link and the teacher's reads; the teacher's browser writes through the Sheets API.
 const TABLES = {
   classrooms: ['slug', 'name', 'current_stage_slug', 'created_at'],
-  students: ['id', 'classroom_slug', 'name', 'emoji', 'position', 'created_at'],
+  students: ['id', 'classroom_slug', 'name', 'emoji', 'position', 'created_at', 'photo'],
   turns: ['classroom_slug', 'stage_slug', 'session_id', 'student_id', 'question_id', 'status', 'created_at'],
   sessions: ['id', 'classroom_slug', 'stage_slug', 'opened_at', 'closed_at'],
   absences: ['session_id', 'student_id', 'created_at'],
+}
+
+// Columns added after sheets were already in use; a header row that only lacks these still reads.
+const LATER_COLUMNS = {
+  students: ['photo'],
 }
 
 const MAX_CLASSROOM_SLUG_LENGTH = 90
@@ -79,7 +84,7 @@ function publicClassroom_(classroomSlug) {
       id: student.id,
       name: student.name,
       emoji: student.emoji,
-      photoFile: null,
+      photo: student.photo === '' ? null : student.photo,
       position: Number(student.position),
       points: points[student.id] || 0,
     }))
@@ -120,7 +125,7 @@ function readRows_(spreadsheet, name) {
   const columns = TABLES[name]
   const values = sheet.getDataRange().getValues()
   const header = (values[0] || []).slice(0, columns.length).map(cellText_)
-  if (values.length > 0 && header.join(',') !== columns.join(',')) {
+  if (values.length > 0 && !headerMatches_(name, header)) {
     console.error('sheet header changed', JSON.stringify({ sheet: name, header }))
     throw new AppError_(500, 'sheet_header_changed', 'The "' + name + '" tab\'s first row must be: ' + columns.join(', ') + '.')
   }
@@ -135,6 +140,12 @@ function readRows_(spreadsheet, name) {
     }
   })
   return rows
+}
+
+function headerMatches_(name, header) {
+  const columns = TABLES[name]
+  const required = columns.length - (LATER_COLUMNS[name] || []).length
+  return header.length >= required && header.join(',') === columns.slice(0, header.length).join(',')
 }
 
 function cellText_(value) {

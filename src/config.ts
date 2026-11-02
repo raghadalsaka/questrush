@@ -12,6 +12,10 @@ export const MAX_LEVELS: number = 50
 export const MAX_NAME_LENGTH: number = 60
 export const MAX_EMOJI_LENGTH: number = 16
 export const MAX_STUDENTS: number = 200
+// A photo is kept in one Google Sheets cell, which holds at most 50,000 characters.
+export const MAX_PHOTO_LENGTH: number = 45000
+export const PHOTO_SIZE_PX: number = 160
+export const PHOTO_QUALITIES: readonly number[] = [0.85, 0.7, 0.5]
 // Must match the backend's MAX_ROSTER_BYTES default; the Google Sheet backend reads the workbook in the browser.
 export const MAX_ROSTER_BYTES: number = 2 * 1024 * 1024
 export const MAX_CLASSROOM_NAME_LENGTH: number = 80

@@ -7,17 +7,17 @@ The classroom data can live in a Google Sheet instead of in each browser's own c
 - **Reads go through the script, writes through Google sign-in.** The teacher's browser reads the whole sheet once per visit, at sign-in, through the same read-only script as the student link (`?action=sheet`), never with the teacher's Google sign-in. The sign-in is used only to write: to save changes and, on first use, to create the tabs.
 - **Changes show at once**, are kept in the browser straight away and are written to the sheet in the background, one at a time and in order, as plain writes: nothing is read first. The browser keeps each row's position on the sheet itself (an appended row learns its row from Google's answer, and a delete moves the rows below it up). A failed write is retried; while offline or after the Google sign-in expires, changes wait in the browser, also across a refresh or a sign-out, and are sent after the next sign-in. If Google refuses a write (for example, the account lost edit access), the waiting changes are dropped and the sheet is read once more so the screen matches it.
 - **The sheet wins, at sign-in.** The read at sign-in replays the browser's unsent changes on top of the sheet; a change goes through only while its row on the sheet is still the way the browser last saw it. A change the sheet already contradicts (the same row edited elsewhere, a result already recorded for that student and stage, another session already open) is dropped along with what depended on it, and the banner says how many changes were dropped. A classroom created offline whose name was taken on the sheet meanwhile is saved under a free link (`-2`, `-3`) instead.
-- **The student link** has no sign-in, so it reads one classroom through `Code.js`, a read-only Apps Script web app. It shows names, pawns and results, never used question ids or sessions.
+- **The student link** has no sign-in, so it reads one classroom through `Code.js`, a read-only Apps Script web app. It shows names, pawns (with photos) and results, never used question ids or sessions. Anyone with the link, or with the script URL built into the site, can see every student's photo.
 
 | Sheet tab | Same as the PostgreSQL table |
 | --- | --- |
 | `classrooms` | `classrooms` |
-| `students` | `students` (no photos: pawns are emoji only) |
+| `students` | `students`, plus a last `photo` column: an optional small JPEG as a `data:` URL, shown instead of the emoji |
 | `turns` | `turns` |
 | `sessions` | `class_sessions` |
 | `absences` | `session_absences` |
 
-Every cell is written as plain text, so `=1+1` is never a formula and `007` keeps its zeros. The tabs are created with their header row on the first sign-in.
+Every cell is written as plain text, so `=1+1` is never a formula and `007` keeps its zeros. The tabs are created with their header row on the first sign-in. A `students` tab made before photos gets its `photo` header cell at the next sign-in.
 
 ## Set up
 

@@ -145,6 +145,29 @@ describe('sheet rules', () => {
     })
   })
 
+  it('sets, keeps and removes a student photo, and refuses anything but a small inline picture', () => {
+    const id = createClass('Year 3', ['Amira']).students[0]?.id as string
+    const photo = 'data:image/jpeg;base64,/9j/4AAQSkZJRg=='
+
+    expect(rules.updateStudent(db, id, { name: 'Amira', emoji: '🦊', photo }).detail.students[0]?.photo).toBe(photo)
+    expect(db.students[0]?.photo).toBe(photo)
+    expect(rules.updateStudent(db, id, { name: 'Amira H', emoji: '🦊' }).detail.students[0]?.photo).toBe(photo)
+    const removed = rules.updateStudent(db, id, { name: 'Amira H', emoji: '🦊', photo: null })
+    expect(removed.detail.students[0]?.photo).toBeNull()
+    expect(removed.writes).toEqual([{ kind: 'update', table: 'students', row: expect.objectContaining({ photo: '' }) }])
+    for (const bad of ['https://example.com/a.jpg', 'data:image/svg+xml;base64,PHN2Zz4=', 'data:image/png;base64,' + 'A'.repeat(50000)]) {
+      expect(refusal(() => rules.updateStudent(db, id, { name: 'Amira', emoji: '🦊', photo: bad }))).toEqual({ status: 400, code: 'invalid_photo' })
+    }
+    expect(db.students[0]?.name).toBe('Amira H')
+  })
+
+  it('reads a student kept before photos existed as having none', () => {
+    createClass('Year 3', ['Amira'])
+    delete (db.students[0] as Partial<rules.StudentRow>).photo
+
+    expect(rules.getClassroom(db, 'year-3').students[0]?.photo).toBeNull()
+  })
+
   it('reads ids it does not know as not found', () => {
     expect(refusal(() => rules.getClassroom(db, 'missing'))).toEqual({ status: 404, code: 'classroom_not_found' })
     expect(refusal(() => rules.getClassroom(db, 'Not A Slug'))).toEqual({ status: 404, code: 'classroom_not_found' })

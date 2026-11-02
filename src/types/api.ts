@@ -4,6 +4,7 @@ export interface Student {
   id: string
   name: string
   emoji: string
+  photo: string | null
   position: number
   points: number
 }
@@ -60,4 +61,6 @@ export interface RosterGrid {
 export interface NewStudent {
   name: string
   emoji: string
+  // Left out keeps the student's photo; null removes it.
+  photo?: string | null
 }

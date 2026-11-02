@@ -20,10 +20,10 @@ const CLASSROOMS: unknown[][] = [
 ]
 const STUDENTS: unknown[][] = [
   [...TABLES.students],
-  ['s2', 'year-3', 'Ben', '🐼', 2, '2026-10-01T08:00:00.000Z'],
-  ['s1', 'year-3', 'Amira', '🦊', '1', '2026-10-01T08:00:00.000Z'],
-  ['', '', '', '', '', ''],
-  ['s3', 'year-4', 'Chloe', '🐯', '1', '2026-10-02T08:00:00.000Z'],
+  ['s2', 'year-3', 'Ben', '🐼', 2, '2026-10-01T08:00:00.000Z', ''],
+  ['s1', 'year-3', 'Amira', '🦊', '1', '2026-10-01T08:00:00.000Z', ''],
+  ['', '', '', '', '', '', ''],
+  ['s3', 'year-4', 'Chloe', '🐯', '1', '2026-10-02T08:00:00.000Z', ''],
 ]
 const TURNS: unknown[][] = [
   [...TABLES.turns],
@@ -66,8 +66,8 @@ describe('Apps Script student link', () => {
       name: 'Year 3',
       currentStageSlug: 'stage-1',
       students: [
-        { id: 's1', name: 'Amira', emoji: '🦊', photoFile: null, position: 1, points: 1 },
-        { id: 's2', name: 'Ben', emoji: '🐼', photoFile: null, position: 2, points: 0 },
+        { id: 's1', name: 'Amira', emoji: '🦊', photo: null, position: 1, points: 1 },
+        { id: 's2', name: 'Ben', emoji: '🐼', photo: null, position: 2, points: 0 },
       ],
       results: [
         { studentId: 's1', stageSlug: 'stage-1', outcome: 'correct' },
@@ -86,6 +86,19 @@ describe('Apps Script student link', () => {
 
   it('treats missing tabs as no classrooms yet', () => {
     expect(get(loadScript(new Map()), 'year-3').error?.code).toBe('classroom_not_found')
+  })
+
+  it('shows a student photo, and still reads a students tab made before photos', () => {
+    const withPhoto = tabs()
+    withPhoto.set('students', [[...TABLES.students], ['s1', 'year-3', 'Amira', '🦊', '1', '2026-10-01T08:00:00.000Z', 'data:image/jpeg;base64,/9j/4AAQSkZJRg==']])
+    expect(get(loadScript(withPhoto), 'year-3').data?.students[0]?.photo).toBe('data:image/jpeg;base64,/9j/4AAQSkZJRg==')
+
+    const older = tabs()
+    older.set('students', STUDENTS.map((row) => row.slice(0, -1)))
+    expect(get(loadScript(older), 'year-3').data?.students.map((student) => [student.name, student.photo])).toEqual([
+      ['Amira', null],
+      ['Ben', null],
+    ])
   })
 
   it('refuses to read a tab whose header row was changed', () => {
