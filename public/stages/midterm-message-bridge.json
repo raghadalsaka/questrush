@@ -1,0 +1,374 @@
+{
+  "title": "Message Bridge",
+  "slug": "midterm-message-bridge",
+  "order": 2,
+  "description": "Read short notices and messages. Identify instructions, changes, permissions and purpose.",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "g6-mid-02-01",
+      "prompt": "READING CLUB: Tuesday's meeting will be in Room 8, not Room 3. The starting time is unchanged.\n\nWhat has changed?",
+      "options": [
+        "The starting time.",
+        "The club members.",
+        "The meeting day.",
+        "The meeting room."
+      ],
+      "correctIndex": 3,
+      "explanation": "The room changes from 3 to 8; the time stays the same."
+    },
+    {
+      "id": "g6-mid-02-02",
+      "prompt": "PHOTO DISPLAY: Send a copy of your family picture. Keep the original safely at home.\n\nWhat should pupils send?",
+      "options": [
+        "Every picture they own.",
+        "A copy of a family picture.",
+        "The original picture.",
+        "A drawing of their house."
+      ],
+      "correctIndex": 1,
+      "explanation": "The notice asks for a copy and says to keep the original at home."
+    },
+    {
+      "id": "g6-mid-02-03",
+      "prompt": "LIBRARY: Return borrowed storybooks by Monday. Reference books must stay in the library.\n\nWhich books may pupils borrow?",
+      "options": [
+        "All the books.",
+        "No books at all.",
+        "Storybooks.",
+        "Reference books."
+      ],
+      "correctIndex": 2,
+      "explanation": "Storybooks can be borrowed; reference books must remain in the library."
+    },
+    {
+      "id": "g6-mid-02-04",
+      "prompt": "Dear Sami, I have bought the card. Could you bring some wrapping paper? We already have a gift. — Lina\n\nWhat does Lina want Sami to bring?",
+      "options": [
+        "Money for a gift.",
+        "Wrapping paper.",
+        "A gift.",
+        "A card."
+      ],
+      "correctIndex": 1,
+      "explanation": "Lina already has the card and gift; she asks for wrapping paper."
+    },
+    {
+      "id": "g6-mid-02-05",
+      "prompt": "MUSEUM TRIP: Bring a packed lunch and water. There is no cafe at the museum.\n\nWhy must pupils bring lunch?",
+      "options": [
+        "They must give food to the guide.",
+        "There is no cafe at the museum.",
+        "The trip finishes before lunch.",
+        "Food is not allowed on the trip."
+      ],
+      "correctIndex": 1,
+      "explanation": "The notice explains that the museum has no cafe."
+    },
+    {
+      "id": "g6-mid-02-06",
+      "prompt": "DRAMA CLUB: Rehearsal begins at 2:15. Please arrive ten minutes early to get ready.\n\nWhen should pupils arrive?",
+      "options": [
+        "At 2:05.",
+        "At 2:25.",
+        "At 2:15.",
+        "At 1:15."
+      ],
+      "correctIndex": 0,
+      "explanation": "Ten minutes before 2:15 is 2:05."
+    },
+    {
+      "id": "g6-mid-02-07",
+      "prompt": "ART ROOM: Wash your brushes after use and put them in the blue container.\n\nWhat should pupils do first?",
+      "options": [
+        "Take the brushes home.",
+        "Paint the container blue.",
+        "Put dirty brushes away.",
+        "Wash the brushes."
+      ],
+      "correctIndex": 3,
+      "explanation": "The instructions say to wash brushes before putting them away."
+    },
+    {
+      "id": "g6-mid-02-08",
+      "prompt": "SCHOOL FAIR: Entry is free. Tickets are needed only for the games.\n\nWhat must visitors pay for?",
+      "options": [
+        "Entering the fair.",
+        "Reading the signs.",
+        "Taking part in the games.",
+        "Looking around the fair."
+      ],
+      "correctIndex": 2,
+      "explanation": "Only the games require tickets; entry is free."
+    },
+    {
+      "id": "g6-mid-02-09",
+      "prompt": "To Noor: Please borrow the atlas from the library before our project meeting. I will bring the photos. — Adam\n\nWho will bring the photos?",
+      "options": [
+        "Adam.",
+        "Noor.",
+        "The whole class.",
+        "The librarian."
+      ],
+      "correctIndex": 0,
+      "explanation": "Adam writes that he will bring the photos; Noor should borrow the atlas."
+    },
+    {
+      "id": "g6-mid-02-10",
+      "prompt": "SWIMMING LESSON: Today's lesson is cancelled because the pool is closed. Lessons return next Friday.\n\nWhat does the notice say?",
+      "options": [
+        "The pool is open today.",
+        "There is no swimming lesson today.",
+        "Today's lesson is at a different pool.",
+        "All future lessons are cancelled."
+      ],
+      "correctIndex": 1,
+      "explanation": "Only today's lesson is cancelled; lessons return next Friday."
+    },
+    {
+      "id": "g6-mid-02-11",
+      "prompt": "FAMILY HISTORY DISPLAY: Label the back of each copy with a date if you know it. Leave unknown dates blank.\n\nWhat should pupils do if a date is unknown?",
+      "options": [
+        "Leave the date blank.",
+        "Throw away the copy.",
+        "Write today's date.",
+        "Guess the date."
+      ],
+      "correctIndex": 0,
+      "explanation": "The notice says to leave unknown dates blank rather than guess."
+    },
+    {
+      "id": "g6-mid-02-12",
+      "prompt": "BOOK SWAP: Bring one book in good condition and choose one to take home.\n\nHow does the book swap work?",
+      "options": [
+        "Give one suitable book and receive another.",
+        "Bring a book but take nothing home.",
+        "Buy a brand-new book.",
+        "Take as many books as you want."
+      ],
+      "correctIndex": 0,
+      "explanation": "Visitors exchange one book for another."
+    },
+    {
+      "id": "g6-mid-02-13",
+      "prompt": "GARDEN CLUB: Wear old shoes on Saturday. We will be planting outside even if the ground is wet.\n\nWhy are old shoes recommended?",
+      "options": [
+        "The shoes may get dirty.",
+        "New shoes are part of the uniform.",
+        "Pupils will donate their shoes.",
+        "The activity will be indoors."
+      ],
+      "correctIndex": 0,
+      "explanation": "Planting in wet ground may make shoes muddy."
+    },
+    {
+      "id": "g6-mid-02-14",
+      "prompt": "NOTICE: The north entrance is closed for repairs. Please use the entrance beside the sports hall.\n\nWhat should visitors do?",
+      "options": [
+        "Help repair the building.",
+        "Wait at the north entrance.",
+        "Leave through the north entrance.",
+        "Enter beside the sports hall."
+      ],
+      "correctIndex": 3,
+      "explanation": "The notice directs visitors to the entrance beside the sports hall."
+    },
+    {
+      "id": "g6-mid-02-15",
+      "prompt": "Dear parents, the exhibition opens at 4:00. Pupils helping with displays should be here at 3:30.\n\nWho needs to arrive at 3:30?",
+      "options": [
+        "All visitors.",
+        "Only the head teacher.",
+        "Every parent.",
+        "Pupils helping with the displays."
+      ],
+      "correctIndex": 3,
+      "explanation": "The earlier arrival time applies to pupils helping with displays."
+    },
+    {
+      "id": "g6-mid-02-16",
+      "prompt": "HISTORY TALK: Places are limited. Register with your teacher before Thursday to reserve a seat.\n\nWhy should pupils register?",
+      "options": [
+        "To borrow a chair.",
+        "To change the date.",
+        "To reserve a place at the talk.",
+        "To become the speaker."
+      ],
+      "correctIndex": 2,
+      "explanation": "Registering reserves one of the limited places."
+    },
+    {
+      "id": "g6-mid-02-17",
+      "prompt": "MUSIC ROOM: You may practise here at lunchtime, but ask permission before moving any instruments.\n\nWhat requires permission?",
+      "options": [
+        "Moving the instruments.",
+        "Practising at lunchtime.",
+        "Reading the notice.",
+        "Listening to music at home."
+      ],
+      "correctIndex": 0,
+      "explanation": "The notice allows practice but requires permission to move instruments."
+    },
+    {
+      "id": "g6-mid-02-18",
+      "prompt": "LOST PROPERTY: A green lunchbox was found near the playground. Describe its contents to the office staff to collect it.\n\nHow can the owner collect the lunchbox?",
+      "options": [
+        "Search the classroom.",
+        "Describe what is inside it.",
+        "Buy another lunchbox.",
+        "Ask a friend to guess its colour."
+      ],
+      "correctIndex": 1,
+      "explanation": "The owner must describe the contents to office staff."
+    },
+    {
+      "id": "g6-mid-02-19",
+      "prompt": "PROJECT REMINDER: Work with a partner, but each pupil must submit a separate reflection.\n\nWhat must pupils submit individually?",
+      "options": [
+        "A whole-class poster.",
+        "Their own reflection.",
+        "Their partner's notebook.",
+        "A shared reflection only."
+      ],
+      "correctIndex": 1,
+      "explanation": "The project is in pairs, but the reflection is individual."
+    },
+    {
+      "id": "g6-mid-02-20",
+      "prompt": "SCHOOL SHOP: Notebooks are sold out. More will arrive on Wednesday; pencils are still available.\n\nWhat can pupils buy now?",
+      "options": [
+        "Both notebooks and pencils.",
+        "Pencils.",
+        "Nothing at all.",
+        "Notebooks."
+      ],
+      "correctIndex": 1,
+      "explanation": "Notebooks are sold out, while pencils remain available."
+    },
+    {
+      "id": "g6-mid-02-21",
+      "prompt": "Dear Rami, please do not wait for me at the gate. I will meet you inside the library. — Omar\n\nWhere should Rami meet Omar?",
+      "options": [
+        "At the gate.",
+        "Outside the school.",
+        "At Omar's house.",
+        "Inside the library."
+      ],
+      "correctIndex": 3,
+      "explanation": "Omar changes the meeting point to inside the library."
+    },
+    {
+      "id": "g6-mid-02-22",
+      "prompt": "SCIENCE DISPLAY: Visitors may look closely at the models, but must not touch them.\n\nWhat is allowed?",
+      "options": [
+        "Taking a model home.",
+        "Picking up the models.",
+        "Moving models to another table.",
+        "Looking closely at the models."
+      ],
+      "correctIndex": 3,
+      "explanation": "Looking is allowed; touching is forbidden."
+    },
+    {
+      "id": "g6-mid-02-23",
+      "prompt": "FILM CLUB: The film is suitable for all ages. Younger children must come with an adult.\n\nWhat must younger children do?",
+      "options": [
+        "Come alone.",
+        "Choose a different film.",
+        "Wait outside.",
+        "Attend with an adult."
+      ],
+      "correctIndex": 3,
+      "explanation": "Younger children can attend if an adult accompanies them."
+    },
+    {
+      "id": "g6-mid-02-24",
+      "prompt": "COACH TRIP: The coach leaves at 8:00 sharp. Be at school by 7:45.\n\nWhat time must pupils be at school?",
+      "options": [
+        "At 8:15.",
+        "By 9:00.",
+        "By 7:45.",
+        "At 8:00 only."
+      ],
+      "correctIndex": 2,
+      "explanation": "Pupils must arrive by 7:45, before the coach leaves."
+    },
+    {
+      "id": "g6-mid-02-25",
+      "prompt": "READING CHALLENGE: Record the title of every book you finish. Books you start but do not finish do not count.\n\nWhich books count?",
+      "options": [
+        "Books pupils plan to read.",
+        "Every book pupils have opened.",
+        "Books that pupils have finished.",
+        "Only books bought this week."
+      ],
+      "correctIndex": 2,
+      "explanation": "Only completed books count towards the challenge."
+    },
+    {
+      "id": "g6-mid-02-26",
+      "prompt": "COSTUME DAY: You may wear a costume, but comfortable school shoes are still required.\n\nWhat must pupils wear?",
+      "options": [
+        "Comfortable school shoes.",
+        "Any shoes they choose.",
+        "A costume instead of shoes.",
+        "Formal party shoes only."
+      ],
+      "correctIndex": 0,
+      "explanation": "Costumes are optional; suitable school shoes are required."
+    },
+    {
+      "id": "g6-mid-02-27",
+      "prompt": "CHARITY SALE: All money raised will buy books for a village school.\n\nWhat is the purpose of the sale?",
+      "options": [
+        "To repair the school bus.",
+        "To fund books for a school.",
+        "To buy costumes for sellers.",
+        "To pay for a class party."
+      ],
+      "correctIndex": 1,
+      "explanation": "The notice states that all proceeds will buy books for the village school."
+    },
+    {
+      "id": "g6-mid-02-28",
+      "prompt": "SPORTS PRACTICE: Bring your water bottle. Balls and other equipment will be provided.\n\nWhat do pupils need to bring?",
+      "options": [
+        "All the sports equipment.",
+        "A tennis net.",
+        "Their own water bottle.",
+        "A football."
+      ],
+      "correctIndex": 2,
+      "explanation": "The equipment is provided; pupils only need their water bottles."
+    },
+    {
+      "id": "g6-mid-02-29",
+      "prompt": "CLASS MESSAGE: The deadline for the poster is now Sunday, two days later than planned.\n\nWhat does the message mean?",
+      "options": [
+        "The deadline has not changed.",
+        "The poster has been cancelled.",
+        "Pupils have extra time for the poster.",
+        "Pupils must finish two days earlier."
+      ],
+      "correctIndex": 2,
+      "explanation": "A later deadline gives pupils two additional days."
+    },
+    {
+      "id": "g6-mid-02-30",
+      "prompt": "EXHIBITION: Please leave large bags at reception. Small bags may be carried inside.\n\nWhich bags may visitors take inside?",
+      "options": [
+        "Small bags.",
+        "No bags of any size.",
+        "Large bags only.",
+        "All bags."
+      ],
+      "correctIndex": 0,
+      "explanation": "Large bags must stay at reception; small bags are allowed inside."
+    }
+  ]
+}

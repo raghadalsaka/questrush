@@ -1,0 +1,374 @@
+{
+  "title": "Reading Lagoon",
+  "slug": "midterm-reading-lagoon",
+  "order": 4,
+  "description": "Read new short passages for detail, inference, reasons, vocabulary in context and main ideas.",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "g6-mid-04-01",
+      "prompt": "THE UNLABELLED ALBUM\nNadia found an album while helping her aunt tidy a cupboard. Several photographs had no names or dates. At first, she wanted to label them by guessing. Her aunt suggested asking relatives instead. One uncle recognised a village square, but he was unsure about the year. Nadia wrote his suggestion in pencil and added a question mark. After two more interviews, she corrected one date. At the school display, she explained how her information had changed. Her teacher praised her careful checking, not the number of photographs. Nadia decided to keep a separate list of facts that still needed evidence.\n\nWhy did Nadia speak to relatives?",
+      "options": [
+        "To invite them to a village festival.",
+        "To identify information missing from the photographs.",
+        "To ask them to buy an album.",
+        "To choose a new cupboard."
+      ],
+      "correctIndex": 1,
+      "explanation": "The photographs lacked names and dates, so relatives could help identify them."
+    },
+    {
+      "id": "g6-mid-04-02",
+      "prompt": "THE UNLABELLED ALBUM\nNadia found an album while helping her aunt tidy a cupboard. Several photographs had no names or dates. At first, she wanted to label them by guessing. Her aunt suggested asking relatives instead. One uncle recognised a village square, but he was unsure about the year. Nadia wrote his suggestion in pencil and added a question mark. After two more interviews, she corrected one date. At the school display, she explained how her information had changed. Her teacher praised her careful checking, not the number of photographs. Nadia decided to keep a separate list of facts that still needed evidence.\n\nWhy did Nadia add a question mark?",
+      "options": [
+        "The photograph was damaged.",
+        "The village had no name.",
+        "Her uncle disliked the album.",
+        "The year had not been confirmed."
+      ],
+      "correctIndex": 3,
+      "explanation": "Her uncle was unsure about the year, so the question mark showed uncertainty."
+    },
+    {
+      "id": "g6-mid-04-03",
+      "prompt": "THE UNLABELLED ALBUM\nNadia found an album while helping her aunt tidy a cupboard. Several photographs had no names or dates. At first, she wanted to label them by guessing. Her aunt suggested asking relatives instead. One uncle recognised a village square, but he was unsure about the year. Nadia wrote his suggestion in pencil and added a question mark. After two more interviews, she corrected one date. At the school display, she explained how her information had changed. Her teacher praised her careful checking, not the number of photographs. Nadia decided to keep a separate list of facts that still needed evidence.\n\nWhat caused Nadia to correct a date?",
+      "options": [
+        "A school photograph.",
+        "Further interviews.",
+        "A new cupboard.",
+        "A drawing by her teacher."
+      ],
+      "correctIndex": 1,
+      "explanation": "She corrected a date after two more interviews."
+    },
+    {
+      "id": "g6-mid-04-04",
+      "prompt": "THE UNLABELLED ALBUM\nNadia found an album while helping her aunt tidy a cupboard. Several photographs had no names or dates. At first, she wanted to label them by guessing. Her aunt suggested asking relatives instead. One uncle recognised a village square, but he was unsure about the year. Nadia wrote his suggestion in pencil and added a question mark. After two more interviews, she corrected one date. At the school display, she explained how her information had changed. Her teacher praised her careful checking, not the number of photographs. Nadia decided to keep a separate list of facts that still needed evidence.\n\nWhat did the teacher value most?",
+      "options": [
+        "Using colourful pens.",
+        "Checking information carefully.",
+        "Finishing before everyone else.",
+        "Collecting the most photographs."
+      ],
+      "correctIndex": 1,
+      "explanation": "The teacher praised careful checking rather than the number of photos."
+    },
+    {
+      "id": "g6-mid-04-05",
+      "prompt": "THE UNLABELLED ALBUM\nNadia found an album while helping her aunt tidy a cupboard. Several photographs had no names or dates. At first, she wanted to label them by guessing. Her aunt suggested asking relatives instead. One uncle recognised a village square, but he was unsure about the year. Nadia wrote his suggestion in pencil and added a question mark. After two more interviews, she corrected one date. At the school display, she explained how her information had changed. Her teacher praised her careful checking, not the number of photographs. Nadia decided to keep a separate list of facts that still needed evidence.\n\nWhat is the best lesson from the passage?",
+      "options": [
+        "Every old photograph has an obvious date.",
+        "Guessing is the fastest way to prove a fact.",
+        "Relatives always agree about the past.",
+        "Reliable research may require changing your first ideas."
+      ],
+      "correctIndex": 3,
+      "explanation": "Nadia improved her research by checking and correcting earlier information."
+    },
+    {
+      "id": "g6-mid-04-06",
+      "prompt": "A THOUGHTFUL PRESENT\nBefore a class visit to a community centre, pupils planned to buy a large glass ornament for the organiser. Karim noticed that the centre had little shelf space and that young children often used the room. He suggested asking what would be useful. The organiser mentioned that the reading corner needed new books. The pupils chose several books and wrote friendly messages on separate cards. Karim worried that books would seem less exciting than an ornament. During the visit, however, he saw children reading them straight away. He realised that a useful gift could show care better than an expensive decoration.\n\nWhy did Karim question the first gift idea?",
+      "options": [
+        "It might be unsuitable for the room.",
+        "The shop had already closed.",
+        "The organiser disliked every present.",
+        "He wanted to keep the ornament."
+      ],
+      "correctIndex": 0,
+      "explanation": "Limited shelf space and young children made a large glass ornament less suitable."
+    },
+    {
+      "id": "g6-mid-04-07",
+      "prompt": "A THOUGHTFUL PRESENT\nBefore a class visit to a community centre, pupils planned to buy a large glass ornament for the organiser. Karim noticed that the centre had little shelf space and that young children often used the room. He suggested asking what would be useful. The organiser mentioned that the reading corner needed new books. The pupils chose several books and wrote friendly messages on separate cards. Karim worried that books would seem less exciting than an ornament. During the visit, however, he saw children reading them straight away. He realised that a useful gift could show care better than an expensive decoration.\n\nHow did the pupils find out what was needed?",
+      "options": [
+        "They read the pupils' exam papers.",
+        "They asked the organiser.",
+        "They copied another class.",
+        "They guessed from the price."
+      ],
+      "correctIndex": 1,
+      "explanation": "Karim suggested asking, and the organiser said the reading corner needed books."
+    },
+    {
+      "id": "g6-mid-04-08",
+      "prompt": "A THOUGHTFUL PRESENT\nBefore a class visit to a community centre, pupils planned to buy a large glass ornament for the organiser. Karim noticed that the centre had little shelf space and that young children often used the room. He suggested asking what would be useful. The organiser mentioned that the reading corner needed new books. The pupils chose several books and wrote friendly messages on separate cards. Karim worried that books would seem less exciting than an ornament. During the visit, however, he saw children reading them straight away. He realised that a useful gift could show care better than an expensive decoration.\n\nWhere did the pupils write their messages?",
+      "options": [
+        "Inside every story.",
+        "On the glass ornament.",
+        "On separate cards.",
+        "On the centre's walls."
+      ],
+      "correctIndex": 2,
+      "explanation": "The passage explicitly says the messages were on separate cards."
+    },
+    {
+      "id": "g6-mid-04-09",
+      "prompt": "A THOUGHTFUL PRESENT\nBefore a class visit to a community centre, pupils planned to buy a large glass ornament for the organiser. Karim noticed that the centre had little shelf space and that young children often used the room. He suggested asking what would be useful. The organiser mentioned that the reading corner needed new books. The pupils chose several books and wrote friendly messages on separate cards. Karim worried that books would seem less exciting than an ornament. During the visit, however, he saw children reading them straight away. He realised that a useful gift could show care better than an expensive decoration.\n\nWhat changed Karim's opinion?",
+      "options": [
+        "Receiving a gift himself.",
+        "Seeing children use the books immediately.",
+        "Finding a cheaper ornament.",
+        "Seeing empty bookshelves at a shop."
+      ],
+      "correctIndex": 1,
+      "explanation": "The children began reading straight away, showing the gift was useful."
+    },
+    {
+      "id": "g6-mid-04-10",
+      "prompt": "A THOUGHTFUL PRESENT\nBefore a class visit to a community centre, pupils planned to buy a large glass ornament for the organiser. Karim noticed that the centre had little shelf space and that young children often used the room. He suggested asking what would be useful. The organiser mentioned that the reading corner needed new books. The pupils chose several books and wrote friendly messages on separate cards. Karim worried that books would seem less exciting than an ornament. During the visit, however, he saw children reading them straight away. He realised that a useful gift could show care better than an expensive decoration.\n\nWhich title best expresses the main idea?",
+      "options": [
+        "A competition to spend more money.",
+        "Buying the largest decoration.",
+        "Choosing a gift that meets someone's needs.",
+        "How to build a shelf."
+      ],
+      "correctIndex": 2,
+      "explanation": "The pupils choose a useful present after learning what the centre needs."
+    },
+    {
+      "id": "g6-mid-04-11",
+      "prompt": "THE QUIET GUIDE\nLeen volunteered to guide visitors around the school exhibition. She knew the displays well, but speaking to unfamiliar adults worried her. On the first day, she read every word from a long script. Some visitors stopped listening. Her partner suggested using three short notes and asking visitors what interested them. Leen tried this with the next group. A visitor asked about a family recipe display, so she spent longer there and skipped a section they had already seen. By the end of the afternoon, she was still a little nervous, but she could speak more naturally. She planned to practise again before the next event.\n\nWhat worried Leen at first?",
+      "options": [
+        "Understanding the displays.",
+        "Speaking to adults she did not know.",
+        "Learning a family recipe.",
+        "Finding a partner."
+      ],
+      "correctIndex": 1,
+      "explanation": "She knew the displays but felt worried about unfamiliar adults."
+    },
+    {
+      "id": "g6-mid-04-12",
+      "prompt": "THE QUIET GUIDE\nLeen volunteered to guide visitors around the school exhibition. She knew the displays well, but speaking to unfamiliar adults worried her. On the first day, she read every word from a long script. Some visitors stopped listening. Her partner suggested using three short notes and asking visitors what interested them. Leen tried this with the next group. A visitor asked about a family recipe display, so she spent longer there and skipped a section they had already seen. By the end of the afternoon, she was still a little nervous, but she could speak more naturally. She planned to practise again before the next event.\n\nWhat was the problem with the long script?",
+      "options": [
+        "It contained no words.",
+        "It described a different school.",
+        "Some visitors lost interest.",
+        "It was written in another language."
+      ],
+      "correctIndex": 2,
+      "explanation": "Some visitors stopped listening while she read the entire script."
+    },
+    {
+      "id": "g6-mid-04-13",
+      "prompt": "THE QUIET GUIDE\nLeen volunteered to guide visitors around the school exhibition. She knew the displays well, but speaking to unfamiliar adults worried her. On the first day, she read every word from a long script. Some visitors stopped listening. Her partner suggested using three short notes and asking visitors what interested them. Leen tried this with the next group. A visitor asked about a family recipe display, so she spent longer there and skipped a section they had already seen. By the end of the afternoon, she was still a little nervous, but she could speak more naturally. She planned to practise again before the next event.\n\nHow did Leen adapt the next tour?",
+      "options": [
+        "She repeated every section twice.",
+        "She removed the recipe display.",
+        "She refused to answer questions.",
+        "She followed the visitors' interests."
+      ],
+      "correctIndex": 3,
+      "explanation": "She spent longer at the display a visitor asked about and skipped a familiar section."
+    },
+    {
+      "id": "g6-mid-04-14",
+      "prompt": "THE QUIET GUIDE\nLeen volunteered to guide visitors around the school exhibition. She knew the displays well, but speaking to unfamiliar adults worried her. On the first day, she read every word from a long script. Some visitors stopped listening. Her partner suggested using three short notes and asking visitors what interested them. Leen tried this with the next group. A visitor asked about a family recipe display, so she spent longer there and skipped a section they had already seen. By the end of the afternoon, she was still a little nervous, but she could speak more naturally. She planned to practise again before the next event.\n\nHow did Leen feel at the end?",
+      "options": [
+        "Angry with every visitor.",
+        "Completely unable to speak.",
+        "More capable, although still slightly nervous.",
+        "Certain she would never need practice."
+      ],
+      "correctIndex": 2,
+      "explanation": "She was still a little nervous but could speak more naturally."
+    },
+    {
+      "id": "g6-mid-04-15",
+      "prompt": "THE QUIET GUIDE\nLeen volunteered to guide visitors around the school exhibition. She knew the displays well, but speaking to unfamiliar adults worried her. On the first day, she read every word from a long script. Some visitors stopped listening. Her partner suggested using three short notes and asking visitors what interested them. Leen tried this with the next group. A visitor asked about a family recipe display, so she spent longer there and skipped a section they had already seen. By the end of the afternoon, she was still a little nervous, but she could speak more naturally. She planned to practise again before the next event.\n\nWhat is the main message?",
+      "options": [
+        "Small changes and practice can improve speaking.",
+        "Knowing a display removes all nervousness.",
+        "A guide must memorise a very long script.",
+        "Visitors should never ask questions."
+      ],
+      "correctIndex": 0,
+      "explanation": "Short notes, audience questions and practice helped Leen improve."
+    },
+    {
+      "id": "g6-mid-04-16",
+      "prompt": "THE CHANGING ROUTE\nFor a local-history project, Rami drew a walking route past four old buildings. He checked the distances on a map but did not visit the streets first. During a practice walk, his group found that the bridge near the last building was closed. Rami wanted to remove the building from the project. His friend suggested a different path through the park. It took ten extra minutes, but it passed a useful information board about the town. They added that stop and changed the start time so the walk would still finish before lunch. Rami learned that planning on paper was only the beginning.\n\nWhat had Rami failed to do before the practice walk?",
+      "options": [
+        "Measure the distances on a map.",
+        "Draw a map.",
+        "Check the route in person.",
+        "Choose any buildings."
+      ],
+      "correctIndex": 2,
+      "explanation": "He used a map but had not visited the streets first."
+    },
+    {
+      "id": "g6-mid-04-17",
+      "prompt": "THE CHANGING ROUTE\nFor a local-history project, Rami drew a walking route past four old buildings. He checked the distances on a map but did not visit the streets first. During a practice walk, his group found that the bridge near the last building was closed. Rami wanted to remove the building from the project. His friend suggested a different path through the park. It took ten extra minutes, but it passed a useful information board about the town. They added that stop and changed the start time so the walk would still finish before lunch. Rami learned that planning on paper was only the beginning.\n\nWhat problem did the group discover?",
+      "options": [
+        "All four buildings were new.",
+        "The park had disappeared.",
+        "A bridge was closed.",
+        "There was no map of the town."
+      ],
+      "correctIndex": 2,
+      "explanation": "The bridge near the last building was closed."
+    },
+    {
+      "id": "g6-mid-04-18",
+      "prompt": "THE CHANGING ROUTE\nFor a local-history project, Rami drew a walking route past four old buildings. He checked the distances on a map but did not visit the streets first. During a practice walk, his group found that the bridge near the last building was closed. Rami wanted to remove the building from the project. His friend suggested a different path through the park. It took ten extra minutes, but it passed a useful information board about the town. They added that stop and changed the start time so the walk would still finish before lunch. Rami learned that planning on paper was only the beginning.\n\nWhat was an advantage of the alternative path?",
+      "options": [
+        "It passed a useful information board.",
+        "It avoided every old building.",
+        "It was ten minutes shorter.",
+        "It allowed the group to miss lunch."
+      ],
+      "correctIndex": 0,
+      "explanation": "The longer park route included a useful town information board."
+    },
+    {
+      "id": "g6-mid-04-19",
+      "prompt": "THE CHANGING ROUTE\nFor a local-history project, Rami drew a walking route past four old buildings. He checked the distances on a map but did not visit the streets first. During a practice walk, his group found that the bridge near the last building was closed. Rami wanted to remove the building from the project. His friend suggested a different path through the park. It took ten extra minutes, but it passed a useful information board about the town. They added that stop and changed the start time so the walk would still finish before lunch. Rami learned that planning on paper was only the beginning.\n\nWhy did they change the start time?",
+      "options": [
+        "To finish before lunch despite the longer route.",
+        "To walk after lunch.",
+        "To wait for the bridge to reopen.",
+        "To avoid using the park."
+      ],
+      "correctIndex": 0,
+      "explanation": "Starting at a different time allowed the extra ten minutes without missing lunch."
+    },
+    {
+      "id": "g6-mid-04-20",
+      "prompt": "THE CHANGING ROUTE\nFor a local-history project, Rami drew a walking route past four old buildings. He checked the distances on a map but did not visit the streets first. During a practice walk, his group found that the bridge near the last building was closed. Rami wanted to remove the building from the project. His friend suggested a different path through the park. It took ten extra minutes, but it passed a useful information board about the town. They added that stop and changed the start time so the walk would still finish before lunch. Rami learned that planning on paper was only the beginning.\n\nWhat did Rami learn?",
+      "options": [
+        "Maps are never useful.",
+        "Every problem requires cancelling a project.",
+        "Plans should be tested in real conditions.",
+        "Closed bridges cannot affect a route."
+      ],
+      "correctIndex": 2,
+      "explanation": "The practice walk revealed a problem that the paper plan had missed."
+    },
+    {
+      "id": "g6-mid-04-21",
+      "prompt": "THE RECIPE NOTEBOOK\nSara wanted to collect recipes for a family booklet. Her grandfather described a soup but used phrases such as 'a little rice' and 'enough water'. Sara could not turn these into clear instructions. She asked to cook it with him and measured the ingredients as they worked. The first bowl tasted different from his usual soup because she had added the salt too early. Her grandfather explained when to add it. Sara changed her notes and included a small warning for readers. The finished booklet recorded both the ingredients and the order of the steps. Sara discovered that watching and trying could teach her things that an interview alone could not.\n\nWhy were the first instructions difficult to follow?",
+      "options": [
+        "The quantities were not precise.",
+        "The soup had no ingredients.",
+        "Sara could not read the language.",
+        "Her grandfather refused to speak."
+      ],
+      "correctIndex": 0,
+      "explanation": "Phrases such as a little and enough did not give exact measurements."
+    },
+    {
+      "id": "g6-mid-04-22",
+      "prompt": "THE RECIPE NOTEBOOK\nSara wanted to collect recipes for a family booklet. Her grandfather described a soup but used phrases such as 'a little rice' and 'enough water'. Sara could not turn these into clear instructions. She asked to cook it with him and measured the ingredients as they worked. The first bowl tasted different from his usual soup because she had added the salt too early. Her grandfather explained when to add it. Sara changed her notes and included a small warning for readers. The finished booklet recorded both the ingredients and the order of the steps. Sara discovered that watching and trying could teach her things that an interview alone could not.\n\nHow did Sara obtain clearer measurements?",
+      "options": [
+        "She removed the ingredients list.",
+        "She copied an unrelated recipe.",
+        "She guessed from a photograph.",
+        "She measured while cooking with her grandfather."
+      ],
+      "correctIndex": 3,
+      "explanation": "Cooking together allowed her to measure the ingredients directly."
+    },
+    {
+      "id": "g6-mid-04-23",
+      "prompt": "THE RECIPE NOTEBOOK\nSara wanted to collect recipes for a family booklet. Her grandfather described a soup but used phrases such as 'a little rice' and 'enough water'. Sara could not turn these into clear instructions. She asked to cook it with him and measured the ingredients as they worked. The first bowl tasted different from his usual soup because she had added the salt too early. Her grandfather explained when to add it. Sara changed her notes and included a small warning for readers. The finished booklet recorded both the ingredients and the order of the steps. Sara discovered that watching and trying could teach her things that an interview alone could not.\n\nWhy did the first bowl taste different?",
+      "options": [
+        "Her grandfather forgot all the rice.",
+        "Sara added the salt at the wrong time.",
+        "The notebook was too old.",
+        "They used no water."
+      ],
+      "correctIndex": 1,
+      "explanation": "The passage says Sara added salt too early."
+    },
+    {
+      "id": "g6-mid-04-24",
+      "prompt": "THE RECIPE NOTEBOOK\nSara wanted to collect recipes for a family booklet. Her grandfather described a soup but used phrases such as 'a little rice' and 'enough water'. Sara could not turn these into clear instructions. She asked to cook it with him and measured the ingredients as they worked. The first bowl tasted different from his usual soup because she had added the salt too early. Her grandfather explained when to add it. Sara changed her notes and included a small warning for readers. The finished booklet recorded both the ingredients and the order of the steps. Sara discovered that watching and trying could teach her things that an interview alone could not.\n\nWhy did Sara include a warning?",
+      "options": [
+        "To stop everyone cooking soup.",
+        "To help readers avoid the mistake she made.",
+        "To tell readers not to use measurements.",
+        "To replace the recipe with a story."
+      ],
+      "correctIndex": 1,
+      "explanation": "The warning follows her correction about when to add salt."
+    },
+    {
+      "id": "g6-mid-04-25",
+      "prompt": "THE RECIPE NOTEBOOK\nSara wanted to collect recipes for a family booklet. Her grandfather described a soup but used phrases such as 'a little rice' and 'enough water'. Sara could not turn these into clear instructions. She asked to cook it with him and measured the ingredients as they worked. The first bowl tasted different from his usual soup because she had added the salt too early. Her grandfather explained when to add it. Sara changed her notes and included a small warning for readers. The finished booklet recorded both the ingredients and the order of the steps. Sara discovered that watching and trying could teach her things that an interview alone could not.\n\nWhat did Sara learn about gathering information?",
+      "options": [
+        "Practical experience can add to an interview.",
+        "Interviews never provide information.",
+        "Recipes need ingredients but no steps.",
+        "Trying a task makes notes unnecessary."
+      ],
+      "correctIndex": 0,
+      "explanation": "Cooking revealed measurements and timing that the interview alone had not provided."
+    },
+    {
+      "id": "g6-mid-04-26",
+      "prompt": "A SMALL EXHIBITION\nThe history club wanted to fill a hall with displays for the school anniversary. With only a week left, the pupils had collected many objects but had little reliable information about them. Their teacher asked visitors what they would want to learn. The answers showed that clear stories mattered more than the number of objects. The club chose five items with well-supported histories. They used large labels and added an audio recording for visitors who preferred listening. Some pupils worried that the hall would look empty. On the day, visitors spent time discussing the five objects rather than rushing past crowded tables. The club decided that a smaller display could still be successful.\n\nWhat difficulty did the club face?",
+      "options": [
+        "They had no objects at all.",
+        "Visitors refused to enter the school.",
+        "The school had no hall.",
+        "Many objects had little reliable information."
+      ],
+      "correctIndex": 3,
+      "explanation": "The pupils had collected many items but knew little reliable information about them."
+    },
+    {
+      "id": "g6-mid-04-27",
+      "prompt": "A SMALL EXHIBITION\nThe history club wanted to fill a hall with displays for the school anniversary. With only a week left, the pupils had collected many objects but had little reliable information about them. Their teacher asked visitors what they would want to learn. The answers showed that clear stories mattered more than the number of objects. The club chose five items with well-supported histories. They used large labels and added an audio recording for visitors who preferred listening. Some pupils worried that the hall would look empty. On the day, visitors spent time discussing the five objects rather than rushing past crowded tables. The club decided that a smaller display could still be successful.\n\nWhat did visitors say was important?",
+      "options": [
+        "The largest possible number of objects.",
+        "A completely silent exhibition.",
+        "Labels without any information.",
+        "Clear stories about the objects."
+      ],
+      "correctIndex": 3,
+      "explanation": "The responses showed that clear stories mattered more than quantity."
+    },
+    {
+      "id": "g6-mid-04-28",
+      "prompt": "A SMALL EXHIBITION\nThe history club wanted to fill a hall with displays for the school anniversary. With only a week left, the pupils had collected many objects but had little reliable information about them. Their teacher asked visitors what they would want to learn. The answers showed that clear stories mattered more than the number of objects. The club chose five items with well-supported histories. They used large labels and added an audio recording for visitors who preferred listening. Some pupils worried that the hall would look empty. On the day, visitors spent time discussing the five objects rather than rushing past crowded tables. The club decided that a smaller display could still be successful.\n\nWhy was an audio recording added?",
+      "options": [
+        "To offer information to people who preferred listening.",
+        "To announce a cancelled event.",
+        "To stop visitors reading labels.",
+        "To replace all five objects."
+      ],
+      "correctIndex": 0,
+      "explanation": "The passage states that the recording was for visitors who preferred listening."
+    },
+    {
+      "id": "g6-mid-04-29",
+      "prompt": "A SMALL EXHIBITION\nThe history club wanted to fill a hall with displays for the school anniversary. With only a week left, the pupils had collected many objects but had little reliable information about them. Their teacher asked visitors what they would want to learn. The answers showed that clear stories mattered more than the number of objects. The club chose five items with well-supported histories. They used large labels and added an audio recording for visitors who preferred listening. Some pupils worried that the hall would look empty. On the day, visitors spent time discussing the five objects rather than rushing past crowded tables. The club decided that a smaller display could still be successful.\n\nHow did visitors respond to the final display?",
+      "options": [
+        "They refused to ask questions.",
+        "They rushed past crowded tables.",
+        "They demanded hundreds more objects.",
+        "They spent time discussing the objects."
+      ],
+      "correctIndex": 3,
+      "explanation": "Visitors discussed the five objects instead of rushing past crowded tables."
+    },
+    {
+      "id": "g6-mid-04-30",
+      "prompt": "A SMALL EXHIBITION\nThe history club wanted to fill a hall with displays for the school anniversary. With only a week left, the pupils had collected many objects but had little reliable information about them. Their teacher asked visitors what they would want to learn. The answers showed that clear stories mattered more than the number of objects. The club chose five items with well-supported histories. They used large labels and added an audio recording for visitors who preferred listening. Some pupils worried that the hall would look empty. On the day, visitors spent time discussing the five objects rather than rushing past crowded tables. The club decided that a smaller display could still be successful.\n\nWhat is the main idea?",
+      "options": [
+        "A clear, carefully chosen display can be effective.",
+        "Every exhibition must fill all available space.",
+        "Unconfirmed stories make the best displays.",
+        "Audio recordings are always better than labels."
+      ],
+      "correctIndex": 0,
+      "explanation": "The successful exhibition prioritised reliable stories and clarity over quantity."
+    }
+  ]
+}

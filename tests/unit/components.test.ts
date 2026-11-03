@@ -107,6 +107,19 @@ describe('QuestionCard', () => {
     expect(wrapper.text()).toContain('Chosen answer')
     expect(wrapper.text()).toContain(question.explanation)
   })
+
+  it('keeps line breaks in the prompt and sets a long prompt smaller', async () => {
+    const question = makeQuestion('q1')
+    const wrapper = mount(QuestionCard, {
+      props: { question, revealed: false, chosenIndex: null, canChoose: true, resultTitle: null, isCorrect: null },
+    })
+    const heading = wrapper.get('h2')
+    expect(heading.classes()).toContain('whitespace-pre-line')
+    expect(heading.classes()).toContain('text-3xl')
+    await wrapper.setProps({ question: { ...question, prompt: `Read the notice.\n${'word '.repeat(40)}\n\nWhat changed?` } })
+    expect(heading.classes()).toContain('text-xl')
+    expect(heading.classes()).not.toContain('text-3xl')
+  })
 })
 
 describe('StudentProgressPanel', () => {

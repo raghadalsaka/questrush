@@ -1,0 +1,374 @@
+{
+  "title": "Tense Mountain",
+  "slug": "midterm-tense-mountain",
+  "order": 5,
+  "description": "Choose present perfect or past simple forms, including negatives, questions and error correction.",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "g6-mid-05-01",
+      "prompt": "We ____ the castle two days ago.",
+      "options": [
+        "visit",
+        "visited",
+        "have visited",
+        "has visited"
+      ],
+      "correctIndex": 1,
+      "explanation": "Two days ago is a finished past time, so use past simple."
+    },
+    {
+      "id": "g6-mid-05-02",
+      "prompt": "Hana ____ her poster, so she can hand it in now.",
+      "options": [
+        "have finished",
+        "finishing",
+        "has finish",
+        "has finished"
+      ],
+      "correctIndex": 3,
+      "explanation": "A completed action with a result now uses has + past participle for Hana."
+    },
+    {
+      "id": "g6-mid-05-03",
+      "prompt": "____ you ever ridden a horse?",
+      "options": [
+        "Did",
+        "Have",
+        "Do",
+        "Has"
+      ],
+      "correctIndex": 1,
+      "explanation": "Ever asks about experience up to now: Have you ever + past participle?"
+    },
+    {
+      "id": "g6-mid-05-04",
+      "prompt": "My brother ____ his homework yet.",
+      "options": [
+        "has not done",
+        "has not did",
+        "did not done",
+        "have not done"
+      ],
+      "correctIndex": 0,
+      "explanation": "Use has not + past participle with yet; the past participle of do is done."
+    },
+    {
+      "id": "g6-mid-05-05",
+      "prompt": "Where ____ you go last Saturday?",
+      "options": [
+        "has",
+        "were",
+        "did",
+        "have"
+      ],
+      "correctIndex": 2,
+      "explanation": "A question about a finished past time uses did + subject + base verb."
+    },
+    {
+      "id": "g6-mid-05-06",
+      "prompt": "They ____ a new display last month.",
+      "options": [
+        "have made",
+        "make",
+        "has made",
+        "made"
+      ],
+      "correctIndex": 3,
+      "explanation": "Last month is finished, so use made, the past simple of make."
+    },
+    {
+      "id": "g6-mid-05-07",
+      "prompt": "I ____ that film before, so I know the ending.",
+      "options": [
+        "have seen",
+        "have saw",
+        "has seen",
+        "did seen"
+      ],
+      "correctIndex": 0,
+      "explanation": "Before links the experience to now; use have + seen."
+    },
+    {
+      "id": "g6-mid-05-08",
+      "prompt": "She ____ to the club meeting yesterday.",
+      "options": [
+        "does not came",
+        "has not come",
+        "did not come",
+        "did not came"
+      ],
+      "correctIndex": 2,
+      "explanation": "Yesterday requires past simple; after did not, use the base form come."
+    },
+    {
+      "id": "g6-mid-05-09",
+      "prompt": "____ your sister ever visited this museum?",
+      "options": [
+        "Have",
+        "Has",
+        "Does",
+        "Did"
+      ],
+      "correctIndex": 1,
+      "explanation": "Your sister is singular; use Has + subject + ever + past participle."
+    },
+    {
+      "id": "g6-mid-05-10",
+      "prompt": "We ____ lunch yet, so we are hungry.",
+      "options": [
+        "has not had",
+        "have not had",
+        "have not have",
+        "did not had"
+      ],
+      "correctIndex": 1,
+      "explanation": "Use have not + had with yet; had is the past participle of have."
+    },
+    {
+      "id": "g6-mid-05-11",
+      "prompt": "I ____ this schoolbag since September, and I still use it.",
+      "options": [
+        "have had",
+        "have have",
+        "has had",
+        "had"
+      ],
+      "correctIndex": 0,
+      "explanation": "Since introduces a starting point continuing to now; have had is correct."
+    },
+    {
+      "id": "g6-mid-05-12",
+      "prompt": "Ruba ____ her bicycle for three years, and she still rides it.",
+      "options": [
+        "having",
+        "have had",
+        "has had",
+        "has have"
+      ],
+      "correctIndex": 2,
+      "explanation": "For three years and still show a situation continuing to now: has had."
+    },
+    {
+      "id": "g6-mid-05-13",
+      "prompt": "They ____ the competition in 2024.",
+      "options": [
+        "won",
+        "win",
+        "has won",
+        "have won"
+      ],
+      "correctIndex": 0,
+      "explanation": "In 2024 is a finished past time, so use won."
+    },
+    {
+      "id": "g6-mid-05-14",
+      "prompt": "The classroom is ready now. We ____ all the chairs.",
+      "options": [
+        "have arranged",
+        "arranging",
+        "have arrange",
+        "has arranged"
+      ],
+      "correctIndex": 0,
+      "explanation": "The present result is important; use have + arranged."
+    },
+    {
+      "id": "g6-mid-05-15",
+      "prompt": "What time ____ the bus arrive yesterday?",
+      "options": [
+        "does",
+        "did",
+        "have",
+        "has"
+      ],
+      "correctIndex": 1,
+      "explanation": "Use did for a question about yesterday."
+    },
+    {
+      "id": "g6-mid-05-16",
+      "prompt": "I have never ____ a formal speech.",
+      "options": [
+        "gave",
+        "giving",
+        "given",
+        "give"
+      ],
+      "correctIndex": 2,
+      "explanation": "After have never, use the past participle given."
+    },
+    {
+      "id": "g6-mid-05-17",
+      "prompt": "Omar ____ his uncle last Friday.",
+      "options": [
+        "have met",
+        "has met",
+        "meet",
+        "met"
+      ],
+      "correctIndex": 3,
+      "explanation": "Last Friday requires past simple: met."
+    },
+    {
+      "id": "g6-mid-05-18",
+      "prompt": "We ____ the old letters yet.",
+      "options": [
+        "have not read",
+        "has not read",
+        "did not reads",
+        "have not reading"
+      ],
+      "correctIndex": 0,
+      "explanation": "Yet calls for have not + past participle here; read keeps the same spelling."
+    },
+    {
+      "id": "g6-mid-05-19",
+      "prompt": "____ you finish the model last night?",
+      "options": [
+        "Have",
+        "Has",
+        "Did",
+        "Do"
+      ],
+      "correctIndex": 2,
+      "explanation": "Last night is a finished time; Did you finish is the correct question."
+    },
+    {
+      "id": "g6-mid-05-20",
+      "prompt": "My aunt has already ____ the tickets.",
+      "options": [
+        "buyed",
+        "bought",
+        "buy",
+        "buying"
+      ],
+      "correctIndex": 1,
+      "explanation": "The past participle of buy is bought."
+    },
+    {
+      "id": "g6-mid-05-21",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "We did went to the library yesterday.",
+        "We has gone to the library yesterday.",
+        "We have gone to the library yesterday.",
+        "We went to the library yesterday."
+      ],
+      "correctIndex": 3,
+      "explanation": "Yesterday needs past simple; went is the past simple of go."
+    },
+    {
+      "id": "g6-mid-05-22",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "Have Mariam written her report yet?",
+        "Did Mariam written her report yet?",
+        "Has Mariam written her report yet?",
+        "Has Mariam wrote her report yet?"
+      ],
+      "correctIndex": 2,
+      "explanation": "Use Has with Mariam and the past participle written."
+    },
+    {
+      "id": "g6-mid-05-23",
+      "prompt": "Correct the sentence: He has ate his lunch.",
+      "options": [
+        "He has eat his lunch.",
+        "He has eaten his lunch.",
+        "He have eaten his lunch.",
+        "He has eating his lunch."
+      ],
+      "correctIndex": 1,
+      "explanation": "Present perfect uses has + past participle; eaten is correct."
+    },
+    {
+      "id": "g6-mid-05-24",
+      "prompt": "Correct the sentence: They did not visited us on Monday.",
+      "options": [
+        "They did not visit us on Monday.",
+        "They has not visited us on Monday.",
+        "They have not visited us on Monday.",
+        "They did not visits us on Monday."
+      ],
+      "correctIndex": 0,
+      "explanation": "After did not, use visit, the base verb."
+    },
+    {
+      "id": "g6-mid-05-25",
+      "prompt": "Which phrase clearly refers to a finished past time?",
+      "options": [
+        "Three weeks ago.",
+        "So far.",
+        "Up to now.",
+        "Since Monday until now."
+      ],
+      "correctIndex": 0,
+      "explanation": "Ago places an action at a finished point in the past."
+    },
+    {
+      "id": "g6-mid-05-26",
+      "prompt": "Which sentence asks about experience up to now?",
+      "options": [
+        "Did you make a family tree yesterday?",
+        "Are you making a family tree now?",
+        "Will you make a family tree tomorrow?",
+        "Have you ever made a family tree?"
+      ],
+      "correctIndex": 3,
+      "explanation": "Have you ever asks about experience at any time before now."
+    },
+    {
+      "id": "g6-mid-05-27",
+      "prompt": "Complete both gaps: ____ you ever ____ an old coin?",
+      "options": [
+        "Have / find",
+        "Has / find",
+        "Did / found",
+        "Have / found"
+      ],
+      "correctIndex": 3,
+      "explanation": "Use Have you ever + found, the past participle of find."
+    },
+    {
+      "id": "g6-mid-05-28",
+      "prompt": "Complete both gaps: When ____ she ____ the school last year?",
+      "options": [
+        "have / join",
+        "did / join",
+        "has / joined",
+        "did / joined"
+      ],
+      "correctIndex": 1,
+      "explanation": "Last year needs did + subject + base form join."
+    },
+    {
+      "id": "g6-mid-05-29",
+      "prompt": "The shelves are empty now because the pupils ____ all the books to another room.",
+      "options": [
+        "has moved",
+        "moving",
+        "have moved",
+        "have move"
+      ],
+      "correctIndex": 2,
+      "explanation": "The completed action explains the situation now: have moved."
+    },
+    {
+      "id": "g6-mid-05-30",
+      "prompt": "Choose the sentence with the correct negative form.",
+      "options": [
+        "She has not choose a topic yet.",
+        "She has not chose a topic yet.",
+        "She have not chosen a topic yet.",
+        "She has not chosen a topic yet."
+      ],
+      "correctIndex": 3,
+      "explanation": "Use has not + chosen, the past participle of choose."
+    }
+  ]
+}

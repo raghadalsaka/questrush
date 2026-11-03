@@ -1,0 +1,374 @@
+{
+  "title": "Vocabulary Harbour",
+  "slug": "midterm-vocabulary-harbour",
+  "order": 1,
+  "description": "Practise Unit 1 vocabulary in new contexts: celebrations, family history, gifts and ceremonies.",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "g6-mid-01-01",
+      "prompt": "The library opened in 1926. At its hundredth birthday in 2026, it celebrated its ____.",
+      "options": [
+        "centenary",
+        "torch",
+        "enamel",
+        "independence"
+      ],
+      "correctIndex": 0,
+      "explanation": "A centenary marks one hundred years."
+    },
+    {
+      "id": "g6-mid-01-02",
+      "prompt": "A town has used the same bridge for one hundred years. The event marking this anniversary is its ____.",
+      "options": [
+        "independence",
+        "enamel",
+        "torch",
+        "centenary"
+      ],
+      "correctIndex": 3,
+      "explanation": "A centenary marks one hundred years."
+    },
+    {
+      "id": "g6-mid-01-03",
+      "prompt": "Which word means a celebration of the hundredth anniversary of an event?",
+      "options": [
+        "independence",
+        "centenary",
+        "torch",
+        "enamel"
+      ],
+      "correctIndex": 1,
+      "explanation": "A centenary marks one hundred years."
+    },
+    {
+      "id": "g6-mid-01-04",
+      "prompt": "The pupils found a ____ solution that nobody else had thought of.",
+      "options": [
+        "independent",
+        "brilliant",
+        "formal",
+        "engaged"
+      ],
+      "correctIndex": 1,
+      "explanation": "Brilliant can mean excellent or very clever."
+    },
+    {
+      "id": "g6-mid-01-05",
+      "prompt": "The judges called the young inventor's clever design ____.",
+      "options": [
+        "formal",
+        "engaged",
+        "independent",
+        "brilliant"
+      ],
+      "correctIndex": 3,
+      "explanation": "Brilliant can mean excellent or very clever."
+    },
+    {
+      "id": "g6-mid-01-06",
+      "prompt": "Which word best describes an exceptionally clever idea?",
+      "options": [
+        "formal",
+        "engaged",
+        "independent",
+        "brilliant"
+      ],
+      "correctIndex": 3,
+      "explanation": "Brilliant can mean excellent or very clever."
+    },
+    {
+      "id": "g6-mid-01-07",
+      "prompt": "My aunt, my cousin and my uncle are all my ____.",
+      "options": [
+        "cockerels",
+        "ceremonies",
+        "relatives",
+        "ancestors"
+      ],
+      "correctIndex": 2,
+      "explanation": "Relatives are members of your family; living cousins and aunts are not your ancestors."
+    },
+    {
+      "id": "g6-mid-01-08",
+      "prompt": "We invited our cousins and aunts, who are our living ____, to lunch.",
+      "options": [
+        "ancestors",
+        "relatives",
+        "ceremonies",
+        "cockerels"
+      ],
+      "correctIndex": 1,
+      "explanation": "Relatives are members of your family; living cousins and aunts are not your ancestors."
+    },
+    {
+      "id": "g6-mid-01-09",
+      "prompt": "Which word includes your brothers, cousins and grandparents?",
+      "options": [
+        "ceremonies",
+        "relatives",
+        "ancestors",
+        "cockerels"
+      ],
+      "correctIndex": 1,
+      "explanation": "Relatives are members of your family; living cousins and aunts are not your ancestors."
+    },
+    {
+      "id": "g6-mid-01-10",
+      "prompt": "My great-great-grandparents were among the ____ who lived here long before I was born.",
+      "options": [
+        "ancestors",
+        "cockerels",
+        "torches",
+        "nephews"
+      ],
+      "correctIndex": 0,
+      "explanation": "Ancestors are family members from earlier generations from whom you are descended."
+    },
+    {
+      "id": "g6-mid-01-11",
+      "prompt": "The family tree shows the ____ from whom our family is descended.",
+      "options": [
+        "ancestors",
+        "nephews",
+        "cockerels",
+        "torches"
+      ],
+      "correctIndex": 0,
+      "explanation": "Ancestors are family members from earlier generations from whom you are descended."
+    },
+    {
+      "id": "g6-mid-01-12",
+      "prompt": "Which word describes your great-grandparents and the generations before them?",
+      "options": [
+        "ancestors",
+        "cockerels",
+        "nephews",
+        "torches"
+      ],
+      "correctIndex": 0,
+      "explanation": "Ancestors are family members from earlier generations from whom you are descended."
+    },
+    {
+      "id": "g6-mid-01-13",
+      "prompt": "The artist covered the metal badge with blue ____ to give it a hard, shiny finish.",
+      "options": [
+        "centenary",
+        "torch",
+        "independence",
+        "enamel"
+      ],
+      "correctIndex": 3,
+      "explanation": "Enamel is a hard, often coloured coating used to decorate objects such as jewellery."
+    },
+    {
+      "id": "g6-mid-01-14",
+      "prompt": "The jeweller used coloured ____ to decorate the surface of a silver bracelet.",
+      "options": [
+        "centenary",
+        "torch",
+        "independence",
+        "enamel"
+      ],
+      "correctIndex": 3,
+      "explanation": "Enamel is a hard, often coloured coating used to decorate objects such as jewellery."
+    },
+    {
+      "id": "g6-mid-01-15",
+      "prompt": "Which material can form a hard, colourful coating on a metal ornament?",
+      "options": [
+        "enamel",
+        "independence",
+        "torch",
+        "centenary"
+      ],
+      "correctIndex": 0,
+      "explanation": "Enamel is a hard, often coloured coating used to decorate objects such as jewellery."
+    },
+    {
+      "id": "g6-mid-01-16",
+      "prompt": "When the lights went out, Huda used a battery-powered ____ to find the stairs.",
+      "options": [
+        "enamel",
+        "ancestor",
+        "torch",
+        "cockerel"
+      ],
+      "correctIndex": 2,
+      "explanation": "A torch is a portable light that helps you see in the dark."
+    },
+    {
+      "id": "g6-mid-01-17",
+      "prompt": "Before entering the dark cave, the explorer switched on her ____.",
+      "options": [
+        "enamel",
+        "torch",
+        "ancestor",
+        "cockerel"
+      ],
+      "correctIndex": 1,
+      "explanation": "A torch is a portable light that helps you see in the dark."
+    },
+    {
+      "id": "g6-mid-01-18",
+      "prompt": "Which item would help you see a path at night?",
+      "options": [
+        "enamel",
+        "torch",
+        "cockerel",
+        "ancestor"
+      ],
+      "correctIndex": 1,
+      "explanation": "A torch is a portable light that helps you see in the dark."
+    },
+    {
+      "id": "g6-mid-01-19",
+      "prompt": "The island became free from another country's rule and celebrated its ____.",
+      "options": [
+        "independence",
+        "centenary",
+        "relative",
+        "enamel"
+      ],
+      "correctIndex": 0,
+      "explanation": "A country gains independence when it is no longer ruled by another country."
+    },
+    {
+      "id": "g6-mid-01-20",
+      "prompt": "The national museum explains how the country won its ____.",
+      "options": [
+        "centenary",
+        "relative",
+        "independence",
+        "enamel"
+      ],
+      "correctIndex": 2,
+      "explanation": "A country gains independence when it is no longer ruled by another country."
+    },
+    {
+      "id": "g6-mid-01-21",
+      "prompt": "Which word means freedom from another country's rule?",
+      "options": [
+        "enamel",
+        "relative",
+        "centenary",
+        "independence"
+      ],
+      "correctIndex": 3,
+      "explanation": "A country gains independence when it is no longer ruled by another country."
+    },
+    {
+      "id": "g6-mid-01-22",
+      "prompt": "A male chicken called a ____ stood beside the hens.",
+      "options": [
+        "nephew",
+        "ancestor",
+        "cockerel",
+        "torch"
+      ],
+      "correctIndex": 2,
+      "explanation": "A cockerel is a male chicken."
+    },
+    {
+      "id": "g6-mid-01-23",
+      "prompt": "On the farm, the ____ crowed while the hens searched for food.",
+      "options": [
+        "nephew",
+        "ancestor",
+        "cockerel",
+        "torch"
+      ],
+      "correctIndex": 2,
+      "explanation": "A cockerel is a male chicken."
+    },
+    {
+      "id": "g6-mid-01-24",
+      "prompt": "Which word names a male chicken?",
+      "options": [
+        "cockerel",
+        "nephew",
+        "torch",
+        "ancestor"
+      ],
+      "correctIndex": 0,
+      "explanation": "A cockerel is a male chicken."
+    },
+    {
+      "id": "g6-mid-01-25",
+      "prompt": "The invitation asked guests to wear ____ clothes, such as suits, rather than sportswear.",
+      "options": [
+        "enamel",
+        "formal",
+        "engaged",
+        "brilliant"
+      ],
+      "correctIndex": 1,
+      "explanation": "Formal clothes are suitable for serious or official occasions."
+    },
+    {
+      "id": "g6-mid-01-26",
+      "prompt": "For the official award ceremony, our teacher chose a ____ jacket and tie.",
+      "options": [
+        "brilliant",
+        "formal",
+        "enamel",
+        "engaged"
+      ],
+      "correctIndex": 1,
+      "explanation": "Formal clothes are suitable for serious or official occasions."
+    },
+    {
+      "id": "g6-mid-01-27",
+      "prompt": "Which word describes clothing suitable for an official ceremony?",
+      "options": [
+        "enamel",
+        "brilliant",
+        "formal",
+        "engaged"
+      ],
+      "correctIndex": 2,
+      "explanation": "Formal clothes are suitable for serious or official occasions."
+    },
+    {
+      "id": "g6-mid-01-28",
+      "prompt": "The whole team met to ____ winning the final match.",
+      "options": [
+        "celebrate",
+        "collect",
+        "interview",
+        "decorate"
+      ],
+      "correctIndex": 0,
+      "explanation": "To celebrate is to do something enjoyable to mark a special event or achievement."
+    },
+    {
+      "id": "g6-mid-01-29",
+      "prompt": "We will ____ our grandparents' anniversary with a special meal.",
+      "options": [
+        "collect",
+        "interview",
+        "decorate",
+        "celebrate"
+      ],
+      "correctIndex": 3,
+      "explanation": "To celebrate is to do something enjoyable to mark a special event or achievement."
+    },
+    {
+      "id": "g6-mid-01-30",
+      "prompt": "Which verb means to mark a happy event with special activities?",
+      "options": [
+        "collect",
+        "decorate",
+        "celebrate",
+        "interview"
+      ],
+      "correctIndex": 2,
+      "explanation": "To celebrate is to do something enjoyable to mark a special event or achievement."
+    }
+  ]
+}

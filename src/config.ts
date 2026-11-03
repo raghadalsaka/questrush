@@ -2,6 +2,8 @@ export const OPTION_COUNT: number = 4
 export const MAX_QUESTIONS_PER_TEAM: number = 50
 export const MAX_SECONDS_PER_QUESTION: number = 600
 export const OPTION_LABELS: readonly string[] = ['A', 'B', 'C', 'D']
+// Prompts carrying a notice, list or passage are set smaller so they fit beside the answers.
+export const LONG_PROMPT_LENGTH: number = 160
 // validateContest.ts is copied unchanged from Quizrush and reserves this slug, so decks stay interchangeable.
 export const CONTESTS_DIR: string = 'contests'
 export const STAGES_DIR: string = 'stages'

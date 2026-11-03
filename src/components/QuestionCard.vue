@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
-import { OPTION_LABELS } from '../config'
+import { LONG_PROMPT_LENGTH, OPTION_LABELS } from '../config'
 import type { Question } from '../types/contest'
 
 type OptionState = 'open' | 'chosen-open' | 'correct' | 'wrong' | 'other'
@@ -60,6 +60,7 @@ const promptHeading = ref<HTMLHeadingElement | null>(null)
 const resultHeading = ref<HTMLParagraphElement | null>(null)
 
 const optionViews = computed(() => props.question.options.map((text, index) => ({ text, index, style: OPTION_STYLES[optionState(index)] })))
+const promptSize = computed(() => (props.question.prompt.length > LONG_PROMPT_LENGTH ? 'text-xl leading-snug lg:text-2xl' : 'text-3xl leading-tight lg:text-4xl'))
 const resultStyle = computed(() => OPTION_STYLES[props.isCorrect === false ? 'wrong' : 'correct'])
 
 // The correct index is only read once revealed, so the answer never reaches the DOM early.
@@ -92,7 +93,7 @@ function focusResult(): void {
 
 <template>
   <div class="grid gap-5">
-    <h2 ref="promptHeading" tabindex="-1" class="border-b-3 border-margin pb-3 text-3xl leading-tight font-bold lg:text-4xl">
+    <h2 ref="promptHeading" tabindex="-1" class="border-b-3 border-margin pb-3 font-bold whitespace-pre-line" :class="promptSize">
       {{ question.prompt }}
     </h2>
     <div class="grid gap-3 md:grid-cols-2" role="group" aria-label="Answer choices">

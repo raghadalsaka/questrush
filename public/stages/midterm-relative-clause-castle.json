@@ -1,0 +1,374 @@
+{
+  "title": "Relative Clause Castle",
+  "slug": "midterm-relative-clause-castle",
+  "order": 6,
+  "description": "Use who, whose, which and that. Join ideas and correct relative-pronoun mistakes.",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "g6-mid-06-01",
+      "prompt": "The woman ____ lives next door is a writer.",
+      "options": [
+        "which",
+        "whose",
+        "when",
+        "who"
+      ],
+      "correctIndex": 3,
+      "explanation": "Who refers to a person and is the subject of lives."
+    },
+    {
+      "id": "g6-mid-06-02",
+      "prompt": "This is the boy ____ sister won the race.",
+      "options": [
+        "who",
+        "which",
+        "that",
+        "whose"
+      ],
+      "correctIndex": 3,
+      "explanation": "Whose shows possession: the sister belongs to the boy's family."
+    },
+    {
+      "id": "g6-mid-06-03",
+      "prompt": "The watch, ____ belonged to my grandfather, is very old.",
+      "options": [
+        "who",
+        "that",
+        "which",
+        "whose"
+      ],
+      "correctIndex": 2,
+      "explanation": "Which refers to a thing in a clause set off by commas; that is not used here."
+    },
+    {
+      "id": "g6-mid-06-04",
+      "prompt": "Choose the word that can replace who or which in a defining relative clause without showing possession.",
+      "options": [
+        "whose",
+        "where",
+        "that",
+        "when"
+      ],
+      "correctIndex": 2,
+      "explanation": "That can introduce defining clauses about people or things; whose shows possession."
+    },
+    {
+      "id": "g6-mid-06-05",
+      "prompt": "I thanked the neighbour ____ helped us.",
+      "options": [
+        "whose",
+        "when",
+        "who",
+        "which"
+      ],
+      "correctIndex": 2,
+      "explanation": "Who refers to the neighbour, a person who did the helping."
+    },
+    {
+      "id": "g6-mid-06-06",
+      "prompt": "We met a teacher ____ classroom contains old maps.",
+      "options": [
+        "that",
+        "who",
+        "which",
+        "whose"
+      ],
+      "correctIndex": 3,
+      "explanation": "Whose links the teacher to the classroom."
+    },
+    {
+      "id": "g6-mid-06-07",
+      "prompt": "The necklace, ____ is made of silver, was a present.",
+      "options": [
+        "which",
+        "who",
+        "whose",
+        "that"
+      ],
+      "correctIndex": 0,
+      "explanation": "A thing in a non-defining clause with commas takes which, not that."
+    },
+    {
+      "id": "g6-mid-06-08",
+      "prompt": "The pupils ____ names are on the list should wait here.",
+      "options": [
+        "who",
+        "whose",
+        "which",
+        "that"
+      ],
+      "correctIndex": 1,
+      "explanation": "Whose shows that the names belong to the pupils."
+    },
+    {
+      "id": "g6-mid-06-09",
+      "prompt": "My aunt, ____ works in a library, enjoys reading.",
+      "options": [
+        "that",
+        "who",
+        "which",
+        "whose"
+      ],
+      "correctIndex": 1,
+      "explanation": "Who refers to a person in a clause separated by commas."
+    },
+    {
+      "id": "g6-mid-06-10",
+      "prompt": "The album ____ has a red cover belongs to Dad. Choose a pronoun used for things.",
+      "options": [
+        "which",
+        "whose",
+        "who",
+        "when"
+      ],
+      "correctIndex": 0,
+      "explanation": "Which refers to the album, a thing."
+    },
+    {
+      "id": "g6-mid-06-11",
+      "prompt": "Join using who: I know a girl. She speaks four languages.",
+      "options": [
+        "I know a girl who speaks four languages.",
+        "I know a girl whose speaks four languages.",
+        "I know a girl which speaks four languages.",
+        "I know a girl who she speaks four languages."
+      ],
+      "correctIndex": 0,
+      "explanation": "Who replaces she; do not repeat the subject pronoun."
+    },
+    {
+      "id": "g6-mid-06-12",
+      "prompt": "Join using whose: We met a boy. His father is a pilot.",
+      "options": [
+        "We met a boy who his father is a pilot.",
+        "We met a boy whose his father is a pilot.",
+        "We met a boy whose father is a pilot.",
+        "We met a boy which father is a pilot."
+      ],
+      "correctIndex": 2,
+      "explanation": "Whose replaces his to show the relationship between boy and father."
+    },
+    {
+      "id": "g6-mid-06-13",
+      "prompt": "Join using which: I found a box. It contains old letters.",
+      "options": [
+        "I found a box which contains old letters.",
+        "I found a box whose contains old letters.",
+        "I found a box which it contains old letters.",
+        "I found a box who contains old letters."
+      ],
+      "correctIndex": 0,
+      "explanation": "Which replaces it and refers to the box."
+    },
+    {
+      "id": "g6-mid-06-14",
+      "prompt": "Join using that: This is the book. It explains the custom.",
+      "options": [
+        "This is the book whose explains the custom.",
+        "This is the book that explains the custom.",
+        "This is the book that explain the custom.",
+        "This is the book that it explains the custom."
+      ],
+      "correctIndex": 1,
+      "explanation": "That replaces it; the singular book takes explains."
+    },
+    {
+      "id": "g6-mid-06-15",
+      "prompt": "Join using whose: I spoke to a woman. Her son collects stamps.",
+      "options": [
+        "I spoke to a woman whose her son collects stamps.",
+        "I spoke to a woman who her son collects stamps.",
+        "I spoke to a woman which son collects stamps.",
+        "I spoke to a woman whose son collects stamps."
+      ],
+      "correctIndex": 3,
+      "explanation": "Whose replaces her and links the woman to her son."
+    },
+    {
+      "id": "g6-mid-06-16",
+      "prompt": "Join using who: The man is our guide. He is carrying a torch.",
+      "options": [
+        "The man whose is carrying a torch is our guide.",
+        "The man who is carrying a torch is our guide.",
+        "The man which is carrying a torch is our guide.",
+        "The man who he is carrying a torch is our guide."
+      ],
+      "correctIndex": 1,
+      "explanation": "Who introduces information about the man without repeating he."
+    },
+    {
+      "id": "g6-mid-06-17",
+      "prompt": "Join using which: We saw a painting. It shows our town.",
+      "options": [
+        "We saw a painting whose shows our town.",
+        "We saw a painting which shows our town.",
+        "We saw a painting who shows our town.",
+        "We saw a painting which it shows our town."
+      ],
+      "correctIndex": 1,
+      "explanation": "Which refers to the painting and replaces it."
+    },
+    {
+      "id": "g6-mid-06-18",
+      "prompt": "Join using that: These are the letters. They tell our family story.",
+      "options": [
+        "These are the letters that tells our family story.",
+        "These are the letters that tell our family story.",
+        "These are the letters whose tell our family story.",
+        "These are the letters that they tell our family story."
+      ],
+      "correctIndex": 1,
+      "explanation": "That replaces they; plural letters takes tell."
+    },
+    {
+      "id": "g6-mid-06-19",
+      "prompt": "Correct the sentence: The girl which won the prize is my cousin.",
+      "options": [
+        "The girl whose won the prize is my cousin.",
+        "The girl who she won the prize is my cousin.",
+        "The girl which she won the prize is my cousin.",
+        "The girl who won the prize is my cousin."
+      ],
+      "correctIndex": 3,
+      "explanation": "Who refers to a person and replaces the incorrect which."
+    },
+    {
+      "id": "g6-mid-06-20",
+      "prompt": "Correct the sentence: This is the boy who mother is a doctor.",
+      "options": [
+        "This is the boy whose mother is a doctor.",
+        "This is the boy that mother is a doctor.",
+        "This is the boy whose his mother is a doctor.",
+        "This is the boy which mother is a doctor."
+      ],
+      "correctIndex": 0,
+      "explanation": "Use whose before mother to express possession."
+    },
+    {
+      "id": "g6-mid-06-21",
+      "prompt": "Correct the sentence: The clock who hangs in the hall is broken.",
+      "options": [
+        "The clock which hangs in the hall is broken.",
+        "The clock which it hangs in the hall is broken.",
+        "The clock whose hangs in the hall is broken.",
+        "The clock who it hangs in the hall is broken."
+      ],
+      "correctIndex": 0,
+      "explanation": "Which refers to a thing; do not add another subject it."
+    },
+    {
+      "id": "g6-mid-06-22",
+      "prompt": "Correct the sentence: We thanked the children who they helped us.",
+      "options": [
+        "We thanked the children which they helped us.",
+        "We thanked the children who helped us.",
+        "We thanked the children who helps us.",
+        "We thanked the children whose helped us."
+      ],
+      "correctIndex": 1,
+      "explanation": "Who already acts as the subject, so remove they."
+    },
+    {
+      "id": "g6-mid-06-23",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "The student whose project won is in my class.",
+        "The student which project won is in my class.",
+        "The student whose his project won is in my class.",
+        "The student who project won is in my class."
+      ],
+      "correctIndex": 0,
+      "explanation": "Whose project shows which student the project belongs to."
+    },
+    {
+      "id": "g6-mid-06-24",
+      "prompt": "Choose the correct sentence.",
+      "options": [
+        "The photographs whose show the village are on the table.",
+        "The photographs that shows the village are on the table.",
+        "The photographs who show the village are on the table.",
+        "The photographs that show the village are on the table."
+      ],
+      "correctIndex": 3,
+      "explanation": "That refers to photographs; the plural subject takes show."
+    },
+    {
+      "id": "g6-mid-06-25",
+      "prompt": "In \"I know the woman whose daughter is an artist\", who is an artist?",
+      "options": [
+        "The woman.",
+        "The speaker.",
+        "The daughter.",
+        "The woman's neighbour."
+      ],
+      "correctIndex": 2,
+      "explanation": "Daughter is the subject of is an artist; whose links her to the woman."
+    },
+    {
+      "id": "g6-mid-06-26",
+      "prompt": "In \"The guide who carried a lantern led the group\", who carried the lantern?",
+      "options": [
+        "The whole group.",
+        "The writer.",
+        "The guide.",
+        "A person outside the group."
+      ],
+      "correctIndex": 2,
+      "explanation": "Who refers back to the guide."
+    },
+    {
+      "id": "g6-mid-06-27",
+      "prompt": "In \"The ring which has a blue stone is mine\", what has a blue stone?",
+      "options": [
+        "The ring.",
+        "The owner.",
+        "The box.",
+        "The necklace."
+      ],
+      "correctIndex": 0,
+      "explanation": "Which refers back to the ring."
+    },
+    {
+      "id": "g6-mid-06-28",
+      "prompt": "Choose the sentence that uses whose to show possession.",
+      "options": [
+        "I read a book that describes Aqaba.",
+        "I met a girl whose uncle lives in Aqaba.",
+        "I met a girl who lives in Aqaba.",
+        "I saw a house which stands in Aqaba."
+      ],
+      "correctIndex": 1,
+      "explanation": "Whose uncle connects the uncle to the girl."
+    },
+    {
+      "id": "g6-mid-06-29",
+      "prompt": "Choose the sentence that correctly uses that for a person.",
+      "options": [
+        "She is the teacher that she organised the trip.",
+        "She is the teacher that classroom is upstairs.",
+        "She is the teacher that her organised the trip.",
+        "She is the teacher that organised the trip."
+      ],
+      "correctIndex": 3,
+      "explanation": "That may refer to a person in a defining relative clause and replaces the subject."
+    },
+    {
+      "id": "g6-mid-06-30",
+      "prompt": "Choose the sentence that correctly uses that for a thing.",
+      "options": [
+        "This is the medal that owner is my grandfather.",
+        "This is the medal that belong to my grandfather.",
+        "This is the medal that belongs to my grandfather.",
+        "This is the medal that it belongs to my grandfather."
+      ],
+      "correctIndex": 2,
+      "explanation": "That refers to the medal; singular medal takes belongs."
+    }
+  ]
+}

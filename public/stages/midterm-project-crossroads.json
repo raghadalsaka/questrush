@@ -1,0 +1,374 @@
+{
+  "title": "Project Crossroads",
+  "slug": "midterm-project-crossroads",
+  "order": 3,
+  "description": "Match pupils to suitable clubs and projects by checking every requirement.",
+  "unlocked": true,
+  "settings": {
+    "secondsPerQuestion": 60,
+    "defaultQuestionsPerTeam": 5,
+    "allowCrossTeamRepeats": false
+  },
+  "questions": [
+    {
+      "id": "g6-mid-03-01",
+      "prompt": "Read the projects.\n- Family Voices — interview older relatives and build a family timeline.\n- School Guides — welcome new pupils with tours and games.\n- Gift Customs — research suitable presents in different cultures.\n- Nature Watch — record local birds in the park.\n\nHala wants to record her grandfather's memories and discover her family's past.\nWhich project is the best match?",
+      "options": [
+        "Nature Watch — record local birds in the park.",
+        "Family Voices — interview older relatives and build a family timeline.",
+        "Gift Customs — research suitable presents in different cultures.",
+        "School Guides — welcome new pupils with tours and games."
+      ],
+      "correctIndex": 1,
+      "explanation": "Family Voices includes interviews with relatives and a family timeline."
+    },
+    {
+      "id": "g6-mid-03-02",
+      "prompt": "Read the projects.\n- Family Voices — interview older relatives and build a family timeline.\n- School Guides — welcome new pupils with tours and games.\n- Gift Customs — research suitable presents in different cultures.\n- Nature Watch — record local birds in the park.\n\nSami wants to help newcomers find classrooms and make friends.\nWhich project is the best match?",
+      "options": [
+        "Gift Customs — research suitable presents in different cultures.",
+        "Nature Watch — record local birds in the park.",
+        "Family Voices — interview older relatives and build a family timeline.",
+        "School Guides — welcome new pupils with tours and games."
+      ],
+      "correctIndex": 3,
+      "explanation": "School Guides welcomes new pupils through tours and games."
+    },
+    {
+      "id": "g6-mid-03-03",
+      "prompt": "Read the projects.\n- Family Voices — interview older relatives and build a family timeline.\n- School Guides — welcome new pupils with tours and games.\n- Gift Customs — research suitable presents in different cultures.\n- Nature Watch — record local birds in the park.\n\nDana wants to find out which gifts are polite in different countries.\nWhich project is the best match?",
+      "options": [
+        "Nature Watch — record local birds in the park.",
+        "Gift Customs — research suitable presents in different cultures.",
+        "School Guides — welcome new pupils with tours and games.",
+        "Family Voices — interview older relatives and build a family timeline."
+      ],
+      "correctIndex": 1,
+      "explanation": "Gift Customs investigates suitable presents in different cultures."
+    },
+    {
+      "id": "g6-mid-03-04",
+      "prompt": "Read the projects.\n- Stage Stars — perform a short play for families.\n- Photo Archive — scan old family photographs and label them.\n- Garden Team — grow vegetables in the school garden.\n- News Desk — interview pupils and publish a school newspaper.\n\nRana enjoys acting and wants to perform for an audience.\nWhich project is the best match?",
+      "options": [
+        "Photo Archive — scan old family photographs and label them.",
+        "Stage Stars — perform a short play for families.",
+        "Garden Team — grow vegetables in the school garden.",
+        "News Desk — interview pupils and publish a school newspaper."
+      ],
+      "correctIndex": 1,
+      "explanation": "Stage Stars offers acting and a performance."
+    },
+    {
+      "id": "g6-mid-03-05",
+      "prompt": "Read the projects.\n- Stage Stars — perform a short play for families.\n- Photo Archive — scan old family photographs and label them.\n- Garden Team — grow vegetables in the school garden.\n- News Desk — interview pupils and publish a school newspaper.\n\nZaid wants to preserve old pictures rather than perform or write news.\nWhich project is the best match?",
+      "options": [
+        "Photo Archive — scan old family photographs and label them.",
+        "News Desk — interview pupils and publish a school newspaper.",
+        "Garden Team — grow vegetables in the school garden.",
+        "Stage Stars — perform a short play for families."
+      ],
+      "correctIndex": 0,
+      "explanation": "Photo Archive preserves and labels old photographs."
+    },
+    {
+      "id": "g6-mid-03-06",
+      "prompt": "Read the projects.\n- Stage Stars — perform a short play for families.\n- Photo Archive — scan old family photographs and label them.\n- Garden Team — grow vegetables in the school garden.\n- News Desk — interview pupils and publish a school newspaper.\n\nMuna wants to interview classmates and write reports about school events.\nWhich project is the best match?",
+      "options": [
+        "News Desk — interview pupils and publish a school newspaper.",
+        "Stage Stars — perform a short play for families.",
+        "Photo Archive — scan old family photographs and label them.",
+        "Garden Team — grow vegetables in the school garden."
+      ],
+      "correctIndex": 0,
+      "explanation": "News Desk combines pupil interviews with school news reports."
+    },
+    {
+      "id": "g6-mid-03-07",
+      "prompt": "Read the projects.\n- Book Buddies — read stories to younger pupils during lunch.\n- Map Makers — trace historical journeys using maps and dates.\n- Craft Gifts — make presents from recycled materials.\n- Sports Helpers — organise races for younger children.\n\nAli likes geography and wants to trace where people travelled long ago.\nWhich project is the best match?",
+      "options": [
+        "Map Makers — trace historical journeys using maps and dates.",
+        "Book Buddies — read stories to younger pupils during lunch.",
+        "Craft Gifts — make presents from recycled materials.",
+        "Sports Helpers — organise races for younger children."
+      ],
+      "correctIndex": 0,
+      "explanation": "Map Makers uses maps and dates to trace historical journeys."
+    },
+    {
+      "id": "g6-mid-03-08",
+      "prompt": "Read the projects.\n- Book Buddies — read stories to younger pupils during lunch.\n- Map Makers — trace historical journeys using maps and dates.\n- Craft Gifts — make presents from recycled materials.\n- Sports Helpers — organise races for younger children.\n\nLama enjoys making things and wants to reuse materials to create presents.\nWhich project is the best match?",
+      "options": [
+        "Book Buddies — read stories to younger pupils during lunch.",
+        "Map Makers — trace historical journeys using maps and dates.",
+        "Craft Gifts — make presents from recycled materials.",
+        "Sports Helpers — organise races for younger children."
+      ],
+      "correctIndex": 2,
+      "explanation": "Craft Gifts makes presents from recycled materials."
+    },
+    {
+      "id": "g6-mid-03-09",
+      "prompt": "Read the projects.\n- Book Buddies — read stories to younger pupils during lunch.\n- Map Makers — trace historical journeys using maps and dates.\n- Craft Gifts — make presents from recycled materials.\n- Sports Helpers — organise races for younger children.\n\nYousef enjoys reading aloud and is free at lunchtime.\nWhich project is the best match?",
+      "options": [
+        "Craft Gifts — make presents from recycled materials.",
+        "Map Makers — trace historical journeys using maps and dates.",
+        "Book Buddies — read stories to younger pupils during lunch.",
+        "Sports Helpers — organise races for younger children."
+      ],
+      "correctIndex": 2,
+      "explanation": "Book Buddies involves reading aloud to younger pupils at lunch."
+    },
+    {
+      "id": "g6-mid-03-10",
+      "prompt": "Read the projects.\n- Weekend Wildlife — photograph animals outdoors on Saturdays.\n- Indoor Art — paint in the art room on Mondays.\n- Family Recipes — collect relatives' recipes and write a booklet.\n- Museum Makers — build models of historical buildings.\n\nNour wants an indoor activity involving painting, not model building.\nWhich project is the best match?",
+      "options": [
+        "Weekend Wildlife — photograph animals outdoors on Saturdays.",
+        "Family Recipes — collect relatives' recipes and write a booklet.",
+        "Indoor Art — paint in the art room on Mondays.",
+        "Museum Makers — build models of historical buildings."
+      ],
+      "correctIndex": 2,
+      "explanation": "Indoor Art offers painting inside the art room."
+    },
+    {
+      "id": "g6-mid-03-11",
+      "prompt": "Read the projects.\n- Weekend Wildlife — photograph animals outdoors on Saturdays.\n- Indoor Art — paint in the art room on Mondays.\n- Family Recipes — collect relatives' recipes and write a booklet.\n- Museum Makers — build models of historical buildings.\n\nAmir is interested in traditional food and wants to ask relatives for recipes.\nWhich project is the best match?",
+      "options": [
+        "Family Recipes — collect relatives' recipes and write a booklet.",
+        "Weekend Wildlife — photograph animals outdoors on Saturdays.",
+        "Indoor Art — paint in the art room on Mondays.",
+        "Museum Makers — build models of historical buildings."
+      ],
+      "correctIndex": 0,
+      "explanation": "Family Recipes gathers relatives' recipes into a booklet."
+    },
+    {
+      "id": "g6-mid-03-12",
+      "prompt": "Read the projects.\n- Weekend Wildlife — photograph animals outdoors on Saturdays.\n- Indoor Art — paint in the art room on Mondays.\n- Family Recipes — collect relatives' recipes and write a booklet.\n- Museum Makers — build models of historical buildings.\n\nFarah enjoys photography and is available outdoors on Saturdays.\nWhich project is the best match?",
+      "options": [
+        "Museum Makers — build models of historical buildings.",
+        "Weekend Wildlife — photograph animals outdoors on Saturdays.",
+        "Indoor Art — paint in the art room on Mondays.",
+        "Family Recipes — collect relatives' recipes and write a booklet."
+      ],
+      "correctIndex": 1,
+      "explanation": "Weekend Wildlife combines animal photography, outdoor work and Saturdays."
+    },
+    {
+      "id": "g6-mid-03-13",
+      "prompt": "Read the projects.\n- Quiet Readers — discuss novels on Tuesday after school.\n- Lunch Speakers — practise short talks at lunchtime.\n- Drama Lunch — rehearse plays during lunch.\n- Tuesday Runners — train outdoors after school on Tuesday.\n\nKareem wants to improve public speaking and can attend only at lunchtime.\nWhich project is the best match?",
+      "options": [
+        "Tuesday Runners — train outdoors after school on Tuesday.",
+        "Quiet Readers — discuss novels on Tuesday after school.",
+        "Lunch Speakers — practise short talks at lunchtime.",
+        "Drama Lunch — rehearse plays during lunch."
+      ],
+      "correctIndex": 2,
+      "explanation": "Lunch Speakers meets at lunch and practises talks rather than plays."
+    },
+    {
+      "id": "g6-mid-03-14",
+      "prompt": "Read the projects.\n- Quiet Readers — discuss novels on Tuesday after school.\n- Lunch Speakers — practise short talks at lunchtime.\n- Drama Lunch — rehearse plays during lunch.\n- Tuesday Runners — train outdoors after school on Tuesday.\n\nSalwa enjoys discussing books and is free after school on Tuesday.\nWhich project is the best match?",
+      "options": [
+        "Lunch Speakers — practise short talks at lunchtime.",
+        "Drama Lunch — rehearse plays during lunch.",
+        "Tuesday Runners — train outdoors after school on Tuesday.",
+        "Quiet Readers — discuss novels on Tuesday after school."
+      ],
+      "correctIndex": 3,
+      "explanation": "Quiet Readers matches both the book discussion and the time."
+    },
+    {
+      "id": "g6-mid-03-15",
+      "prompt": "Read the projects.\n- Quiet Readers — discuss novels on Tuesday after school.\n- Lunch Speakers — practise short talks at lunchtime.\n- Drama Lunch — rehearse plays during lunch.\n- Tuesday Runners — train outdoors after school on Tuesday.\n\nBasil wants outdoor exercise on Tuesday after lessons.\nWhich project is the best match?",
+      "options": [
+        "Tuesday Runners — train outdoors after school on Tuesday.",
+        "Drama Lunch — rehearse plays during lunch.",
+        "Lunch Speakers — practise short talks at lunchtime.",
+        "Quiet Readers — discuss novels on Tuesday after school."
+      ],
+      "correctIndex": 0,
+      "explanation": "Tuesday Runners provides outdoor training after school."
+    },
+    {
+      "id": "g6-mid-03-16",
+      "prompt": "Read the projects.\n- History Podcast — record spoken stories about the past.\n- History Posters — present historical facts through drawings and labels.\n- Live Welcome — give new pupils face-to-face school tours.\n- Nature Podcast — record spoken reports about local wildlife.\n\nAisha wants to make audio recordings about historical events.\nWhich project is the best match?",
+      "options": [
+        "Live Welcome — give new pupils face-to-face school tours.",
+        "History Podcast — record spoken stories about the past.",
+        "History Posters — present historical facts through drawings and labels.",
+        "Nature Podcast — record spoken reports about local wildlife."
+      ],
+      "correctIndex": 1,
+      "explanation": "History Podcast matches both audio recording and history."
+    },
+    {
+      "id": "g6-mid-03-17",
+      "prompt": "Read the projects.\n- History Podcast — record spoken stories about the past.\n- History Posters — present historical facts through drawings and labels.\n- Live Welcome — give new pupils face-to-face school tours.\n- Nature Podcast — record spoken reports about local wildlife.\n\nAdam enjoys drawing and wants to display historical information visually.\nWhich project is the best match?",
+      "options": [
+        "Live Welcome — give new pupils face-to-face school tours.",
+        "Nature Podcast — record spoken reports about local wildlife.",
+        "History Posters — present historical facts through drawings and labels.",
+        "History Podcast — record spoken stories about the past."
+      ],
+      "correctIndex": 2,
+      "explanation": "History Posters uses drawings and labels for historical information."
+    },
+    {
+      "id": "g6-mid-03-18",
+      "prompt": "Read the projects.\n- History Podcast — record spoken stories about the past.\n- History Posters — present historical facts through drawings and labels.\n- Live Welcome — give new pupils face-to-face school tours.\n- Nature Podcast — record spoken reports about local wildlife.\n\nRuba wants to meet new pupils and guide them around school in person.\nWhich project is the best match?",
+      "options": [
+        "History Posters — present historical facts through drawings and labels.",
+        "Live Welcome — give new pupils face-to-face school tours.",
+        "History Podcast — record spoken stories about the past.",
+        "Nature Podcast — record spoken reports about local wildlife."
+      ],
+      "correctIndex": 1,
+      "explanation": "Live Welcome offers face-to-face tours for new pupils."
+    },
+    {
+      "id": "g6-mid-03-19",
+      "prompt": "Read the projects.\n- Community Gifts — make cards for hospital patients.\n- Family Tree — research your own ancestors using interviews.\n- Town Timeline — research local events using newspapers.\n- Bird Survey — count birds with a partner.\n\nMajd wants to study his own ancestors by talking to family members.\nWhich project is the best match?",
+      "options": [
+        "Community Gifts — make cards for hospital patients.",
+        "Town Timeline — research local events using newspapers.",
+        "Bird Survey — count birds with a partner.",
+        "Family Tree — research your own ancestors using interviews."
+      ],
+      "correctIndex": 3,
+      "explanation": "Family Tree studies personal ancestry through interviews."
+    },
+    {
+      "id": "g6-mid-03-20",
+      "prompt": "Read the projects.\n- Community Gifts — make cards for hospital patients.\n- Family Tree — research your own ancestors using interviews.\n- Town Timeline — research local events using newspapers.\n- Bird Survey — count birds with a partner.\n\nDima wants to learn about the town's past by reading old news reports.\nWhich project is the best match?",
+      "options": [
+        "Family Tree — research your own ancestors using interviews.",
+        "Town Timeline — research local events using newspapers.",
+        "Bird Survey — count birds with a partner.",
+        "Community Gifts — make cards for hospital patients."
+      ],
+      "correctIndex": 1,
+      "explanation": "Town Timeline uses newspapers to research local history."
+    },
+    {
+      "id": "g6-mid-03-21",
+      "prompt": "Read the projects.\n- Community Gifts — make cards for hospital patients.\n- Family Tree — research your own ancestors using interviews.\n- Town Timeline — research local events using newspapers.\n- Bird Survey — count birds with a partner.\n\nFadi wants to cheer up people in hospital by making cards.\nWhich project is the best match?",
+      "options": [
+        "Community Gifts — make cards for hospital patients.",
+        "Town Timeline — research local events using newspapers.",
+        "Bird Survey — count birds with a partner.",
+        "Family Tree — research your own ancestors using interviews."
+      ],
+      "correctIndex": 0,
+      "explanation": "Community Gifts makes cards for hospital patients."
+    },
+    {
+      "id": "g6-mid-03-22",
+      "prompt": "Read the projects.\n- Monday Music — learn songs after school on Monday.\n- Friday Films — discuss films after school on Friday.\n- Monday Films — discuss films at lunchtime on Monday.\n- Friday Music — learn songs at lunchtime on Friday.\n\nRazan wants to discuss films and is free only at lunchtime on Monday.\nWhich project is the best match?",
+      "options": [
+        "Monday Music — learn songs after school on Monday.",
+        "Friday Films — discuss films after school on Friday.",
+        "Monday Films — discuss films at lunchtime on Monday.",
+        "Friday Music — learn songs at lunchtime on Friday."
+      ],
+      "correctIndex": 2,
+      "explanation": "Monday Films matches the activity and the exact time."
+    },
+    {
+      "id": "g6-mid-03-23",
+      "prompt": "Read the projects.\n- Monday Music — learn songs after school on Monday.\n- Friday Films — discuss films after school on Friday.\n- Monday Films — discuss films at lunchtime on Monday.\n- Friday Music — learn songs at lunchtime on Friday.\n\nBilal wants to learn songs after lessons on Monday.\nWhich project is the best match?",
+      "options": [
+        "Monday Music — learn songs after school on Monday.",
+        "Monday Films — discuss films at lunchtime on Monday.",
+        "Friday Music — learn songs at lunchtime on Friday.",
+        "Friday Films — discuss films after school on Friday."
+      ],
+      "correctIndex": 0,
+      "explanation": "Monday Music teaches songs after school on Monday."
+    },
+    {
+      "id": "g6-mid-03-24",
+      "prompt": "Read the projects.\n- Monday Music — learn songs after school on Monday.\n- Friday Films — discuss films after school on Friday.\n- Monday Films — discuss films at lunchtime on Monday.\n- Friday Music — learn songs at lunchtime on Friday.\n\nSafa wants a lunchtime singing activity on Friday.\nWhich project is the best match?",
+      "options": [
+        "Monday Music — learn songs after school on Monday.",
+        "Monday Films — discuss films at lunchtime on Monday.",
+        "Friday Films — discuss films after school on Friday.",
+        "Friday Music — learn songs at lunchtime on Friday."
+      ],
+      "correctIndex": 3,
+      "explanation": "Friday Music teaches songs during Friday lunch."
+    },
+    {
+      "id": "g6-mid-03-25",
+      "prompt": "Read the projects.\n- Garden Journal — observe plants and write weekly notes.\n- Garden Builders — construct wooden plant boxes.\n- Picture Journal — draw scenes of school life.\n- School Builders — make cardboard models of classrooms.\n\nHassan wants to track plant growth and describe changes in writing.\nWhich project is the best match?",
+      "options": [
+        "Garden Journal — observe plants and write weekly notes.",
+        "School Builders — make cardboard models of classrooms.",
+        "Garden Builders — construct wooden plant boxes.",
+        "Picture Journal — draw scenes of school life."
+      ],
+      "correctIndex": 0,
+      "explanation": "Garden Journal combines plant observation and written notes."
+    },
+    {
+      "id": "g6-mid-03-26",
+      "prompt": "Read the projects.\n- Garden Journal — observe plants and write weekly notes.\n- Garden Builders — construct wooden plant boxes.\n- Picture Journal — draw scenes of school life.\n- School Builders — make cardboard models of classrooms.\n\nLayan likes woodwork and wants to build something useful for plants.\nWhich project is the best match?",
+      "options": [
+        "School Builders — make cardboard models of classrooms.",
+        "Picture Journal — draw scenes of school life.",
+        "Garden Journal — observe plants and write weekly notes.",
+        "Garden Builders — construct wooden plant boxes."
+      ],
+      "correctIndex": 3,
+      "explanation": "Garden Builders makes wooden plant boxes."
+    },
+    {
+      "id": "g6-mid-03-27",
+      "prompt": "Read the projects.\n- Garden Journal — observe plants and write weekly notes.\n- Garden Builders — construct wooden plant boxes.\n- Picture Journal — draw scenes of school life.\n- School Builders — make cardboard models of classrooms.\n\nOla enjoys drawing real moments from the school day.\nWhich project is the best match?",
+      "options": [
+        "Garden Journal — observe plants and write weekly notes.",
+        "School Builders — make cardboard models of classrooms.",
+        "Garden Builders — construct wooden plant boxes.",
+        "Picture Journal — draw scenes of school life."
+      ],
+      "correctIndex": 3,
+      "explanation": "Picture Journal records school life through drawings."
+    },
+    {
+      "id": "g6-mid-03-28",
+      "prompt": "Read the projects.\n- Old Objects — research what household objects were used for in the past.\n- Gift Makers — design and make new presents.\n- Family Performers — act out a story for an audience.\n- Celebration Reporters — interview visitors at local festivals.\n\nTariq wants to discover the purpose of tools used by people long ago.\nWhich project is the best match?",
+      "options": [
+        "Family Performers — act out a story for an audience.",
+        "Gift Makers — design and make new presents.",
+        "Celebration Reporters — interview visitors at local festivals.",
+        "Old Objects — research what household objects were used for in the past."
+      ],
+      "correctIndex": 3,
+      "explanation": "Old Objects investigates how historical household objects were used."
+    },
+    {
+      "id": "g6-mid-03-29",
+      "prompt": "Read the projects.\n- Old Objects — research what household objects were used for in the past.\n- Gift Makers — design and make new presents.\n- Family Performers — act out a story for an audience.\n- Celebration Reporters — interview visitors at local festivals.\n\nReem wants to ask festival visitors questions and report their answers.\nWhich project is the best match?",
+      "options": [
+        "Gift Makers — design and make new presents.",
+        "Celebration Reporters — interview visitors at local festivals.",
+        "Family Performers — act out a story for an audience.",
+        "Old Objects — research what household objects were used for in the past."
+      ],
+      "correctIndex": 1,
+      "explanation": "Celebration Reporters interviews people at festivals."
+    },
+    {
+      "id": "g6-mid-03-30",
+      "prompt": "Read the projects.\n- Old Objects — research what household objects were used for in the past.\n- Gift Makers — design and make new presents.\n- Family Performers — act out a story for an audience.\n- Celebration Reporters — interview visitors at local festivals.\n\nSaif wants to invent and make a present rather than research old objects.\nWhich project is the best match?",
+      "options": [
+        "Old Objects — research what household objects were used for in the past.",
+        "Celebration Reporters — interview visitors at local festivals.",
+        "Gift Makers — design and make new presents.",
+        "Family Performers — act out a story for an audience."
+      ],
+      "correctIndex": 2,
+      "explanation": "Gift Makers focuses on designing and making new presents."
+    }
+  ]
+}
