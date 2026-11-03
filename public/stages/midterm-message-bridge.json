@@ -1,7 +1,7 @@
 {
   "title": "Message Bridge",
   "slug": "midterm-message-bridge",
-  "order": 2,
+  "order": 5,
   "description": "Read short notices and messages. Identify instructions, changes, permissions and purpose.",
   "unlocked": true,
   "settings": {
