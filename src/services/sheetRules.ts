@@ -1,5 +1,5 @@
 import { MAX_CLASSROOM_NAME_LENGTH, MAX_NAME_LENGTH, MAX_STUDENTS } from '../config'
-import type { ClassroomDetail, ClassroomSummary, NewStudent, Outcome, PublicClassroom, Result, Student } from '../types/api'
+import type { ClassroomDetail, ClassroomLink, ClassroomSummary, NewStudent, Outcome, PublicClassroom, Result, Student } from '../types/api'
 import { isPhotoUrl } from '../utils/photo'
 import { collapseSpaces, isValidEmoji, normalizeName as checkStudentName, type NameProblem } from '../utils/roster'
 import { ApiError } from './apiError'
@@ -59,6 +59,8 @@ const MAX_QUESTION_ID_LENGTH: number = 200
 
 const UUID_PATTERN: RegExp = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
 const SLUG_PATTERN: RegExp = /^[a-z0-9]+(-[a-z0-9]+)*$/
+// Numeric, so "Year 9" comes before "Year 10".
+const NAME_ORDER: Intl.Collator = new Intl.Collator(undefined, { numeric: true })
 
 export const systemClock: RuleClock = { now: () => new Date().toISOString(), newId: () => crypto.randomUUID() }
 
@@ -91,6 +93,10 @@ export function listClassrooms(db: SheetDb): ClassroomSummary[] {
       studentCount: db.students.filter((student) => student.classroom_slug === classroom.slug).length,
       createdAt: classroom.created_at,
     }))
+}
+
+export function classroomLinks(classrooms: readonly ClassroomRow[]): ClassroomLink[] {
+  return classrooms.map((classroom) => ({ slug: classroom.slug, name: classroom.name })).sort((a, b) => NAME_ORDER.compare(a.name, b.name))
 }
 
 export function getClassroom(db: SheetDb, classroomSlug: string): ClassroomDetail {

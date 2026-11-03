@@ -6,7 +6,7 @@ import { levels } from '../services/game'
 import type { Student } from '../types/api'
 import { levelTitle } from '../utils/progress'
 import AdventureMap from './AdventureMap.vue'
-import MapLegend from './MapLegend.vue'
+import CreatorCredit from './CreatorCredit.vue'
 import MessagePanel from './MessagePanel.vue'
 import PawnPicker from './PawnPicker.vue'
 import StudentProgressPanel from './StudentProgressPanel.vue'
@@ -68,7 +68,10 @@ function pickHidden(studentId: string): void {
   <main v-else class="grid gap-4 px-3 py-4 lg:grid-cols-[minmax(0,1fr)_28rem] lg:px-6">
     <header class="lg:col-span-2">
       <h1 class="brand-kicker text-xl"><BrandIcon />QuestRush</h1>
-      <p class="text-lg">Tap your pawn to see your progress. Tap an open stage to practise at home.</p>
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+        <p class="text-lg">Tap your pawn to see your progress. Tap an open stage to practise at home.</p>
+        <CreatorCredit />
+      </div>
     </header>
 
     <section class="grid content-start gap-3" aria-label="Adventure map">
@@ -82,9 +85,8 @@ function pickHidden(studentId: string): void {
         @select-level="selectLevel"
         @show-list="hiddenStudents = $event"
       />
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <MapLegend />
-        <button v-if="selectedId !== null" type="button" class="btn btn-small" @click="selectedId = null">Show Everyone</button>
+      <div v-if="selectedId !== null" class="flex justify-end">
+        <button type="button" class="btn btn-small" @click="selectedId = null">Show Everyone</button>
       </div>
       <p v-if="lockedNotice !== ''" role="status" class="notice border-locked bg-locked-soft">{{ lockedNotice }}</p>
     </section>

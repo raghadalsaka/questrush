@@ -29,6 +29,9 @@ export interface ClassroomSummary {
   createdAt: string
 }
 
+// What the landing page shows of a classroom before anyone signs in: its name and where its student link goes.
+export type ClassroomLink = Pick<ClassroomSummary, 'slug' | 'name'>
+
 // Where the class stands on the map; null until the class starts its first stage.
 export interface ClassroomProgress {
   currentStageSlug: string | null

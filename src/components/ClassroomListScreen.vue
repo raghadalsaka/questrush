@@ -5,7 +5,7 @@ import { api, errorMessage, googleSignIn } from '../services/api'
 import type { ClassroomSummary } from '../types/api'
 import { routeHash } from '../utils/route'
 import BrandIcon from './BrandIcon.vue'
-import IslandGlyph from './IslandGlyph.vue'
+import ClassroomCard from './ClassroomCard.vue'
 
 const auth = injectAuth()
 const classrooms = shallowRef<ClassroomSummary[] | null>(null)
@@ -45,16 +45,9 @@ onMounted(load)
     <p v-else-if="classrooms.length === 0" class="text-xl">No classrooms yet. Create one to start the adventure.</p>
     <ul v-else class="grid gap-3 sm:grid-cols-2">
       <li v-for="classroom in classrooms" :key="classroom.slug">
-        <a
-          :href="routeHash({ name: 'classroom', slug: classroom.slug })"
-          class="panel flex items-center gap-4 p-5 [--edge:5px] transition-transform duration-150 hover:-translate-y-0.5 hover:bg-parchment"
-        >
-          <IslandGlyph />
-          <span class="grid gap-1">
-            <span class="font-display text-3xl leading-tight font-extrabold">{{ classroom.name }}</span>
-            <span class="text-lg text-ink-soft">{{ classroom.studentCount }} students</span>
-          </span>
-        </a>
+        <ClassroomCard :href="routeHash({ name: 'classroom', slug: classroom.slug })" :name="classroom.name">
+          <span class="text-lg text-ink-soft">{{ classroom.studentCount }} students</span>
+        </ClassroomCard>
       </li>
     </ul>
   </main>

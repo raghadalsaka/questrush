@@ -2,6 +2,7 @@
 import { computed, provide, watch } from 'vue'
 import ClassroomListScreen from './components/ClassroomListScreen.vue'
 import ClassroomScreen from './components/ClassroomScreen.vue'
+import LandingScreen from './components/LandingScreen.vue'
 import LoginScreen from './components/LoginScreen.vue'
 import MessagePanel from './components/MessagePanel.vue'
 import NewClassroomScreen from './components/NewClassroomScreen.vue'
@@ -10,6 +11,7 @@ import PublicClassroomScreen from './components/PublicClassroomScreen.vue'
 import SaveStatusBanner from './components/SaveStatusBanner.vue'
 import { authKey, useAuth } from './composables/useAuth'
 import { useHashRoute } from './composables/useHashRoute'
+import { googleSignIn } from './services/api'
 import { isTeacherRoute } from './utils/route'
 
 const { route } = useHashRoute()
@@ -36,6 +38,7 @@ watch(
 <template>
   <template v-if="needsTeacher">
     <p v-if="auth.state.value === 'unknown'" class="p-8 text-xl" role="status">Loading…</p>
+    <LandingScreen v-else-if="auth.state.value === 'signed-out' && googleSignIn && route.name === 'classrooms'" />
     <LoginScreen v-else-if="auth.state.value === 'signed-out'" />
     <ClassroomListScreen v-else-if="route.name === 'classrooms'" />
     <NewClassroomScreen v-else-if="route.name === 'new-classroom'" />

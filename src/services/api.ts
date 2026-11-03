@@ -7,6 +7,7 @@ import { preloadGoogleSignIn } from './googleAuth'
 import {
   dismissSaveMessage,
   googleSheetApi,
+  listClassroomLinks,
   onSheetReloaded,
   retrySaving,
   saveStatus,
@@ -15,7 +16,7 @@ import {
   usesGoogleSheet,
 } from './googleSheetApi'
 
-export { ApiError, dismissSaveMessage, onSheetReloaded, retrySaving, saveStatus, signInAgain }
+export { ApiError, dismissSaveMessage, listClassroomLinks, onSheetReloaded, retrySaving, saveStatus, signInAgain }
 
 export interface Api {
   login: () => Promise<void>

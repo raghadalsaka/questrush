@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { injectAuth } from '../composables/useAuth'
 import { googleSignIn, preloadSignIn } from '../services/api'
 import BrandIcon from './BrandIcon.vue'
+import CreatorCredit from './CreatorCredit.vue'
 
 const auth = injectAuth()
 
@@ -23,6 +24,7 @@ onMounted(preloadSignIn)
         {{ auth.busy.value ? 'Loading the Classrooms…' : 'Sign In with Google' }}
       </button>
       <p class="text-base text-ink-soft">Students don't need to sign in: use the classroom link your teacher shares.</p>
+      <CreatorCredit />
     </form>
     <section v-else class="panel grid gap-5 p-8">
       <div>

@@ -7,7 +7,6 @@ import { levels } from '../services/game'
 import { routeHash } from '../utils/route'
 import AdventureMap from './AdventureMap.vue'
 import LevelsPanel from './LevelsPanel.vue'
-import MapLegend from './MapLegend.vue'
 import MessagePanel from './MessagePanel.vue'
 import OfficialTurn from './OfficialTurn.vue'
 import SessionPanel from './SessionPanel.vue'
@@ -98,9 +97,8 @@ function setAbsent(studentId: string, absent: boolean): void {
         @select-level="tab = 'stages'"
         @show-list="showList"
       />
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <MapLegend />
-        <button v-if="selectedId !== null" type="button" class="btn btn-small" @click="selectedId = null">Show Everyone</button>
+      <div v-if="selectedId !== null" class="flex justify-end">
+        <button type="button" class="btn btn-small" @click="selectedId = null">Show Everyone</button>
       </div>
     </section>
 

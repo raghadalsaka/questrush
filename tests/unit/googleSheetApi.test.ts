@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { googleSheetApi, onSheetReloaded, retrySaving, saveStatus, usesGoogleSheet } from '../../src/services/googleSheetApi'
+import { googleSheetApi, listClassroomLinks, onSheetReloaded, retrySaving, saveStatus, usesGoogleSheet } from '../../src/services/googleSheetApi'
 import { previewRosterFile } from '../../src/services/rosterFile'
 import { TABLES, type TableName } from '../../src/services/sheetRules'
 import { jsonResponse as json } from './helpers'
@@ -203,6 +203,12 @@ describe('googleSheetApi', () => {
 
     expect(view.name).toBe('Year 3')
     expect(String(vi.mocked(fetch).mock.calls[0]?.[0])).toBe(`${SCRIPT_URL}?action=public&slug=year%203`)
+  })
+
+  it('lists classroom links for the landing page through the read-only script, without signing in', async () => {
+    expect(await listClassroomLinks()).toEqual([{ slug: 'year-3', name: 'Year 3' }])
+    expect(fetch).toHaveBeenCalledTimes(1)
+    expect(String(vi.mocked(fetch).mock.calls[0]?.[0])).toBe(`${SCRIPT_URL}?action=sheet`)
   })
 
   it('refuses large roster files without calling Google', async () => {

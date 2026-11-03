@@ -1,6 +1,6 @@
 import { columnLabel } from '../utils/roster'
 import { ApiError, GENERIC_ERROR_MESSAGE } from './apiError'
-import { cellsOf, emptyDb, LATER_COLUMNS, rowFrom, TABLE_NAMES, TABLES, type SheetDb, type SheetRow, type TableName } from './sheetRules'
+import { cellsOf, emptyDb, LATER_COLUMNS, rowFrom, TABLE_NAMES, TABLES, type ClassroomRow, type SheetDb, type SheetRow, type TableName } from './sheetRules'
 import type { PendingWrite } from './sheetSync'
 
 const SHEETS_API: string = 'https://sheets.googleapis.com/v4/spreadsheets'
@@ -87,23 +87,34 @@ export async function loadSheet(id: string, token: string): Promise<LoadedSheet>
       needsHeader.push(table)
       continue
     }
-    const header = (values[0] ?? []).map((cell) => String(cell))
-    if (!headerFits(table, header)) {
-      throw new ApiError(500, 'sheet_header_changed', `The "${table}" tab's first row must be: ${TABLES[table].join(', ')}.`)
-    }
-    if (header.length < TABLES[table].length) {
+    ;(db[table] as SheetRow[]).push(...tabRows(table, values))
+    if ((values[0] ?? []).length < TABLES[table].length) {
       needsHeader.push(table)
     }
-    const rows = values
-      .slice(1)
-      .map((cells, offset) => rowFrom(table, offset + 2, cells))
-      .filter((row) => cellsOf(table, row).some((cell) => cell !== ''))
-    ;(db[table] as SheetRow[]).push(...rows)
   }
   if (needsHeader.length > 0) {
     await writeHeaders(id, token, needsHeader)
   }
   return { db, sheetIds }
+}
+
+// The landing page lists classrooms before anyone signs in, so it only reads through the script and never writes.
+export async function readClassroomRows(): Promise<ClassroomRow[]> {
+  const { tabs } = await readFromScript<ScriptTabs>({ action: 'sheet' })
+  const values = tabs.classrooms?.values ?? []
+  return values.length === 0 ? [] : (tabRows('classrooms', values) as ClassroomRow[])
+}
+
+// A tab's non-blank rows under its header row, which must be the tab's columns.
+function tabRows(table: TableName, values: readonly unknown[][]): SheetRow[] {
+  const header = (values[0] ?? []).map((cell) => String(cell))
+  if (!headerFits(table, header)) {
+    throw new ApiError(500, 'sheet_header_changed', `The "${table}" tab's first row must be: ${TABLES[table].join(', ')}.`)
+  }
+  return values
+    .slice(1)
+    .map((cells, offset) => rowFrom(table, offset + 2, cells))
+    .filter((row) => cellsOf(table, row).some((cell) => cell !== ''))
 }
 
 // The tab's columns in order, where only the LATER_COLUMNS at the end may still be missing.

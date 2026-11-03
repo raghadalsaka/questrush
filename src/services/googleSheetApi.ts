@@ -1,13 +1,13 @@
 import { SIGN_OUT_SAVE_WAIT_MS } from '../config'
-import type { ClassroomDetail, PublicClassroom } from '../types/api'
+import type { ClassroomDetail, ClassroomLink, PublicClassroom } from '../types/api'
 import type { Api } from './api'
 import { ApiError, GENERIC_ERROR_MESSAGE, networkError, notSignedIn } from './apiError'
 import { indexedDbStore } from './browserStore'
 import { currentToken, forgetToken, googleClientId, requestToken } from './googleAuth'
-import { loadSheet, pushWrite, scriptUrl, spreadsheetId, type LoadedSheet, type WriteOutcome } from './googleSheets'
+import { loadSheet, pushWrite, readClassroomRows, scriptUrl, spreadsheetId, type LoadedSheet, type WriteOutcome } from './googleSheets'
 import { rulesApi } from './rulesApi'
 import { createSaveQueue } from './saveQueue'
-import type { Change, SheetDb, SheetRow, TableName } from './sheetRules'
+import { classroomLinks, type Change, type SheetDb, type SheetRow, type TableName } from './sheetRules'
 import { cloneDb, pendingFrom, reconcile, rowKey, rowsOf, type PendingWrite } from './sheetSync'
 import { teacherTabLock } from './teacherTabLock'
 
@@ -248,4 +248,9 @@ export const googleSheetApi: Api = {
   ...rulesApi(loaded, change),
 
   getPublicClassroom: readPublicClassroom,
+}
+
+// The landing page lists the classrooms before anyone signs in, through the read-only script.
+export async function listClassroomLinks(): Promise<ClassroomLink[]> {
+  return classroomLinks(await readClassroomRows())
 }

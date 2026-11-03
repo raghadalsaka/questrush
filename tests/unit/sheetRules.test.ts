@@ -61,6 +61,16 @@ describe('sheet rules', () => {
     ])
   })
 
+  it('lists classroom links in name order, with numbers in number order', () => {
+    createClass('Year 10', ['Amira'])
+    createClass('Year 9', ['Ben'])
+
+    expect(rules.classroomLinks(db.classrooms)).toEqual([
+      { slug: 'year-9', name: 'Year 9' },
+      { slug: 'year-10', name: 'Year 10' },
+    ])
+  })
+
   it('validates names and emoji with the Go API messages', () => {
     expect(refusal(() => createClass('Class', ['12345']))).toEqual({ status: 400, code: 'invalid_name' })
     expect(refusal(() => rules.createClassroom(db, clock, 'Class', [{ name: 'Amira', emoji: '' }]))).toEqual({ status: 400, code: 'invalid_emoji' })
